@@ -1,0 +1,18 @@
+{
+  "name": "Food Waste Fighter — Node 24",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:5.2.5-24-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "forwardPorts": [
+    3000
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Food Waste Fighter",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "node scripts/setup-env.js && npm ci && npm run build",
+  "remoteUser": "node"
+}

@@ -1,0 +1,63 @@
+@import "tailwindcss" source(none);
+@source "../views";
+@source "../modules/expiration/expiration.js";
+
+@import "./legacy.css";
+
+@font-face { font-family: 'Inter'; font-style: normal; font-display: swap; font-weight: 400; src: url('/assets/fonts/inter-latin-400-normal.woff2') format('woff2'); }
+
+@font-face { font-family: 'Inter'; font-style: normal; font-display: swap; font-weight: 500; src: url('/assets/fonts/inter-latin-500-normal.woff2') format('woff2'); }
+
+@font-face { font-family: 'Inter'; font-style: normal; font-display: swap; font-weight: 600; src: url('/assets/fonts/inter-latin-600-normal.woff2') format('woff2'); }
+
+@font-face { font-family: 'Inter'; font-style: normal; font-display: swap; font-weight: 700; src: url('/assets/fonts/inter-latin-700-normal.woff2') format('woff2'); }
+
+/* Preserve the Tailwind 3 palette used by the supplied HTML/JSP templates. */
+@theme {
+  --color-green-50: #f0fdf4;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #15803d;
+  --color-green-800: #166534;
+  --color-green-900: #14532d;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-red-50: #fef2f2;
+  --color-red-100: #fee2e2;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+  --color-yellow-50: #fefce8;
+  --color-yellow-500: #eab308;
+  --color-yellow-800: #854d0e;
+  --color-blue-50: #eff6ff;
+  --color-blue-500: #3b82f6;
+  --color-blue-700: #1d4ed8;
+  --color-blue-800: #1e40af;
+  --color-blue-900: #1e3a8a;
+}
+
+/* Keyboard visibility and reduced motion do not change the original palette. */
+:focus-visible { outline: 2px solid #15803d; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .page-transition { animation: none; }
+  .btn-primary { transition: none; }
+}
+
+/* WCAG text contrast: use the existing green 700 for normal text/actions.
+   Keep green 600 on large brand lettering and decorative elements. */
+:is(a, button).bg-green-600, .btn-primary, .step-number { background-color: #15803d; }
+.text-green-600:not(.text-xl):not(.text-2xl):not(.text-3xl) { color: #15803d; }

@@ -1,0 +1,464 @@
+/* =============================================================================
+   FOOD WASTE FIGHTER - ESTILOS PERSONALIZADOS
+   ============================================================================= */
+
+/* Aplicar la fuente Inter a todo el cuerpo */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Estilo para el enlace activo en la navegación de la app */
+.nav-link-active {
+    color: #16a34a; /* text-green-600 */
+    font-weight: 600; /* font-semibold */
+}
+
+/* Transiciones suaves para navegación */
+.page-transition {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos para alertas de caducidad */
+.alert-critical {
+    background-color: #fef2f2;
+    border-left-color: #dc2626;
+}
+
+.alert-warning {
+    background-color: #fefce8;
+    border-left-color: #eab308;
+}
+
+.alert-normal {
+    background-color: #f9fafb;
+    border-left-color: #d1d5db;
+}
+
+/* Hover effects mejorados */
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(22, 163, 74, 0.3);
+}
+
+.btn-primary {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Estilos para tablas responsivas */
+@media (max-width: 768px) {
+    .table-responsive {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* =============================================================================
+   COMPONENTES REUTILIZABLES
+   ============================================================================= */
+
+/* Navbar común */
+.navbar {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.navbar-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+    .navbar-container {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .navbar-container {
+        padding: 0 2rem;
+    }
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    height: 4rem;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #16a34a;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.navbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Botones */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #16a34a;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #15803d;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(22, 163, 74, 0.3);
+}
+
+.btn-secondary {
+    background-color: white;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.btn-secondary:hover {
+    background-color: #f9fafb;
+}
+
+/* Cards de características */
+.feature-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.feature-card:hover {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+.feature-icon {
+    width: 3rem;
+    height: 3rem;
+    background-color: #dcfce7;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.feature-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #16a34a;
+    stroke: currentColor;
+    fill: none;
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.feature-description {
+    color: #4b5563;
+}
+
+/* Contenedor principal */
+.main-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+@media (min-width: 640px) {
+    .main-container {
+        padding: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .main-container {
+        padding: 2rem;
+    }
+}
+
+/* Hero section */
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem 0;
+}
+
+@media (min-width: 768px) {
+    .hero-section {
+        flex-direction: row;
+        padding: 6rem 0;
+    }
+}
+
+.hero-badge {
+    display: inline-block;
+    background-color: #dcfce7;
+    color: #15803d;
+    padding: 0.25rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.hero-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+}
+
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: 3.75rem;
+    }
+}
+
+.hero-title-highlight {
+    color: #16a34a;
+}
+
+.hero-description {
+    font-size: 1.125rem;
+    color: #4b5563;
+    margin-bottom: 2rem;
+}
+
+/* Sección de características */
+.features-section {
+    padding: 4rem 0;
+}
+
+@media (min-width: 768px) {
+    .features-section {
+        padding: 6rem 0;
+    }
+}
+
+.features-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.features-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .features-title {
+        font-size: 2.25rem;
+    }
+}
+
+.features-subtitle {
+    font-size: 1.125rem;
+    color: #4b5563;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .features-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Sección de estadísticas - Solo estilos que no tiene Tailwind */
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #15803d;
+    line-height: 1;
+}
+
+@media (min-width: 768px) {
+    .stat-number {
+        font-size: 3.75rem;
+    }
+}
+
+/* Footer */
+.footer-section {
+    background-color: #111827;
+    color: #d1d5db;
+    padding: 4rem 0;
+    margin-top: 4rem;
+}
+
+@media (min-width: 768px) {
+    .footer-section {
+        padding: 5rem 0;
+        margin-top: 5rem;
+    }
+}
+
+.footer-link {
+    color: #d1d5db;
+    transition: color 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+    color: #16a34a;
+}
+
+/* =============================================================================
+   PÁGINA DE RECETAS
+   ============================================================================= */
+
+/* Tarjeta de sección */
+.recipe-card {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Info rápida de receta */
+.quick-info-item {
+    text-align: center;
+}
+
+.quick-info-icon {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto;
+    color: #16a34a;
+    margin-bottom: 0.5rem;
+}
+
+/* Lista de ingredientes */
+.ingredient-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.ingredient-check {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ingredient-check.available {
+    background-color: #dcfce7;
+}
+
+.ingredient-check.unavailable {
+    background-color: #f3f4f6;
+}
+
+.ingredient-check svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.ingredient-check.available svg {
+    color: #16a34a;
+}
+
+.ingredient-check.unavailable svg {
+    color: #9ca3af;
+}
+
+/* Pasos de preparación */
+.preparation-step {
+    display: flex;
+    gap: 1rem;
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #16a34a;
+    color: white;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* Tarjeta de consejos */
+.tips-card {
+    background-color: #f0fdf4;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    border: 2px solid #bbf7d0;
+}
+
+.tips-item {
+    display: flex;
+    align-items: start;
+    gap: 0.75rem;
+}
+
+/* Info nutricional */
+.nutrition-item {
+    text-align: center;
+    padding: 1rem;
+    background-color: #f9fafb;
+    border-radius: 0.75rem;
+}
+
+.nutrition-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #16a34a;
+}
+
+.nutrition-label {
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin-top: 0.25rem;
+}

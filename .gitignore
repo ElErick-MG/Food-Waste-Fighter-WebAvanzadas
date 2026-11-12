@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.*
+!.env.example
+work/
+src/generated/
+src/public/styles.css
+coverage/
+playwright-report/
+test-results/
+*.log

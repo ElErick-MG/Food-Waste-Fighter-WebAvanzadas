@@ -1,0 +1,368 @@
+{
+  "measuredAt": "2026-11-07T20:15:25.100Z",
+  "sourceRevision": "e6dfe81+phase5-working-tree",
+  "browser": "156.0.8078.79",
+  "brandColor": "rgb(22, 163, 74)",
+  "scans": [
+    {
+      "path": "/",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/auth/login",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/auth/register",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/auth/forgot",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/auth/reset",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/missing",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/auth/login",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/auth/register",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/auth/forgot",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/auth/reset",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/missing",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/dashboard",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/account",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/team",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory/new",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory/:id",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory/:id/edit",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory/:id/delete",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/categories",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/categories/:id/delete",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/expiration",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/recipes",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/recipes/:id",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".ingredient-check"
+            ]
+          ]
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "path": "/chat",
+      "width": 1280,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/dashboard",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/account",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/team",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory/new",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory/:id",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory/:id/edit",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/inventory/:id/delete",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/categories",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/categories/:id/delete",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/expiration",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/recipes",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    },
+    {
+      "path": "/recipes/:id",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".ingredient-check"
+            ]
+          ]
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "path": "/chat",
+      "width": 320,
+      "violations": 0,
+      "incomplete": [],
+      "incompleteDetails": [],
+      "overflow": false
+    }
+  ],
+  "issues": [],
+  "functional": {
+    "nativeLogin": true,
+    "keyboardSkipLink": true,
+    "keyboardMobileMenu": true,
+    "twoDistinctUsers": true,
+    "liveExchange": true,
+    "persistedHistory": true,
+    "companyIsolation": true,
+    "notificationWithoutReload": true,
+    "websocketObserved": true
+  },
+  "errors": [],
+  "externalOrigins": [],
+  "limitations": [
+    "Automated axe WCAG A/AA and best-practice checks plus targeted manual/keyboard behavior are not complete WCAG certification.",
+    "Local HTTP and isolated MySQL; actual Codespaces traffic is not captured by this command. Incomplete axe checks require human review."
+  ]
+}

@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="es"><head><%- include('../partials/head', { title: item.name }) %></head><body class="bg-gray-50 text-gray-800"><%- include('../partials/navigation') %>
+<main id="main-content" class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8"><a href="/inventory" class="inline-flex text-green-700 font-medium mb-6">← Volver al Inventario</a><%- include('../partials/notice') %>
+  <div class="bg-white p-8 rounded-xl shadow-lg"><h1 class="text-3xl font-bold mb-6 break-words"><%= item.name %></h1><dl class="grid sm:grid-cols-2 gap-4"><% for (const [label, value] of [['Categoría', item.category.name], ['Cantidad', item.quantity + ' ' + item.unit], ['Stock mínimo', item.minimumStock + ' ' + item.unit], ['Fecha de Ingreso', displayDate(item.receivedDate)], ['Fecha de Caducidad', displayDate(item.expiresDate)]]) { %><div><dt class="text-gray-600"><%= label %></dt><dd class="font-medium break-words"><%= value %></dd></div><% } %></dl>
+    <% const state = expiration(item.expiresDate); %><p class="border-l-4 rounded-lg p-3 mt-6 <%= state.classes %>"><%= state.label %></p><% if (item.quantity.lte(item.minimumStock)) { %><p class="text-red-800 font-semibold mt-3">Stock bajo: repón este producto.</p><% } %><div class="flex flex-wrap gap-4 mt-6"><a href="/inventory/<%= item.id %>/edit" class="text-blue-700 font-medium">Editar Producto</a><% if (currentUser.role === 'ADMIN') { %><a href="/inventory/<%= item.id %>/delete" class="text-red-700 font-medium">Eliminar Producto</a><% } %></div>
+  </div>
+</main></body></html>

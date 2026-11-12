@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es"><head><%- include('../partials/head', { title: 'Equipo' }) %></head>
+<body class="bg-gray-50 text-gray-800 min-h-screen"><%- include('../partials/navigation') %>
+<main id="main-content" class="main-container page-transition"><h1 class="text-3xl font-bold mb-6">Equipo de <%= currentUser.company.name %></h1>
+<div class="grid md:grid-cols-2 gap-6">
+  <section class="bg-white p-6 rounded-xl shadow-lg"><h2 class="text-xl font-semibold mb-4">Personas del negocio</h2>
+  <ul class="divide-y divide-gray-200"><% for (const user of users) { %><li class="py-4 break-words"><p class="font-semibold"><%= user.name %></p><p><%= user.email %></p><p class="text-gray-600 text-sm"><%= user.role === 'ADMIN' ? 'Administración' : 'Empleado' %></p></li><% } %></ul></section>
+  <section class="bg-white p-6 rounded-xl shadow-lg"><h2 class="text-xl font-semibold mb-4">Añadir empleado</h2>
+  <% if (error) { %><p role="alert" class="bg-red-50 text-red-700 border-l-4 border-red-500 p-4 mb-6"><%= error %></p><% } %>
+  <form method="post" action="/team" data-password-form class="grid gap-4">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div><label for="name" class="block text-sm font-medium mb-1">Nombre Completo</label><input id="name" name="name" required minlength="2" maxlength="120" autocomplete="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"></div>
+    <div><label for="email" class="block text-sm font-medium mb-1">Correo Electrónico</label><input id="email" name="email" type="email" required maxlength="254" autocomplete="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"></div>
+    <div><label for="password" class="block text-sm font-medium mb-1">Contraseña inicial</label><input id="password" name="password" type="password" required minlength="12" maxlength="128" autocomplete="new-password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"></div>
+    <div><label for="confirmPassword" class="block text-sm font-medium mb-1">Confirmar Contraseña</label><input id="confirmPassword" name="confirmPassword" type="password" required maxlength="128" autocomplete="new-password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"></div>
+    <button class="btn btn-primary">Añadir empleado</button>
+  </form></section>
+</div></main></body></html>

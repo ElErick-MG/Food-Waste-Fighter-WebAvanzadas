@@ -1,0 +1,138 @@
+{
+  "measuredAt": "2026-11-07T20:11:03.910Z",
+  "sourceRevision": "e6dfe81+phase5-working-tree",
+  "environment": {
+    "node": "v24.22.1",
+    "mysql": "8.4.13",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "logicalCpus": 3,
+    "memoryGiB": 9.73
+  },
+  "methodology": {
+    "records": 1000,
+    "samples": 30,
+    "warmup": 5,
+    "concurrency": 1,
+    "operation": "Real inventory repository transaction: count + paginated list/category relation",
+    "includes": "Node/Prisma/adapter/SQL round trip; warm database; no HTTP/browser/network proxy latency",
+    "timeZone": "America/Guayaquil"
+  },
+  "cases": [
+    {
+      "name": "page-1",
+      "samples": 30,
+      "recordsReturned": 10,
+      "totalMatches": 1000,
+      "minMs": 3.463,
+      "p50Ms": 4.801,
+      "p95Ms": 5.923,
+      "maxMs": 6.02
+    },
+    {
+      "name": "page-50",
+      "samples": 30,
+      "recordsReturned": 10,
+      "totalMatches": 1000,
+      "minMs": 4.132,
+      "p50Ms": 4.965,
+      "p95Ms": 6.384,
+      "maxMs": 6.615
+    },
+    {
+      "name": "substring-search",
+      "samples": 30,
+      "recordsReturned": 10,
+      "totalMatches": 100,
+      "minMs": 5.718,
+      "p50Ms": 7.595,
+      "p95Ms": 12.123,
+      "maxMs": 17.628
+    }
+  ],
+  "representativePlans": {
+    "ordered": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "FoodItem",
+        "partitions": null,
+        "type": "ref",
+        "possible_keys": "FoodItem_companyId_name_idx,FoodItem_companyId_expiresDate_idx",
+        "key": "FoodItem_companyId_expiresDate_idx",
+        "key_len": "122",
+        "ref": "const",
+        "rows": 1000,
+        "filtered": 100,
+        "Extra": "Using index"
+      }
+    ],
+    "substring": [
+      {
+        "id": 1,
+        "select_type": "SIMPLE",
+        "table": "FoodItem",
+        "partitions": null,
+        "type": "ALL",
+        "possible_keys": "FoodItem_companyId_name_idx,FoodItem_companyId_expiresDate_idx",
+        "key": null,
+        "key_len": null,
+        "ref": null,
+        "rows": 1000,
+        "filtered": 11.110000610351562,
+        "Extra": "Using where; Using filesort"
+      }
+    ]
+  },
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "sequence": 1,
+      "column": "id"
+    },
+    {
+      "name": "FoodItem_companyId_name_idx",
+      "sequence": 1,
+      "column": "companyId"
+    },
+    {
+      "name": "FoodItem_companyId_name_idx",
+      "sequence": 2,
+      "column": "name"
+    },
+    {
+      "name": "FoodItem_companyId_expiresDate_idx",
+      "sequence": 1,
+      "column": "companyId"
+    },
+    {
+      "name": "FoodItem_companyId_expiresDate_idx",
+      "sequence": 2,
+      "column": "expiresDate"
+    },
+    {
+      "name": "FoodItem_categoryId_companyId_idx",
+      "sequence": 1,
+      "column": "categoryId"
+    },
+    {
+      "name": "FoodItem_categoryId_companyId_idx",
+      "sequence": 2,
+      "column": "companyId"
+    },
+    {
+      "name": "FoodItem_inventoryId_companyId_fkey",
+      "sequence": 1,
+      "column": "inventoryId"
+    },
+    {
+      "name": "FoodItem_inventoryId_companyId_fkey",
+      "sequence": 2,
+      "column": "companyId"
+    }
+  ],
+  "limitations": [
+    "Local isolated MySQL, synthetic 1000-row company, serial warm queries; no production throughput claim.",
+    "Leading-wildcard substring search is not a B-tree prefix lookup; an available index does not prove every query uses it.",
+    "Plans describe representative parameterized SQL; latency measures the actual application repository."
+  ]
+}

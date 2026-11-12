@@ -1,0 +1,4 @@
+<nav aria-label="Paginación" class="flex flex-wrap justify-between items-center gap-4 mt-6 text-gray-700">
+  <p><%= pagination.total %> registros · Página <%= pagination.page %><% if (pagination.page > pagination.pages) { %> fuera de rango<% } else { %> de <%= pagination.pages %><% } %></p>
+  <div class="flex gap-4"><% if (pagination.previous) { %><a rel="prev" href="<%= pagination.previous %>" class="text-green-700 font-medium">← Anterior</a><% } %><% if (pagination.next) { %><a rel="next" href="<%= pagination.next %>" class="text-green-700 font-medium">Siguiente →</a><% } %></div>
+</nav>

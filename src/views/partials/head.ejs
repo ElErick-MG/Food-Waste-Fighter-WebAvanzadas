@@ -1,0 +1,10 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %> — Food Waste Fighter</title>
+<link rel="stylesheet" href="/assets/styles.css">
+<script src="/assets/auth.js" defer></script>
+<% if (typeof currentUser !== 'undefined' && currentUser) { %>
+<meta name="csrf-token" content="<%= csrfToken %>">
+<script src="/socket.io/socket.io.js" defer></script>
+<script src="/assets/realtime.js" defer></script>
+<% } %>

@@ -1,0 +1,52 @@
+{
+  "name": "food-waste-fighter-business",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "setup:env": "node scripts/setup-env.js",
+    "build:css": "tailwindcss -i src/styles/app.css -o src/public/styles.css --minify",
+    "build": "npm run db:generate && npm run build:css",
+    "predev": "npm run build",
+    "dev": "node --watch src/server.js",
+    "prestart": "npm run build",
+    "start": "node src/server.js",
+    "test": "vitest run --exclude 'tests/*.integration.test.js'",
+    "test:db": "node scripts/test-db.js",
+    "db:up": "docker compose up -d --wait mysql",
+    "db:generate": "prisma generate",
+    "db:validate": "prisma validate",
+    "db:migrate": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "verify:browser": "node scripts/verify-browser.js",
+    "measure:queries": "node scripts/measure-queries.js"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@prisma/adapter-mariadb": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "argon2": "^0.45.2",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.7.3",
+    "express-session": "^1.19.0",
+    "helmet": "^8.1.0",
+    "socket.io": "^4.8.4",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.17",
+    "axe-core": "^4.14.0",
+    "playwright": "^1.65.0",
+    "prisma": "7.10.1",
+    "socket.io-client": "^4.8.4",
+    "supertest": "^7.1.4",
+    "tailwindcss": "^4.1.17",
+    "vitest": "^5.1.0"
+  }
+}

@@ -1,0 +1,156 @@
+generator client {
+  provider   = "prisma-client-js"
+  output     = "../src/generated/prisma"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+model Company {
+  id          String   @id @default(cuid()) @db.VarChar(30)
+  name        String   @db.VarChar(120)
+  description String?  @db.VarChar(500)
+  createdAt   DateTime @default(now()) @db.DateTime(3)
+  users       User[]
+  inventory   Inventory?
+  categories  Category[]
+  recipes     Recipe[]
+  rooms       ChatRoom[]
+}
+
+model User {
+  id             String   @id @default(cuid()) @db.VarChar(30)
+  companyId      String   @db.VarChar(30)
+  name           String   @db.VarChar(120)
+  email          String   @unique @db.VarChar(254)
+  passwordHash   String   @db.VarChar(255)
+  role           Role     @default(EMPLOYEE)
+  sessionVersion Int      @default(0)
+  createdAt      DateTime @default(now()) @db.DateTime(3)
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  messages       ChatMessage[]
+  resetToken     PasswordResetToken?
+  sessions       Session[]
+
+  @@unique([id, companyId])
+  @@index([companyId, name])
+}
+
+model Inventory {
+  id        String @id @default(cuid()) @db.VarChar(30)
+  companyId String @unique @db.VarChar(30)
+  name      String @db.VarChar(120)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  items     FoodItem[]
+
+  @@unique([id, companyId])
+}
+
+model Category {
+  id        String @id @default(cuid()) @db.VarChar(30)
+  companyId String @db.VarChar(30)
+  name      String @db.VarChar(80)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  items     FoodItem[]
+
+  @@unique([id, companyId])
+  @@unique([companyId, name])
+}
+
+model FoodItem {
+  id           String   @id @default(cuid()) @db.VarChar(30)
+  companyId    String   @db.VarChar(30)
+  inventoryId  String   @db.VarChar(30)
+  categoryId   String   @db.VarChar(30)
+  name         String   @db.VarChar(120)
+  quantity     Decimal  @db.Decimal(12, 3)
+  unit         String   @db.VarChar(20)
+  receivedDate DateTime @db.Date
+  expiresDate  DateTime @db.Date
+  minimumStock Decimal  @default(0) @db.Decimal(12, 3)
+  inventory    Inventory @relation(fields: [inventoryId, companyId], references: [id, companyId], onDelete: Cascade)
+  category     Category @relation(fields: [categoryId, companyId], references: [id, companyId], onDelete: Restrict)
+
+  @@index([companyId, name])
+  @@index([companyId, expiresDate])
+  @@index([categoryId, companyId])
+}
+
+model Recipe {
+  id          String @id @default(cuid()) @db.VarChar(30)
+  companyId   String @db.VarChar(30)
+  name        String @db.VarChar(120)
+  description String @db.VarChar(500)
+  preparation String @db.Text
+  company     Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  ingredients RecipeIngredient[]
+
+  @@unique([id, companyId])
+  @@index([companyId, name])
+}
+
+model RecipeIngredient {
+  id        String @id @default(cuid()) @db.VarChar(30)
+  companyId String @db.VarChar(30)
+  recipeId  String @db.VarChar(30)
+  name      String @db.VarChar(120)
+  quantity  Decimal @db.Decimal(12, 3)
+  unit      String @db.VarChar(20)
+  recipe    Recipe @relation(fields: [recipeId, companyId], references: [id, companyId], onDelete: Cascade)
+
+  @@index([recipeId, companyId])
+}
+
+model ChatRoom {
+  id        String @id @default(cuid()) @db.VarChar(30)
+  companyId String @db.VarChar(30)
+  name      String @db.VarChar(80)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  messages  ChatMessage[]
+
+  @@unique([id, companyId])
+  @@unique([companyId, name])
+}
+
+model ChatMessage {
+  id        String @id @default(cuid()) @db.VarChar(30)
+  companyId String @db.VarChar(30)
+  roomId    String @db.VarChar(30)
+  userId    String @db.VarChar(30)
+  content   String @db.VarChar(2000)
+  createdAt DateTime @default(now()) @db.DateTime(3)
+  room      ChatRoom @relation(fields: [roomId, companyId], references: [id, companyId], onDelete: Cascade)
+  sender    User @relation(fields: [userId, companyId], references: [id, companyId], onDelete: Cascade)
+
+  @@index([roomId, companyId, createdAt, id])
+  @@index([userId, companyId])
+}
+
+model PasswordResetToken {
+  id         String @id @default(cuid()) @db.VarChar(30)
+  userId     String @unique @db.VarChar(30)
+  tokenHash  String @unique @db.Char(64)
+  expiresAt  DateTime @db.DateTime(3)
+  consumedAt DateTime? @db.DateTime(3)
+  user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+}
+
+model Session {
+  id        String @id @db.VarChar(128)
+  userId    String? @db.VarChar(30)
+  data      Json
+  expiresAt DateTime @db.DateTime(3)
+  user      User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@index([userId])
+}

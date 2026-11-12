@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="es"><head><%- include('../partials/head', { title: 'Recetas' }) %></head><body class="bg-gray-50 text-gray-800"><%- include('../partials/navigation') %>
+<!-- Grid and cards from recetas.jsp; no invented images or nutritional values. -->
+<main id="main-content" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8"><div class="page-transition">
+  <div class="mb-8"><h1 class="text-3xl font-bold mb-2">Recetas Sugeridas</h1><p class="text-gray-600">Consulta las recetas de tu empresa. En cada detalle se indican las coincidencias con los alimentos de tu inventario.</p></div>
+  <% if (!recipes.length) { %><div class="bg-white rounded-xl shadow-lg p-8 text-center"><h2 class="text-xl font-semibold text-gray-700 mb-2">No hay recetas disponibles en esta página</h2><p class="text-gray-600">La empresa de demostración incluye una receta ficticia. Las empresas nuevas comienzan sin recetas.</p></div><% } else { %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><% for (const recipe of recipes) { %><a href="/recipes/<%= recipe.id %>" class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow block"><div class="p-5"><h2 class="font-bold text-xl mb-2 break-words"><%= recipe.name %></h2><p class="text-gray-600 text-sm mb-3 break-words"><%= recipe.description %></p><p class="text-green-700 font-medium">Ver receta completa →</p></div></a><% } %></div>
+  <% } %><%- include('../partials/pagination') %>
+  <div class="mt-10 bg-green-50 border border-green-200 rounded-2xl p-6"><h2 class="font-bold text-lg text-green-800">¿Sabías que...?</h2><p class="text-green-800 mt-1">Aprovechar ingredientes próximos a caducar ayuda a reducir el desperdicio de alimentos.</p></div>
+</div></main></body></html>

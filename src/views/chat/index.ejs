@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es"><head><%- include('../partials/head', { title: 'Chat del equipo' }) %></head>
+<body class="bg-gray-50 text-gray-800"><%- include('../partials/navigation') %>
+<main id="main-content" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8" data-chat-room="<%= room.id %>">
+  <h1 class="text-3xl font-bold mb-2">Chat del equipo</h1>
+  <p class="text-gray-600 mb-6 break-words"><%= currentUser.company.name %> · Sala <%= room.name %></p>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <section class="lg:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-lg min-w-0" aria-label="Conversación">
+      <p id="chat-status" class="text-gray-600 mb-3" role="status">Conectando…</p>
+      <button id="chat-older" type="button" class="text-green-700 underline mb-4" <%= history.hasMore ? '' : 'hidden' %>>Cargar mensajes anteriores</button>
+      <ol id="chat-messages" class="space-y-4 max-h-96 overflow-y-auto mb-6" aria-label="Mensajes" aria-live="polite" aria-relevant="additions">
+        <% for (const message of history.messages) { %><li data-message-id="<%= message.id %>" data-created-at="<%= message.createdAt %>" class="bg-gray-50 p-3 rounded-lg break-words"><p class="font-semibold"><%= message.sender.name %> <time class="font-normal text-sm text-gray-600" datetime="<%= message.createdAt %>"><%= new Date(message.createdAt).toLocaleString('es', { timeZone: businessTimezone }) %></time></p><p class="whitespace-pre-wrap break-words"><%= message.content %></p></li><% } %>
+      </ol>
+      <p id="chat-empty" class="text-gray-600 mb-4" <%= history.messages.length ? 'hidden' : '' %>>Aún no hay mensajes. Coordina aquí con tu equipo.</p>
+      <form id="chat-form">
+        <label for="chat-content" class="block font-semibold mb-2">Mensaje (hasta 2000 caracteres)</label>
+        <textarea id="chat-content" name="content" required minlength="1" maxlength="2000" rows="3" class="w-full border border-gray-300 rounded-lg p-3 mb-3" disabled></textarea>
+        <button id="chat-send" class="bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg px-5 py-3" disabled>Enviar mensaje</button>
+        <p id="chat-error" class="text-red-700 mt-3" role="alert"></p>
+      </form>
+      <noscript>Activa JavaScript para enviar mensajes en tiempo real.</noscript>
+    </section>
+    <aside class="bg-white p-6 rounded-xl shadow-lg self-start min-w-0"><h2 class="text-xl font-semibold mb-3">Personas conectadas <span id="chat-count">0</span></h2><ul id="chat-users" class="space-y-2 break-words"></ul><p class="text-sm text-gray-600 mt-4">Cada persona se cuenta una vez, aunque tenga varias pestañas abiertas.</p></aside>
+  </div>
+</main></body></html>

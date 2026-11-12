@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="es"><head><%- include('partials/head', { title: 'Mi cuenta' }) %></head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+<%- include('partials/navigation') %>
+<main id="main-content" class="main-container page-transition">
+  <div class="bg-white p-8 rounded-xl shadow-lg max-w-3xl mx-auto mt-8">
+    <p class="text-green-600 font-semibold mb-2"><%= currentUser.company.name %></p>
+    <h1 class="text-3xl font-bold mb-6">Hola, <%= currentUser.name %></h1>
+    <dl class="grid gap-4"><div><dt class="text-gray-600">Correo electrónico</dt><dd class="font-medium"><%= currentUser.email %></dd></div>
+    <div><dt class="text-gray-600">Rol</dt><dd class="font-medium"><%= currentUser.role === 'ADMIN' ? 'Administración' : 'Empleado' %></dd></div></dl>
+    <% if (currentUser.role === 'ADMIN') { %><p class="mt-8"><a href="/team" class="btn btn-primary inline-block">Administrar equipo</a></p><% } %>
+  </div>
+</main></body></html>

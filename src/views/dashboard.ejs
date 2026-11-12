@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es"><head><%- include('partials/head', { title: 'Dashboard' }) %></head>
+<body class="bg-gray-50 text-gray-800"><%- include('partials/navigation') %>
+<!-- Container, welcome, alert cards and recipe grid adapted from dashboard.jsp. -->
+<main id="main-content" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+  <div class="mb-6"><h1 class="text-3xl font-bold break-words">¡Hola, <%= currentUser.name %>!</h1><p class="text-gray-600 break-words">Este es el resumen de tu inventario · <%= currentUser.company.name %></p></div>
+  <%- include('partials/notice') %>
+  <p class="mb-6"><a href="/chat" class="text-green-700 underline font-semibold">Abrir chat del equipo →</a></p>
+  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8" aria-label="Resumen del inventario">
+    <% for (const [key, label, href] of [['total', 'Alimentos registrados', '/inventory'], ['soon', 'Próximos a caducar (0–5 días)', '/expiration?status=soon'], ['expired', 'Productos caducados', '/expiration?status=expired'], ['low', 'Productos con stock bajo', '/inventory?status=low']]) { %><a href="<%= href %>" class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-500 block"><h2 class="text-gray-600 font-medium"><%= label %></h2><p class="text-3xl font-bold text-green-700 mt-2" data-metric="<%= key %>"><%= metrics[key] %></p></a><% } %>
+  </section>
+  <section class="mb-8"><div class="flex flex-wrap justify-between items-center gap-4 mb-4"><h2 class="text-2xl font-semibold">Alertas de Caducidad</h2><a class="text-green-700 font-medium" href="/expiration">Ver todos los productos →</a></div>
+    <% if (!alerts.length) { %><div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-500"><h3 class="font-bold text-lg">¡Tu inventario está vacío!</h3><a href="/inventory/new" class="text-green-700 font-medium">Añade tu primer producto →</a></div><% } else { %>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4"><% for (const item of alerts) { const state = expiration(item.expiresDate); %><a href="/inventory/<%= item.id %>" class="bg-white p-4 rounded-xl shadow-lg border-l-4 <%= state.classes %> block"><h3 class="font-bold break-words"><%= item.name %></h3><p class="text-sm mt-2"><%= state.label %> · <%= displayDate(item.expiresDate) %></p><% if (item.quantity.lte(item.minimumStock)) { %><p class="font-semibold mt-2">Stock bajo</p><% } %></a><% } %></div>
+    <% } %><p class="text-sm text-gray-600 mt-4">Fechas del negocio: <%= displayDate(today) %> (<%= businessTimezone %>). Los caducados deben retirarse del uso.</p>
+  </section>
+  <section class="mb-8"><h2 class="text-2xl font-semibold mb-4">Recetas Sugeridas</h2>
+    <% if (!suggested.length) { %><div class="bg-white p-6 rounded-xl shadow-lg"><p class="text-gray-600">No hay recetas que coincidan con los productos próximos a caducar con stock disponible.</p><a href="/recipes" class="text-green-700 font-medium">Consultar recetas →</a></div><% } else { %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6"><% for (const recipe of suggested) { %><a href="/recipes/<%= recipe.id %>" class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow block"><div class="p-5"><h3 class="font-bold text-xl mb-2 break-words"><%= recipe.name %></h3><p class="text-sm text-green-800 bg-green-50 border border-green-200 rounded-lg p-2 mb-3">Coincide por nombre: <%= recipe.matches.join(', ') %></p><p class="text-gray-600 mb-3 break-words"><%= recipe.description %></p><p class="text-green-700 font-medium">Ver receta completa →</p></div></a><% } %></div><p class="text-sm text-gray-600 mt-3">Revisa cantidades, unidades y condiciones del alimento antes de preparar una receta.</p>
+    <% } %>
+  </section>
+</main></body></html>

@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="es"><head><%- include('../partials/head', { title: recipe.name }) %></head><body class="bg-gray-50 text-gray-800"><%- include('../partials/navigation') %>
+<!-- recipe-card / ingredient-item / preparation-step retained from detalleReceta.jsp. -->
+<main id="main-content" class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8"><div class="page-transition">
+  <a href="/recipes" class="inline-flex text-green-700 font-medium mb-6">← Volver a Recetas</a><div class="recipe-card"><h1 class="text-4xl font-bold mb-4 break-words"><%= recipe.name %></h1><p class="text-gray-600 text-lg break-words"><%= recipe.description %></p></div>
+  <section class="recipe-card"><h2 class="text-2xl font-bold mb-4">Ingredientes</h2><p class="text-sm text-gray-600 mb-4">✓ indica coincidencia por nombre con un producto no caducado y con stock. Revisa cantidades, unidades y condiciones; no garantiza que alcance para la receta.</p>
+    <ul class="space-y-3"><% for (const ingredient of ingredients) { %><li class="ingredient-item" data-ingredient="<%= ingredient.id %>" data-available="<%= ingredient.available %>"><span class="ingredient-check <%= ingredient.available ? 'available' : 'unavailable' %>" aria-hidden="true"><%= ingredient.available ? '✓' : '–' %></span><span class="text-gray-700 break-words"><%= ingredient.quantity %> <%= ingredient.unit %> de <strong><%= ingredient.name %></strong> — <%= ingredient.available ? 'Coincide con tu inventario' : 'Sin coincidencia disponible' %></span></li><% } %></ul>
+  </section>
+  <section class="recipe-card"><h2 class="text-2xl font-bold mb-6">Preparación</h2><ol class="space-y-6"><% for (const [index, step] of recipe.preparation.split(/\r?\n/).filter(step => step.trim()).entries()) { %><li class="preparation-step"><div class="step-number" aria-hidden="true"><%= index + 1 %></div><p class="flex-1 pt-1 text-gray-600 whitespace-pre-line break-words"><%= step %></p></li><% } %></ol></section>
+  <aside class="tips-card"><h2 class="text-2xl font-bold mb-4 text-green-800">Consejo</h2><p class="text-gray-700">Prioriza los ingredientes próximos a caducar. Los productos caducados o sin stock no se marcan como disponibles.</p></aside>
+</div></main></body></html>

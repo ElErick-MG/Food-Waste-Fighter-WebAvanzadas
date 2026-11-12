@@ -1,0 +1,19 @@
+<% const links = [['/dashboard', 'Dashboard'], ['/inventory', 'Mi Inventario'], ['/recipes', 'Recetas'], ['/expiration', 'Por Caducar'], ['/categories', 'Categorías'], ['/chat', 'Chat'], ['/account', 'Mi cuenta']]; if (currentUser.role === 'ADMIN') links.push(['/team', 'Equipo']); %>
+<!-- Adapted from components/navbar.jsp; logout remains a CSRF-protected POST. -->
+<a href="#main-content" class="sr-only focus:not-sr-only focus:block focus:p-3">Saltar al contenido</a>
+<nav class="bg-white shadow-sm sticky top-0 z-50" aria-label="Navegación principal">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex flex-wrap justify-between items-center gap-4 min-h-16 py-3">
+    <a href="/dashboard" class="flex items-center gap-2 text-green-600 font-bold text-xl"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><span class="hidden sm:inline">Food Waste Fighter</span><span class="sr-only sm:hidden">Food Waste Fighter — Dashboard</span></a>
+    <div class="hidden xl:flex flex-wrap items-center gap-4">
+      <% for (const [href, label] of links) { const active = currentPath === href || currentPath.startsWith(href + '/'); %><a href="<%= href %>" aria-current="<%= active ? 'page' : 'false' %>" class="<%= active ? 'text-green-600 font-semibold' : 'text-gray-600 hover:text-green-700 font-medium' %>"><%= label %></a><% } %>
+      <form method="post" action="/auth/logout"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="text-red-700 font-medium">Cerrar Sesión</button></form>
+    </div>
+    <button id="mobile-menu-btn" type="button" class="xl:hidden text-gray-600 hover:text-green-700 p-2" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path id="menu-icon-open" stroke-linecap="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/><path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div></div>
+  <div id="mobile-menu" class="hidden xl:hidden bg-white border-t border-gray-100 shadow-md"><div class="px-4 pt-2 pb-4 space-y-1">
+    <% for (const [href, label] of links) { const active = currentPath === href || currentPath.startsWith(href + '/'); %><a href="<%= href %>" aria-current="<%= active ? 'page' : 'false' %>" class="block px-3 py-2 rounded-md <%= active ? 'bg-green-50 text-green-600 font-semibold' : 'text-gray-600 hover:bg-green-50 hover:text-green-700' %>"><%= label %></a><% } %>
+    <p class="px-3 py-2 text-gray-700 break-words"><%= currentUser.name %></p>
+    <form method="post" action="/auth/logout"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="px-3 py-2 text-red-700 font-medium">Cerrar Sesión</button></form>
+  </div></div>
+</nav>
+<div id="inventory-live" class="hidden max-w-7xl mx-auto px-4 py-3 bg-green-50 text-green-800 border-b border-green-200" role="status" aria-live="polite"><span id="inventory-live-text"></span> <a href="/inventory" class="underline font-semibold">Ver inventario</a></div>
