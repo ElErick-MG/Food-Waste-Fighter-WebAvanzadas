@@ -34,7 +34,7 @@ origen, los formularios POST con CSRF y las pruebas existentes.
 | 1 · Portada y acceso | `home.ejs` y vistas `/auth/*` con el diseño nuevo y formularios reales. | DONE |
 | 2 · Datos | Migración aditiva: `FoodItem.imageUrl` (HTTPS opcional) y `Category.color`; validación, servicio, seed y pruebas. | DONE |
 | 3 · Resumen | `/dashboard` con la refri cerrada y datos reales. | DONE |
-| 4 · Refri | `/inventory` como refri abierta: estantes, detalle y formularios reales. | PENDIENTE |
+| 4 · Refri | `/inventory` como refri abierta: estantes, detalle y formularios reales. | DONE |
 | 5 · Gestión | Categorías con color, equipo y cuenta. | PENDIENTE |
 | 6 · Chat | Burbuja conectada a Socket.IO con los contratos existentes. | PENDIENTE |
 | 7 · Cierre | Recetas, caducidad y errores; accesibilidad, rendimiento y documentación. | PENDIENTE |
@@ -164,3 +164,40 @@ backend (kg, g, l, ml, unidad).
   40 escaneos axe sin incidencias, sin errores de JS ni orígenes externos.
   Revisión visual con datos ficticios en la base de pruebas: escritorio, 320 px,
   menú de cuenta y transición desde la portada.
+
+### Etapa 4 — registro
+
+- `/inventory` es la refri abierta en el nicho de la cocina: un estante de vidrio por
+  categoría (hasta seis a la vez) con las tarjetas de sus productos en coverflow
+  (arrastre, rueda y flechas del teclado). Panel lateral: chip de cuenta, empresa,
+  contadores, "Agregar producto", "Agregar categoría" (solo ADMIN), "Ver como lista"
+  y filtros por estado y categoría. Panel de detalle: foto (o inicial sobre el color
+  de la categoría), estado, vida útil, cantidades y enlaces Editar, Ver ficha y
+  Eliminar (solo ADMIN). "Cerrar refri" vuelve al Resumen. En móvil, barra superior
+  desplazable y detalle como hoja inferior.
+- Datos: `inventory.repository.shelf` es una consulta nueva de solo lectura (todos los
+  productos de la empresa, hasta 1000, por caducidad).
+  `inventory.shelf.js` calcula estado y días con la fecha del negocio y los
+  entrega en `<script type="application/json">` con `<`, `>` y `&` escapados (no se
+  ejecuta; la CSP no cambia). El filtro `?status=` y `?categoryId=` de los enlaces del
+  Resumen se aplica al abrir la refri.
+- La lista del servidor se conserva dentro de la página ("Vista de lista"): búsqueda,
+  filtros, tabla paginada con `data-item`, Editar y Eliminar. Se abre sola tras una
+  búsqueda o un cambio de página, y es la vista sin JavaScript
+  (`refri-sin-js.css` en `<noscript>`). Sin WebGL, los estantes se dibujan planos.
+- Agregar, editar y eliminar siguen siendo las páginas y POST del servidor (CSRF,
+  validación y mensajes sin cambios). El formulario, la ficha y la confirmación de
+  eliminar son ahora tarjetas de vidrio sobre la cocina (`fwf-ficha-*`, `ficha.css`,
+  `ficha.js`), con los mismos campos, ids y textos.
+- `/expiration` usa todavía la vista anterior (`inventory/list.ejs`); se rediseña en
+  la etapa 7.
+- Estilos comunes del Resumen y la refri en `fwf-app.css`. `fwf-head` carga Three.js y
+  Motion solo en páginas 3D y acepta scripts clásicos existentes (`inventory.js`).
+- Pruebas: `tests/frontend-shelf.test.js` (2: datos y escape del JSON) y cuatro nuevas
+  en `tests/frontend-pages.test.js` (refri, lista, permisos, formulario, ficha y
+  eliminar). El control de CSP admite el bloque `application/json`.
+- Verificación: `npm test` 105/105. Integración con MySQL de pruebas: 58/59; solo
+  falla el cierre por SIGTERM, propio de Windows. `verify:browser` con Edge: PASS,
+  40 escaneos axe sin incidencias, incluido el alta real de un producto y el aviso en
+  vivo al otro usuario. Revisión visual con datos ficticios: refri en escritorio y en
+  375 px, detalle, filtro, vista de lista y formulario.

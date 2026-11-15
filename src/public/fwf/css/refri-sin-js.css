@@ -1,0 +1,3 @@
+/* Sin JavaScript la refri no puede dibujarse: se muestra la vista de lista (servidor). */
+#lista { display: flex; }
+#lateral, #detalle, #interior, #cerrarRefri, #lienzo, .salto { display: none; }

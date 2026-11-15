@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" class="fwf-raiz">
+<head>
+<%- include('../partials/fwf-head', { title: 'Mi Inventario', estilos: ['fwf-app', 'refri'], modulos: ['refri'] }) %>
+<noscript><link rel="stylesheet" href="/assets/fwf/css/refri-sin-js.css"></noscript>
+</head>
+<body class="fwf"<% if (listaAbierta) { %> data-lista<% } %>>
+<%# Fondo decorativo: la cocina y la refri abierta en su nicho. %>
+<div id="escena" aria-hidden="true">
+  <div id="cocinaCapa"><img id="cocinaFoto" src="/assets/fwf/img/cocina.png" alt="" width="1670" height="941"><div id="cocinaVelo"></div></div>
+  <div id="lienzo"><canvas id="refri3d"></canvas></div>
+</div>
+
+<a class="salto" href="#lista">Saltar a la lista de productos</a>
+
+<main id="main-content">
+  <%# Estantes: los dibuja refri.js con los datos de #datos-refri. %>
+  <div id="interior" aria-label="Estantes de tu refri" role="region"><div id="hueco"></div></div>
+
+  <aside id="lateral" aria-labelledby="refriTit">
+    <%- include('../partials/fwf-cuenta') %>
+    <header class="lat-cab">
+      <p class="etiqueta"><%= currentUser.company.name %></p>
+      <h1 id="refriTit">Tu refri</h1>
+      <p class="conteo"><span><b id="cTot">0</b> productos</span><span class="alerta"><i aria-hidden="true"></i><b id="cPor">0</b> por caducar</span></p>
+    </header>
+    <% if (message) { %><p role="status" class="lat-aviso"><%= message %></p><% } %>
+    <div class="acciones">
+      <a class="btn btn-pri" href="/inventory/new"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar producto</a>
+      <% if (currentUser.role === 'ADMIN') { %><a class="btn btn-sec" href="/categories"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg>Agregar categoría</a><% } %>
+      <button type="button" class="btn btn-sec" id="verLista" aria-controls="lista" aria-expanded="<%= listaAbierta %>"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Ver como lista</button>
+    </div>
+    <div class="filtro">
+      <section class="acord" data-abierto="false">
+        <h2><button type="button" class="acord-cab" id="hEst" aria-expanded="false" aria-controls="pEst"><span>Estado</span><span class="acord-val" id="vEst">Todos</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></h2>
+        <div class="acord-cuerpo" id="pEst" role="region" aria-labelledby="hEst"><div class="acord-int"><div id="estados" class="chips" role="group" aria-label="Filtrar por estado"></div></div></div>
+      </section>
+      <section class="acord" data-abierto="false">
+        <h2><button type="button" class="acord-cab" id="hCats" aria-expanded="false" aria-controls="pCats"><span>Categorías</span><span class="acord-val" id="vCats">Todas</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></h2>
+        <div class="acord-cuerpo" id="pCats" role="region" aria-labelledby="hCats"><div class="acord-int"><div id="cats" class="chips" role="group" aria-label="Filtrar por categoría"></div></div></div>
+      </section>
+    </div>
+    <p class="lat-nota" id="limiteNota" hidden></p>
+  </aside>
+
+  <section id="detalle" aria-label="Detalle del producto"><div class="asa" aria-hidden="true"></div><div class="det-in" aria-live="polite"></div></section>
+
+  <a id="cerrarRefri" class="btn" href="/dashboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>Cerrar refri</a>
+
+  <%# Vista de lista: búsqueda, tabla paginada y acciones. Es la vista sin JavaScript. %>
+  <section id="lista" aria-labelledby="listaTit" tabindex="-1">
+    <header class="lista-cab">
+      <h2 id="listaTit" class="t-modal">Lista de productos</h2>
+      <div class="lista-acc">
+        <a class="btn btn-pri btn-pildora" href="/inventory/new">+ Añadir Producto</a>
+        <button type="button" class="btn btn-sec btn-pildora" id="cerrarLista" hidden>Volver a la refri</button>
+      </div>
+    </header>
+    <form method="get" action="/inventory" class="lista-filtros">
+      <div class="campo"><label for="q">Buscar por nombre o categoría</label><input id="q" name="q" value="<%= filters.q %>" maxlength="80"></div>
+      <div class="campo"><label for="categoryId">Categoría</label><select id="categoryId" name="categoryId"><option value="">Todas</option><% for (const category of categories) { %><option value="<%= category.id %>" <%= filters.categoryId === category.id ? 'selected' : '' %>><%= category.name %></option><% } %></select></div>
+      <div class="campo"><label for="status">Estado</label><select id="status" name="status"><% for (const [value, label] of [['', 'Todos'], ['soon', 'Próximos (0–5 días)'], ['expired', 'Caducados'], ['critical', 'Críticos (0–2 días)'], ['warning', 'Advertencia (3–5 días)'], ['normal', 'Normal (6+ días)'], ['low', 'Stock bajo']]) { %><option value="<%= value %>" <%= filters.status === value ? 'selected' : '' %>><%= label %></option><% } %></select></div>
+      <div class="lista-botones"><button type="submit" class="btn btn-tinta">Buscar</button><a class="enlace" href="/inventory?q=">Limpiar</a></div>
+    </form>
+    <% if (!items.length) { %>
+    <div class="lista-vacia"><h3 class="t-tarjeta">No hay productos en esta página</h3><p class="ayuda">Añade productos o ajusta los filtros de búsqueda.</p><% if (pagination.page > 1) { %><a class="enlace" href="/inventory?q=">Volver a la primera página</a><% } %></div>
+    <% } else { %>
+    <div class="tabla-envoltura" role="region" aria-label="Productos del inventario" tabindex="0">
+      <table>
+        <caption class="sr-only">Productos de tu empresa, ordenados por fecha de caducidad</caption>
+        <thead><tr><% for (const label of ['Producto', 'Categoría', 'Fecha Caducidad', 'Cantidad', 'Estado', 'Acciones']) { %><th scope="col"><%= label %></th><% } %></tr></thead>
+        <tbody>
+          <% for (const item of items) { const state = expiration(item.expiresDate); %>
+          <tr data-item="<%= item.id %>">
+            <th scope="row"><a class="enlace" href="/inventory/<%= item.id %>"><%= item.name %></a></th>
+            <td><%= item.category.name %></td>
+            <td class="nowrap"><%= displayDate(item.expiresDate) %></td>
+            <td class="nowrap"><%= item.quantity %> <%= item.unit %></td>
+            <td><span class="est est-<%= state.code %>"><i class="pc" aria-hidden="true"></i><%= state.label %></span><% if (item.quantity.lte(item.minimumStock)) { %><span class="est est-bajo">Stock bajo</span><% } %></td>
+            <td><div class="fila-acc"><a class="enlace" href="/inventory/<%= item.id %>/edit">Editar<span class="sr-only"> <%= item.name %></span></a><% if (currentUser.role === 'ADMIN') { %><a class="enlace peligro" href="/inventory/<%= item.id %>/delete">Eliminar<span class="sr-only"> <%= item.name %></span></a><% } %></div></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <% } %>
+    <%- include('../partials/fwf-paginacion') %>
+    <p class="lista-nav ayuda">Otras secciones: <a class="enlace" href="/dashboard">Resumen</a> · <a class="enlace" href="/expiration">Por caducar</a> · <a class="enlace" href="/categories">Categorías</a> · <a class="enlace" href="/recipes">Recetas</a></p>
+  </section>
+</main>
+
+<div id="inventory-live" class="aviso-vivo hidden" role="status" aria-live="polite"><span id="inventory-live-text"></span> <a class="enlace" href="/inventory">Actualizar la refri</a></div>
+<script type="application/json" id="datos-refri"><%- refri %></script>
+</body>
+</html>

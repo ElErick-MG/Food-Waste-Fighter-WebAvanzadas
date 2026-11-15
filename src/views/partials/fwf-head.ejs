@@ -1,7 +1,8 @@
 <%#
   Cabecera del diseño nuevo: todo desde el mismo origen (CSP 'self').
   Parámetros: title, acceso (formularios de acceso), estilos y modulos (nombres de
-  archivo en /assets/fwf/css y /assets/fwf/js; por defecto, los de la portada).
+  archivo en /assets/fwf/css y /assets/fwf/js; por defecto, los de la portada) y
+  scripts (rutas de scripts clásicos existentes, p. ej. /assets/inventory.js).
 %>
 <% const hojas = typeof estilos !== 'undefined' ? estilos : ['portada']; const mods = typeof modulos !== 'undefined' ? modulos : ['portada']; %>
 <meta charset="utf-8">
@@ -12,9 +13,12 @@
 <link rel="stylesheet" href="/assets/fwf/css/fwf-base.css">
 <% for (const hoja of hojas) { %><link rel="stylesheet" href="/assets/fwf/css/<%= hoja %>.css">
 <% } %>
-<script src="/assets/vendor/three/three.min.js" defer></script>
+<% if (mods.some(mod => ['portada', 'resumen', 'refri'].includes(mod))) { %><script src="/assets/vendor/three/three.min.js" defer></script>
 <script src="/assets/vendor/motion/motion.js" defer></script>
+<% } %>
 <% for (const mod of mods) { %><script src="/assets/fwf/js/<%= mod %>.js" type="module"></script>
+<% } %>
+<% for (const src of (typeof scripts !== 'undefined' ? scripts : [])) { %><script src="<%= src %>" defer></script>
 <% } %>
 <% if (typeof acceso !== 'undefined' && acceso) { %>
 <script src="/assets/auth.js" defer></script>

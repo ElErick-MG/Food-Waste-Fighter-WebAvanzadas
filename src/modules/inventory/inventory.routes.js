@@ -4,6 +4,7 @@ import { BusinessError, businessContext, businessErrors, confirmationSchema, pag
 import { dateInput } from '../expiration/expiration.js';
 import { foodSchema, inventoryQuery } from './inventory.validation.js';
 import { createInventoryService } from './inventory.service.js';
+import { jsonIsland, shelfData } from './inventory.shelf.js';
 
 export function inventoryRoutes({ database, config, expirationPage = false }) {
   const router = Router();
@@ -13,8 +14,15 @@ export function inventoryRoutes({ database, config, expirationPage = false }) {
     const filters = readQuery(inventoryQuery, req.query);
     if (filters.categoryId && !await service.category(req.user.companyId, filters.categoryId)) throw new BusinessError('Selecciona una categoría de tu empresa.');
     const { total, items } = await service.list(req.user.companyId, filters, res.locals.today);
-    res.render('inventory/list', { items, filters, categories: await service.categories(req.user.companyId), expirationPage,
-      pagination: pagination(total, filters.page, expirationPage ? '/expiration' : '/inventory', { q: filters.q, categoryId: filters.categoryId, status: filters.status }) });
+    const categories = await service.categories(req.user.companyId);
+    const page = pagination(total, filters.page, expirationPage ? '/expiration' : '/inventory', { q: filters.q, categoryId: filters.categoryId, status: filters.status });
+    if (expirationPage) return res.render('inventory/list', { items, filters, categories, expirationPage, pagination: page });
+    // /inventory is the open fridge (stage 4). The same filtered, paginated list stays in the
+    // page as the accessible/no-JS "list view"; it opens on its own after a search or page change.
+    const shelf = await service.shelf(req.user.companyId);
+    res.render('inventory/refri', { items, filters, categories, expirationPage, pagination: page,
+      listaAbierta: 'q' in req.query || 'page' in req.query,
+      refri: jsonIsland(shelfData({ items: shelf, categories, today: res.locals.today, filters, user: req.user })) });
   });
   if (!expirationPage) {
     const form = async (req, res, values, error = null, status = 200) => {

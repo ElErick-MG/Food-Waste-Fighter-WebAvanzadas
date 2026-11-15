@@ -24,7 +24,8 @@ function expectCspSafe(html) {
   expect(html).not.toMatch(/\sstyle\s*=/i);
   expect(html).not.toMatch(/<style[\s>]/i);
   expect(html).not.toMatch(/\son[a-z]+\s*=/i);
-  for (const tag of html.match(/<script\b[^>]*>/gi) || []) expect(tag).toMatch(/\ssrc="\/(assets|socket\.io)\//);
+  // Executable scripts come from files; a JSON data island (never executed) is allowed.
+  for (const tag of html.match(/<script\b[^>]*>/gi) || []) expect(tag).toMatch(/\ssrc="\/(assets|socket\.io)\/|\stype="application\/json"/);
   // Scripts and stylesheets stay same-origin; only product images (img-src https:) may be remote.
   expect(html).not.toMatch(/<(script|link)\b[^>]*(src|href)="https?:\/\//i);
   expect(html).not.toContain('data:');
@@ -168,5 +169,71 @@ describe('New summary page /dashboard (stage 3)', () => {
     const html = await render('dashboard', base({ currentUser: { ...base().currentUser, name: '<script>alert(1)</script>', company: { name: '<img src=x onerror=alert(1)>' } } }));
     expect(html).not.toContain('<script>alert(1)</script>');
     expect(html).not.toContain('<img src=x');
+  });
+});
+
+describe('Open fridge /inventory and product cards (stage 4)', () => {
+  const today = new Date('2026-11-15T00:00:00Z');
+  const day = n => new Date(today.getTime() + n * 86400000);
+  const decimal = (value, low = false) => ({ lte: () => low, toString: () => value });
+  const currentUser = { name: 'Ana Pérez', email: 'ana@tests.example', role: 'ADMIN', company: { name: 'Café Semilla' } };
+  const item = (overrides = {}) => ({ id: 'item-1', name: 'Leche', expiresDate: day(-1), receivedDate: day(-6), quantity: decimal('2.125', true), minimumStock: decimal('1.000'), unit: 'kg', imageUrl: null, category: { name: 'Lácteos', color: '#4A7FD6' }, ...overrides });
+  const base = (overrides = {}) => ({
+    csrfToken, currentPath: '/inventory', message: null, today, businessTimezone: 'America/Guayaquil',
+    displayDate, expiration: date => expiration(date, today), currentUser,
+    items: [item()], categories: [{ id: 'cat-1', name: 'Lácteos' }],
+    filters: { q: '', categoryId: '', status: '', page: 1 },
+    pagination: { total: 23, page: 1, pages: 3, previous: null, next: '/inventory?q=Lote&categoryId=&status=&page=2' },
+    expirationPage: false, listaAbierta: false, refri: '{"productos":[]}',
+    ...overrides,
+  });
+
+  it('renders the fridge shell, the server list (data-item, pagination) and a JSON island', async () => {
+    const html = await render('inventory/refri', base());
+    expect(html).toContain('id="hueco"');
+    expect(html).toContain('<script type="application/json" id="datos-refri">{"productos":[]}</script>');
+    expect(html).toContain('data-item="item-1"');
+    expect(html).toContain('23 registros');
+    expect(html).toContain('page=2');
+    for (const href of ['/inventory/new', '/categories', '/inventory/item-1', '/inventory/item-1/edit', '/inventory/item-1/delete', '/dashboard']) expect(html).toContain(`href="${href}"`);
+    expect(html).toContain('Stock bajo');
+    expect(html).toContain('/assets/fwf/css/refri-sin-js.css');
+    expect(html).not.toContain('<body class="fwf" data-lista>');
+    expectCspSafe(html);
+  });
+
+  it('opens the list after a search and hides admin-only links from employees', async () => {
+    expect(await render('inventory/refri', base({ listaAbierta: true }))).toContain('<body class="fwf" data-lista>');
+    const employee = await render('inventory/refri', base({ currentUser: { ...currentUser, role: 'EMPLOYEE' } }));
+    expect(employee).not.toContain('/delete"');
+    expect(employee).not.toContain('Agregar categoría');
+  });
+
+  it('keeps the product form fields, CSRF and the verification hooks', async () => {
+    const html = await render('inventory/form', { currentUser, csrfToken, editing: false, id: undefined, values: { name: 'Valor conservado', unit: 'kg' }, error: 'Escribe una fecha válida.', categories: [{ id: 'cat-1', name: 'Lácteos' }] });
+    for (const id of ['name', 'categoryId', 'quantity', 'minimumStock', 'unit', 'receivedDate', 'expiresDate', 'imageUrl']) expect(html).toContain(`id="${id}"`);
+    expect(html).toContain('method="post" action="/inventory"');
+    expect(html).toContain(`name="_csrf" value="${csrfToken}"`);
+    expect(html).toMatch(/<button type="submit"[^>]*>Guardar Producto<\/button>/);
+    expect(html).toContain('value="Valor conservado"');
+    expect(html).toMatch(/role="alert"[^>]*>Escribe una fecha válida\./);
+    expect(html).toContain('/assets/inventory.js');
+    expect(html).not.toContain('three.min.js');
+    expectCspSafe(html);
+  });
+
+  it('detail and delete keep their data, admin actions and confirmation form', async () => {
+    const locals = { currentUser, csrfToken, message: 'Producto registrado.', today, displayDate, expiration: date => expiration(date, today) };
+    const detail = await render('inventory/detail', { ...locals, item: item({ imageUrl: 'https://images.example.com/leche.jpg' }) });
+    expect(detail).toContain('Producto registrado.');
+    expect(detail).toContain('2.125 kg');
+    expect(detail).toContain('Stock bajo');
+    expect(detail).toContain('src="https://images.example.com/leche.jpg"');
+    expect(detail).toContain('href="/inventory/item-1/delete"');
+    expectCspSafe(detail);
+    const remove = await render('inventory/delete', { ...locals, item: item(), error: null });
+    expect(remove).toContain('action="/inventory/item-1/delete"');
+    expect(remove).toContain('name="confirm" value="yes" required');
+    expectCspSafe(remove);
   });
 });

@@ -1,6 +1,9 @@
 import { PAGE_SIZE } from '../business.js';
 import { expirationWhere } from '../expiration/expiration.js';
 
+// The fridge shows at most this many items; the paginated list always covers everything.
+export const SHELF_LIMIT = 1000;
+
 export function createInventoryRepository(database) {
   const food = database.foodItem;
   return {
@@ -21,6 +24,11 @@ export function createInventoryRepository(database) {
       ]);
       return { total, items };
     },
+    /** Read-only snapshot for the fridge view: every item of the company (capped), soonest first. */
+    shelf: (companyId, limit = SHELF_LIMIT) => food.findMany({
+      where: { companyId }, orderBy: [{ expiresDate: 'asc' }, { id: 'asc' }], take: limit,
+      select: { id: true, name: true, categoryId: true, quantity: true, unit: true, minimumStock: true, receivedDate: true, expiresDate: true, imageUrl: true },
+    }),
     create: data => food.create({ data }),
     update: (companyId, id, data) => food.updateMany({ where: { companyId, id }, data }),
     delete: (companyId, id) => food.deleteMany({ where: { companyId, id } }),

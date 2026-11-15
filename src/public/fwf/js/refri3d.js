@@ -80,6 +80,11 @@ export function crearRefri(canvas, { base = '/assets/fwf/refri/', alCargar } = {
       hemi.groundColor.copy(cA.hg0).lerp(cA.hg1, w);
     },
     render() { renderer.render(scene, camera); },
+    /** Punto del modelo (m) → píxeles de pantalla con la cámara actual. */
+    proyectar(x, y, z) {
+      const v = new THREE.Vector3(x, y, z).project(camera);
+      return [(v.x + 1) / 2 * vw, (1 - v.y) / 2 * vh];
+    },
     /** ¿El puntero está sobre la refri? (la cámara debe tener la pose actual aplicada) */
     toca(e) {
       const r = canvas.getBoundingClientRect();

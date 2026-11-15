@@ -1,0 +1,48 @@
+/*
+ * Food Waste Fighter — tarjetas de producto (formulario, ficha y eliminar) sobre la
+ * cocina. Requiere fwf-base.css y fwf-app.css. Funciona sin JavaScript.
+ */
+
+.ficha-capa { position: fixed; inset: 0; z-index: 10; overflow-y: auto; overscroll-behavior: contain; display: grid; place-items: center; padding: var(--s6) var(--s4); background: rgba(20, 20, 20, .22); -webkit-backdrop-filter: blur(10px) saturate(120%); backdrop-filter: blur(10px) saturate(120%); }
+.ficha { position: relative; width: min(480px, 100%); padding: 36px 28px 28px; border-radius: var(--r-panel); background: linear-gradient(150deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .78)); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); border: 1px solid rgba(255, 255, 255, .8); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 40px 80px -36px rgba(20, 20, 20, .55); display: flex; flex-direction: column; gap: var(--s3); animation: ficha .36s var(--ease) both; }
+@keyframes ficha { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
+.ficha-x { position: absolute; top: var(--s3); right: var(--s3); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gris); transition: background var(--t1), color var(--t1); }
+.ficha-x:hover { background: rgba(20, 20, 20, .06); color: var(--tinta); }
+.ficha-marca { color: var(--acento); }
+.ficha h1 { overflow-wrap: anywhere; padding-right: var(--s7); }
+.ficha-sub { margin-bottom: var(--s2); }
+.ficha form { margin-top: var(--s2); }
+.ficha-par { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--s3); }
+.ficha-botones { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s4); }
+.ficha-botones .btn { flex: 1 1 160px; }
+.ficha .campo .ayuda { margin-top: 6px; }
+.ficha-aviso { font-size: 14px; line-height: 1.5; border-radius: var(--r-ctl); padding: var(--s3) var(--s4); border: 1px solid; }
+.ficha-aviso.error { background: var(--caducado-bg); border-color: var(--caducado-bd); color: var(--caducado-tx); }
+.ficha-aviso.pronto { background: var(--pronto-bg); border-color: var(--pronto-bd); color: var(--pronto-tx); }
+.ficha [role="status"] { font-size: 14px; line-height: 1.5; border-radius: var(--r-ctl); padding: var(--s3) var(--s4); background: rgba(17, 128, 62, .1); border: 1px solid rgba(17, 128, 62, .3); color: #0C5A2B; }
+.ficha-img { position: relative; height: 180px; border-radius: var(--r-ctl); overflow: hidden; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--c, var(--gris)) 12%, #fff); box-shadow: 0 1px 2px rgba(20, 20, 20, .06), 0 12px 24px -16px rgba(20, 20, 20, .35); margin-top: var(--s4); }
+.ficha-img img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; }
+.ficha-img .ini-g { font-size: 72px; font-weight: 700; color: var(--c, var(--gris)); }
+.ficha-estado { align-self: flex-start; border-radius: var(--r-ctl); border: 1px solid; padding: var(--s2) var(--s3); font-size: 14px; font-weight: 600; }
+.ficha-estado.b-expired { background: var(--caducado-bg); border-color: var(--caducado-bd); color: var(--caducado-tx); }
+.ficha-estado.b-critical { background: var(--critico-bg); border-color: var(--critico-bd); color: var(--critico-tx); }
+.ficha-estado.b-warning { background: var(--pronto-bg); border-color: var(--pronto-bd); color: var(--pronto-tx); }
+.ficha-estado.b-normal { background: var(--bien-bg); border-color: var(--bien-bd); color: var(--bien-tx); }
+.ficha-dl { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3) var(--s4); padding: var(--s4) 0; border-top: 1px solid var(--borde); border-bottom: 1px solid var(--borde); }
+.ficha-dl dt { font-size: 13px; color: var(--gris); }
+.ficha-dl dd { font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.ficha-pie { text-align: center; margin-top: var(--s2); }
+.ficha-check { display: flex; align-items: flex-start; gap: var(--s3); font-size: 14px; line-height: 1.5; padding: var(--s3) 0; cursor: pointer; }
+.ficha-check input { width: 20px; height: 20px; margin-top: 1px; accent-color: #A32D2D; flex: none; }
+.peligro { color: #A32D2D; }
+.btn.peligro:hover { background: var(--caducado-bg); }
+.btn-peligro { background: #A32D2D; color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 10px 20px -10px rgba(163, 45, 45, .75); }
+.btn-peligro:hover { background: #7E2222; }
+
+@media (max-width: 480px) {
+  .ficha { padding: 32px 20px 24px; }
+  .ficha-par, .ficha-dl { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ficha { animation: none; }
+}

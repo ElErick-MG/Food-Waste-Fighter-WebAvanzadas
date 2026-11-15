@@ -1,0 +1,4 @@
+<nav aria-label="Paginación" class="paginacion">
+  <p><%= pagination.total %> registros · Página <%= pagination.page %><% if (pagination.page > pagination.pages) { %> fuera de rango<% } else { %> de <%= pagination.pages %><% } %></p>
+  <div><% if (pagination.previous) { %><a rel="prev" class="enlace" href="<%= pagination.previous %>">← Anterior</a><% } %><% if (pagination.next) { %><a rel="next" class="enlace" href="<%= pagination.next %>">Siguiente →</a><% } %></div>
+</nav>
