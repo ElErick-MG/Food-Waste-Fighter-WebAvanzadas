@@ -88,19 +88,23 @@ npm run measure:queries
 
 La automatización usa MySQL test independiente y limpia sus datos temporales.
 Los resultados nuevos de navegador y rendimiento se guardan en `work/`; las
-evidencias de referencia están en [VALIDATION.md](docs/VALIDATION.md). Si existe,
+evidencias de referencia están en [VALIDATION.md](docs/5.Calidad-Y-Validacion/VALIDATION.md). Si existe,
 se detecta `/usr/bin/chromium`; BROWSER_EXECUTABLE_PATH permite seleccionar otro
 binario del entorno.
 
 ## Referencias del proyecto
 
-- [Alcance, objetivos, historias y cronograma](docs/PROJECT_SPEC.md).
-- [Arquitectura, modelo, permisos, seguridad y eventos](docs/TECHNICAL_REFERENCE.md).
-- [Rúbrica oficial y correspondencia con evidencias](docs/COMPLIANCE_MATRIX.md).
-- [Pruebas, accesibilidad y rendimiento](docs/VALIDATION.md).
-- [Presentación y entrega](docs/DELIVERY.md).
-- [Alcance del segundo bimestre](docs/second-bimester-roadmap.md).
-- [Estado actual y pendientes](PROGRESS.md).
+- [Índice general de la documentación](docs/README.md).
+- [Contexto del proyecto y estado actual](docs/1.Estado/contextoProyecto.md).
+- [Guía paso a paso de ejecución e inicialización](docs/2.Guias/ejecucionPrimeraVez.md).
+- [Alcance, objetivos, historias y cronograma](docs/3.Especificaciones/PROJECT_SPEC.md).
+- [Arquitectura, modelo, permisos, seguridad y eventos](docs/4.Arquitectura/TECHNICAL_REFERENCE.md).
+- [Pruebas, accesibilidad y rendimiento](docs/5.Calidad-Y-Validacion/VALIDATION.md).
+- [Rúbrica oficial y correspondencia con evidencias](docs/6.Evaluacion-Y-Entrega/COMPLIANCE_MATRIX.md).
+- [Presentación y entrega](docs/6.Evaluacion-Y-Entrega/DELIVERY.md).
+- [Alcance del segundo bimestre](docs/3.Especificaciones/second-bimester-roadmap.md).
+- [Estado actual y pendientes](docs/1.Estado/PROGRESS.md).
+- [Instrucciones de trabajo para agentes](docs/1.Estado/AGENTS.md).
 
 ## Integrantes y roles
 

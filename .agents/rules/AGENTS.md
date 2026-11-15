@@ -10,10 +10,11 @@ The project is a migration of an existing Java/JSP application into a Node.js mo
 
 Before modifying any code:
 
-1. Read `docs/PROJECT_SPEC.md`.
-2. Read `docs/TECHNICAL_REFERENCE.md` for the current architecture, model and contracts.
-3. Read `PROGRESS.md` to understand the current state.
-4. Inspect the relevant existing code before making changes.
+1. Read `docs/1.Estado/contextoProyecto.md` for overall context.
+2. Read `docs/3.Especificaciones/PROJECT_SPEC.md`.
+3. Read `docs/4.Arquitectura/TECHNICAL_REFERENCE.md` for the current architecture, model and contracts.
+4. Read `docs/1.Estado/PROGRESS.md` to understand the current state.
+5. Inspect the relevant existing code before making changes.
 
 Never assume unfinished work is complete.
 
@@ -32,14 +33,14 @@ For the first bimester, use:
 
 Do not introduce React, a SPA or microservices during the first bimester.
 
-Follow the original academic guide and `docs/PROJECT_SPEC.md`.
+Follow the original academic guide and `docs/3.Especificaciones/PROJECT_SPEC.md`.
 
 ## Development workflow
 
 Work incrementally, focusing on one small, verifiable task at a time.
 
 Before beginning a task:
-- Inspect `PROGRESS.md`.
+- Inspect `docs/1.Estado/PROGRESS.md`.
 - Choose the next pending task based on priority and dependencies.
 - Mark the task as IN_PROGRESS.
 - Inspect the files that will be affected.
@@ -48,12 +49,12 @@ After completing a task:
 - Run relevant automated tests.
 - Verify functionality when the environment permits.
 - Record what was changed.
-- Update `PROGRESS.md`.
+- Update `docs/1.Estado/PROGRESS.md`.
 - Mark the task DONE only when verification is successful.
 - Document errors and blockers truthfully.
 - Identify the next pending task.
 
-If work is interrupted, keep `PROGRESS.md` accurate enough for another agent to continue.
+If work is interrupted, keep `docs/1.Estado/PROGRESS.md` accurate enough for another agent to continue.
 
 ## Quality requirements
 
@@ -76,7 +77,7 @@ Do not require local installations on the user's computer.
 
 ## Documentation
 
-Keep `PROGRESS.md` updated throughout development.
+Keep `docs/1.Estado/PROGRESS.md` updated throughout development.
 
 Update architectural documentation when architectural decisions change.
 
@@ -88,4 +89,4 @@ The academic guide and project specification define WHAT must be built.
 
 This file defines HOW the agent must work.
 
-`PROGRESS.md` defines WHAT HAS BEEN DONE and WHAT REMAINS.
+`docs/1.Estado/PROGRESS.md` defines WHAT HAS BEEN DONE and WHAT REMAINS.

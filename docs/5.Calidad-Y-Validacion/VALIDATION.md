@@ -27,7 +27,7 @@ limpian sus propios registros, sin reiniciar datos de desarrollo.
 `verify:browser` crea app y Socket.IO reales en un servidor efímero y MySQL test.
 Utiliza Chromium instalado o descargado por Playwright; BROWSER_EXECUTABLE_PATH
 permite seleccionar el binario. Las capturas y nuevos JSON se guardan en `work/`.
-Los informes versionados en `docs/evidence/` se conservan como referencia y no
+Los informes versionados en `evidence/` se conservan como referencia y no
 se sobrescriben automáticamente al ejecutar los comandos.
 
 ## Cobertura y resultados disponibles
@@ -78,7 +78,7 @@ apertura/cierre del menú con teclado.
 Los resultados automatizados no constituyen certificación WCAG ni una auditoría
 externa de seguridad. Queda pendiente una evaluación completa con lector de
 pantalla y personas usuarias. Las pruebas del proxy HTTPS son locales; el acta
-del despliegue real se adjunta según [DELIVERY.md](DELIVERY.md).
+del despliegue real se adjunta según [DELIVERY.md](../6.Evaluacion-Y-Entrega/DELIVERY.md).
 
 ## Medición de consultas
 

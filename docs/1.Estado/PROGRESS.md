@@ -6,9 +6,9 @@
 | --- | --- |
 | Alcance | Primer bimestre: monolito Node.js/Express/EJS, MySQL y Socket.IO. |
 | Funcionalidad | Autenticación, recuperación, roles/equipo, inventario, dashboard, recetas, caducidad, chat y avisos por empresa implementados. |
-| Calidad | 106 pruebas registradas, 40 escaneos de navegador y medición reproducible de consultas; alcance y resultados en [VALIDATION.md](docs/VALIDATION.md). |
+| Calidad | 106 pruebas registradas, 40 escaneos de navegador y medición reproducible de consultas; alcance y resultados en [VALIDATION.md](../5.Calidad-Y-Validacion/VALIDATION.md). |
 | Documentación | Consolidada y cotejada con la guía oficial; enlaces, once modelos del ER y rúbrica de 11 criterios verificados. |
-| Rúbrica | Pesos y máximos oficiales completos: 100 % y 20 puntos. Evidencias y pendientes en [COMPLIANCE_MATRIX.md](docs/COMPLIANCE_MATRIX.md). |
+| Rúbrica | Pesos y máximos oficiales completos: 100 % y 20 puntos. Evidencias y pendientes en [COMPLIANCE_MATRIX.md](../6.Evaluacion-Y-Entrega/COMPLIANCE_MATRIX.md). |
 | Entrega | Preparación técnica/documental disponible; cierre académico pendiente. |
 
 ## Pendientes de cierre

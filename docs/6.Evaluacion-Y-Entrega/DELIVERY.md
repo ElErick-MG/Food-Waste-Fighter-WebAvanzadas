@@ -10,7 +10,7 @@ pruebas/resultados, uso de IA y conclusiones.
 
 Fecha: `[FECHA_HORA_EXPOSICION]` · presentación: `[URL_PRESENTACION]` · carpeta del
 grupo: `[URL_ENTREGA_CURSO]`. Los integrantes, roles y aportes se completan en
-el [README](../README.md); no se sustituyen por contribuciones ficticias.
+el [README](../../README.md); no se sustituyen por contribuciones ficticias.
 
 | Tiempo | Responsable | Contenido |
 | --- | --- | --- |
@@ -63,14 +63,14 @@ la demostración de dos personas utiliza sesiones independientes.
 Las capturas públicas contienen datos ficticios y excluyen cookies, tokens,
 .env, bandeja de recuperación y claves privadas. No se adjunta un HAR sin
 revisarlo: puede incluir credenciales de sesión. Los informes locales de
-[VALIDATION.md](VALIDATION.md) no se presentan como capturas remotas.
+[VALIDATION.md](../5.Calidad-Y-Validacion/VALIDATION.md) no se presentan como capturas remotas.
 
 ## Cierre y envío
 
 - [ ] Completar nombres, roles, aportes y commits auténticos de todos los integrantes.
 - [ ] Preparar la presentación y comprobar la cobertura de la [rúbrica](COMPLIANCE_MATRIX.md).
 - [ ] Adjuntar la evidencia del despliegue y ensayar demo y respuestas individuales.
-- [ ] Ejecutar las verificaciones de VALIDATION.md sobre la revisión final.
+- [ ] Ejecutar las verificaciones de [VALIDATION.md](../5.Calidad-Y-Validacion/VALIDATION.md) sobre la revisión final.
 - [ ] Confirmar repositorio público sin secretos ni datos personales reales.
 - [ ] Crear la etiqueta anotada **v1.0-b1** sobre la revisión validada y publicar esa etiqueta.
 - [ ] Entregar en la carpeta del grupo el enlace al repositorio o ZIP y la presentación o su enlace público.

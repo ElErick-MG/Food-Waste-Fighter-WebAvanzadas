@@ -33,7 +33,7 @@ Helmet, Vitest/Supertest y Playwright/axe para verificación.
 
 La entidad principal es FoodItem y contiene siete atributos de negocio: nombre,
 cantidad, unidad, categoría, fecha de ingreso, fecha de caducidad y stock mínimo.
-Los modelos, permisos y contratos se describen en [TECHNICAL_REFERENCE.md](TECHNICAL_REFERENCE.md).
+Los modelos, permisos y contratos se describen en [TECHNICAL_REFERENCE.md](../4.Arquitectura/TECHNICAL_REFERENCE.md).
 
 ## Historias de usuario priorizadas
 
@@ -75,6 +75,6 @@ calendario académico.
 | S5 | Calidad y documentación | Regresión, accesibilidad, rendimiento y referencias. |
 | S6 | Preparación de entrega | Datos reales del equipo, evidencias, ensayo y exposición. |
 
-Las responsabilidades y aportes por completar se mantienen en el [README](../README.md).
-La presentación y los requisitos de entrega se describen en [DELIVERY.md](DELIVERY.md).
-La correspondencia con la guía oficial se encuentra en [COMPLIANCE_MATRIX.md](COMPLIANCE_MATRIX.md).
+Las responsabilidades y aportes por completar se mantienen en el [README](../../README.md).
+La presentación y los requisitos de entrega se describen en [DELIVERY.md](../6.Evaluacion-Y-Entrega/DELIVERY.md).
+La correspondencia con la guía oficial se encuentra en [COMPLIANCE_MATRIX.md](../6.Evaluacion-Y-Entrega/COMPLIANCE_MATRIX.md).
