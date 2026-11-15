@@ -57,6 +57,8 @@ model Category {
   id        String @id @default(cuid()) @db.VarChar(30)
   companyId String @db.VarChar(30)
   name      String @db.VarChar(80)
+  /// Hex color (#RRGGBB) for the shelf; optional, a palette default is assigned on create.
+  color     String? @db.VarChar(7)
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   items     FoodItem[]
 
@@ -75,6 +77,8 @@ model FoodItem {
   receivedDate DateTime @db.Date
   expiresDate  DateTime @db.Date
   minimumStock Decimal  @default(0) @db.Decimal(12, 3)
+  /// Optional HTTPS image URL for the product card.
+  imageUrl     String?  @db.VarChar(500)
   inventory    Inventory @relation(fields: [inventoryId, companyId], references: [id, companyId], onDelete: Cascade)
   category     Category @relation(fields: [categoryId, companyId], references: [id, companyId], onDelete: Restrict)
 

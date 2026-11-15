@@ -8,7 +8,13 @@ export const missingRecord = () => new BusinessError('El registro no existe o no
 export const identifier = z.string().regex(/^[a-zA-Z0-9_-]{1,30}$/, 'Selecciona una categoría válida.');
 export const pageNumber = z.string().regex(/^[1-9]\d{0,4}$/, 'La página no es válida.').default('1').transform(Number);
 export const PAGE_SIZE = 10;
-export const categorySchema = z.strictObject({ name: z.string().trim().min(2, 'Escribe un nombre de al menos 2 caracteres.').max(80, 'El nombre admite hasta 80 caracteres.') });
+// Optional hex color; an empty or missing value keeps the current color (or the palette default on create).
+export const hexColor = z.string().trim().regex(/^#[0-9a-fA-F]{6}$/, 'Elige un color válido en formato #RRGGBB.').transform(value => value.toUpperCase())
+  .or(z.literal('').transform(() => undefined)).optional();
+export const categorySchema = z.strictObject({
+  name: z.string().trim().min(2, 'Escribe un nombre de al menos 2 caracteres.').max(80, 'El nombre admite hasta 80 caracteres.'),
+  color: hexColor,
+});
 export const confirmationSchema = z.strictObject({ confirm: z.literal('yes', { error: 'Confirma la eliminación para continuar.' }) });
 export function readBusinessForm(schema, body) {
   const { _csrf, ...fields } = body;

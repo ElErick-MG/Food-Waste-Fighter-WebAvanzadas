@@ -88,8 +88,8 @@ El modelo está definido en [prisma/schema.prisma](file:///d:/levantamientoProye
 1. **Company:** Empresa/negocio independiente (Tenant).
 2. **User:** Usuarios (`ADMIN` o `EMPLOYEE`), vinculados a una empresa con `passwordHash` (Argon2id) y `sessionVersion`.
 3. **Inventory:** Inventario de alimentos de la empresa.
-4. **Category:** Categorías de alimentos (únicas por empresa).
-5. **FoodItem:** Alimento con `quantity` (DECIMAL 12,3), `unit`, `receivedDate`, `expiresDate` y `minimumStock`.
+4. **Category:** Categorías de alimentos (únicas por empresa), con `color` opcional (`#RRGGBB`).
+5. **FoodItem:** Alimento con `quantity` (DECIMAL 12,3), `unit`, `receivedDate`, `expiresDate`, `minimumStock` e `imageUrl` opcional (HTTPS).
 6. **Recipe:** Receta para aprovechamiento de alimentos.
 7. **RecipeIngredient:** Ingredientes requeridos por cada receta.
 8. **ChatRoom:** Sala de coordinación (sala predeterminada: `General`).

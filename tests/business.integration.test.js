@@ -294,3 +294,38 @@ describe('Phase 3 business HTTP routes against isolated real MySQL', () => {
     }
   });
 });
+
+describe('Front-end redesign stage 2: product image and category color', () => {
+  it('stores an optional HTTPS product image, keeps it when omitted and clears it when empty', async () => {
+    const f = await fixture();
+    const created = await post(f.agent, '/inventory', { ...f.input, imageUrl: 'https://images.example.com/zanahoria.jpg' });
+    expect(created.status).toBe(303);
+    const id = created.headers.location.split('/').pop();
+    expect((await database.foodItem.findUniqueOrThrow({ where: { id } })).imageUrl).toBe('https://images.example.com/zanahoria.jpg');
+    expect((await f.agent.get(`/inventory/${id}`)).text).toContain('src="https://images.example.com/zanahoria.jpg"');
+    expect((await post(f.agent, `/inventory/${id}/edit`, { ...f.input, name: 'Zanahoria nueva' })).status).toBe(303);
+    expect((await database.foodItem.findUniqueOrThrow({ where: { id } })).imageUrl).toBe('https://images.example.com/zanahoria.jpg');
+    expect((await post(f.agent, `/inventory/${id}/edit`, { ...f.input, imageUrl: '' })).status).toBe(303);
+    expect((await database.foodItem.findUniqueOrThrow({ where: { id } })).imageUrl).toBeNull();
+  });
+  it('rejects non-HTTPS image URLs without writing and preserves the typed value', async () => {
+    const f = await fixture();
+    for (const imageUrl of ['http://images.example.com/a.jpg', 'javascript:alert(1)']) {
+      const response = await post(f.agent, '/inventory', { ...f.input, imageUrl });
+      expect(response.status).toBe(400);
+      expect(response.text).toContain('role="alert"');
+    }
+    expect(await database.foodItem.count({ where: { companyId: f.company.id } })).toBe(0);
+  });
+  it('assigns a palette color to new categories, accepts a chosen color and keeps it when omitted', async () => {
+    const f = await fixture();
+    expect((await post(f.agent, '/categories', { name: 'Lácteos' })).status).toBe(303);
+    const dairy = await database.category.findFirstOrThrow({ where: { companyId: f.company.id, name: 'Lácteos' } });
+    expect(dairy.color).toMatch(/^#[0-9A-F]{6}$/);
+    expect((await post(f.agent, '/categories', { name: 'Bebidas', color: '#e09b2d' })).status).toBe(303);
+    expect((await database.category.findFirstOrThrow({ where: { companyId: f.company.id, name: 'Bebidas' } })).color).toBe('#E09B2D');
+    expect((await post(f.agent, `/categories/${dairy.id}/edit`, { name: 'Lácteos frescos' })).status).toBe(303);
+    expect((await database.category.findUniqueOrThrow({ where: { id: dairy.id } })).color).toBe(dairy.color);
+    expect((await post(f.agent, `/categories/${dairy.id}/edit`, { name: 'Lácteos frescos', color: 'red' })).status).toBe(400);
+  });
+});

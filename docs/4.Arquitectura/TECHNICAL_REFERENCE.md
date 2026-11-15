@@ -88,6 +88,7 @@ erDiagram
     varchar id PK
     varchar companyId FK
     varchar name
+    varchar color
   }
   FoodItem {
     varchar id PK
@@ -100,6 +101,7 @@ erDiagram
     date receivedDate
     date expiresDate
     decimal minimumStock
+    varchar imageUrl
   }
   Recipe {
     varchar id PK
@@ -151,6 +153,11 @@ erDiagram
 - `quantity` y `minimumStock` usan DECIMAL(12,3). Los CHECK exigen valores no
   negativos, ingredientes con cantidad positiva y caducidad igual o posterior
   al ingreso. Las fechas de alimentos usan SQL DATE.
+- `Category.color` (VARCHAR(7), opcional, `#RRGGBB`) y `FoodItem.imageUrl`
+  (VARCHAR(500), opcional, solo `https://` sin credenciales) se añadieron con una
+  migración aditiva para el rediseño del front-end. Una categoría nueva sin color
+  recibe uno de la paleta; omitir cualquiera de los dos campos al editar conserva
+  el valor guardado y una URL vacía quita la imagen.
 - Los índices de alimentos incluyen `(companyId,name)`, `(companyId,expiresDate)`
   y `(categoryId,companyId)`. El historial indexa `(roomId,companyId,createdAt,id)`.
 - Una categoría en uso no se elimina. El borrado público de empresas no está

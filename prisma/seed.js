@@ -21,7 +21,7 @@ try {
       } });
     }
     await tx.inventory.upsert({ where: { id: 'demo-inventory' }, update: {}, create: { id: 'demo-inventory', companyId: 'demo-cafeteria', name: 'Inventario principal' } });
-    await tx.category.upsert({ where: { id: 'demo-category' }, update: {}, create: { id: 'demo-category', companyId: 'demo-cafeteria', name: 'Vegetales' } });
+    await tx.category.upsert({ where: { id: 'demo-category' }, update: {}, create: { id: 'demo-category', companyId: 'demo-cafeteria', name: 'Vegetales', color: '#2F9E5B' } });
     const receivedDate = new Date();
     receivedDate.setUTCHours(0, 0, 0, 0);
     await tx.foodItem.upsert({ where: { id: 'demo-food' }, update: {}, create: {

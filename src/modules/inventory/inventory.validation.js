@@ -6,6 +6,17 @@ const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Escribe una fecha válida.
   const parsed = new Date(`${value}T00:00:00.000Z`);
   return value >= '1000-01-01' && !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
 }, 'Escribe una fecha válida (año 1000–9999).');
+// Optional product image: only absolute https:// URLs without embedded credentials.
+// Missing keeps the current image; an empty string removes it.
+const httpsUrl = value => {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password && url.hostname.includes('.') && url.href.length <= 500;
+  } catch { return false; }
+};
+export const imageUrl = z.string().trim().max(500, 'La URL de la imagen admite hasta 500 caracteres.')
+  .refine(value => value === '' || httpsUrl(value), 'La imagen debe ser una dirección completa que empiece por https://.')
+  .transform(value => value === '' ? null : new URL(value).href).optional();
 export const foodSchema = z.strictObject({
   name: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres.').max(120, 'El nombre admite hasta 120 caracteres.'),
   categoryId: identifier,
@@ -14,6 +25,7 @@ export const foodSchema = z.strictObject({
   minimumStock: decimal,
   receivedDate: date,
   expiresDate: date,
+  imageUrl,
 }).refine(value => value.receivedDate <= value.expiresDate, { message: 'La caducidad no puede ser anterior al ingreso.', path: ['expiresDate'] });
 export const inventoryQuery = z.strictObject({
   q: z.string().trim().max(80).default(''),

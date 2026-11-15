@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { requireUser, requireAdmin } from '../../middleware/security.js';
+import { defaultCategoryColor } from './category-colors.js';
 import { BusinessError, businessContext, businessErrors, categorySchema, confirmationSchema, missingRecord, readBusinessForm, redirectWithNotice } from '../business.js';
 
 export function categoriesRoutes({ database, config }) {
@@ -12,7 +13,7 @@ export function categoriesRoutes({ database, config }) {
   };
   async function render(req, res, error = null, status = 200, values = {}) {
     const categories = await database.category.findMany({ where: { companyId: req.user.companyId }, orderBy: [{ name: 'asc' }, { id: 'asc' }], include: { _count: { select: { items: true } } } });
-    res.status(status).render('categories/list', { categories, error, values });
+    res.status(status).render('categories/list', { categories, error, values, nextColor: defaultCategoryColor(categories.length) });
   }
   router.get('/', (req, res) => render(req, res));
   async function save(req, res) {
@@ -22,12 +23,15 @@ export function categoriesRoutes({ database, config }) {
       if (req.params.id) {
         const result = await database.category.updateMany({ where: { id: req.params.id, companyId: req.user.companyId }, data: input });
         if (!result.count) throw missingRecord();
-      } else await database.category.create({ data: { ...input, companyId: req.user.companyId } });
+      } else {
+        const color = input.color ?? defaultCategoryColor(await database.category.count({ where: { companyId: req.user.companyId } }));
+        await database.category.create({ data: { ...input, color, companyId: req.user.companyId } });
+      }
       return await redirectWithNotice(req, res, '/categories', req.params.id ? 'Categoría actualizada.' : 'Categoría creada.');
     } catch (error) {
-      if (error.code === 'P2002') return render(req, res, 'Ya existe una categoría con ese nombre.', 409, { name: req.body.name, id: req.params.id });
+      if (error.code === 'P2002') return render(req, res, 'Ya existe una categoría con ese nombre.', 409, { name: req.body.name, color: req.body.color, id: req.params.id });
       if (!(error instanceof BusinessError) || error.status === 404) throw error;
-      return render(req, res, error.message, error.status, { name: req.body.name, id: req.params.id });
+      return render(req, res, error.message, error.status, { name: req.body.name, color: req.body.color, id: req.params.id });
     }
   }
   router.post('/', requireAdmin, save);

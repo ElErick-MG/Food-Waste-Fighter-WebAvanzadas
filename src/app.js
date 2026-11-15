@@ -26,7 +26,8 @@ export function createApp({ config, checkDatabase, database, sendResetMail }) {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'"],
       styleSrc: ["'self'"],
-      imgSrc: ["'self'"],
+      // Optional product images are HTTPS URLs (front-end redesign, stage 2); nothing else widens.
+      imgSrc: ["'self'", 'https:'],
       objectSrc: ["'none'"],
       frameAncestors: ["'none'"],
       upgradeInsecureRequests: https ? [] : null,

@@ -32,7 +32,7 @@ origen, los formularios POST con CSRF y las pruebas existentes.
 | --- | --- | --- |
 | 0 · Preparación | Librerías, fuente, texturas e imágenes servidas desde el mismo origen; hoja de estilos del sistema de diseño. Sin cambios visibles. | DONE |
 | 1 · Portada y acceso | `home.ejs` y vistas `/auth/*` con el diseño nuevo y formularios reales. | DONE |
-| 2 · Datos | Migración aditiva: `FoodItem.imageUrl` (HTTPS opcional) y `Category.color`; validación, servicio, seed y pruebas. | PENDIENTE |
+| 2 · Datos | Migración aditiva: `FoodItem.imageUrl` (HTTPS opcional) y `Category.color`; validación, servicio, seed y pruebas. | DONE |
 | 3 · Resumen | `/dashboard` con la refri cerrada y datos reales. | PENDIENTE |
 | 4 · Refri | `/inventory` como refri abierta: estantes, detalle y formularios reales. | PENDIENTE |
 | 5 · Gestión | Categorías con color, equipo y cuenta. | PENDIENTE |
@@ -94,3 +94,39 @@ backend (kg, g, l, ml, unidad).
   conserva el correo, la confirmación de contraseña sigue validando. No se ejecutó
   `npm run verify:browser` (axe) ni las pruebas de integración con MySQL: requieren
   la base de pruebas, que no estaba levantada; quedan pendientes para la etapa 2.
+
+### Etapa 2 — registro
+
+- Migración `20261115000300_product_image_category_color`: solo añade dos columnas
+  NULL (`Category.color` VARCHAR(7) y `FoodItem.imageUrl` VARCHAR(500)). No
+  reescribe ni borra datos; las filas existentes quedan con NULL.
+- Validación (Zod): `imageUrl` opcional, solo `https://` absoluta, sin usuario ni
+  contraseña en la URL y hasta 500 caracteres; vacía la quita y omitida la
+  conserva. `color` opcional en formato `#RRGGBB` (se guarda en mayúsculas);
+  omitido o vacío conserva el actual.
+- Servicio: una categoría nueva sin color recibe uno de la paleta
+  (`src/modules/categories/category-colors.js`, seis colores en ciclo). El color es
+  decorativo: el nombre sigue identificando la categoría.
+- Vistas actuales (temporales hasta las etapas 4 y 5): campo de imagen en el
+  formulario de producto, imagen en el detalle y selector de color al crear y
+  editar categorías. El seed asigna color a la categoría de ejemplo solo al crearla.
+- CSP: `img-src 'self' https:`. Es la única directiva ampliada; scripts, estilos y
+  fuentes siguen en `'self'`. Helmet mantiene `Referrer-Policy: no-referrer`, así
+  que las imágenes externas no reciben la URL de la página.
+- Documentación: ER y notas de datos en `TECHNICAL_REFERENCE.md` y
+  `contextoProyecto.md`.
+- Pruebas: `tests/frontend-data.test.js` (19: validación, paleta y CSP) y tres
+  pruebas nuevas en `tests/business.integration.test.js` (guardar, conservar y
+  quitar la imagen; rechazar URLs no HTTPS sin escribir; color por defecto, elegido
+  y conservado).
+- Verificación: `npm test` 95/95. Integración con MySQL de pruebas (puerto 3307):
+  `npm run test:db` no arranca en Windows porque `scripts/test-db.js` llama a
+  `spawnSync('npx')` sin shell (ENOENT). Se ejecutaron los mismos dos pasos con
+  `shell: true` desde un script temporal: migraciones aplicadas y 57/59 pruebas en
+  verde, incluidas todas las de negocio. Fallaron dos, ajenas a esta etapa: el
+  cierre por SIGTERM (Windows no entrega SIGTERM a procesos de Node) y el conteo
+  global de empresas en `auth.integration.test.js`, que choca con otros archivos que
+  crean empresas en paralelo (ese archivo solo pasa 21/21). Deben confirmarse en
+  Linux/Codespaces.
+- La base de desarrollo necesita `npm run db:migrate` antes de usar el servidor con
+  este cambio.
