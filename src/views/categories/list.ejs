@@ -1,10 +1,46 @@
-<!doctype html>
-<html lang="es"><head><%- include('../partials/head', { title: 'Categorías' }) %></head><body class="bg-gray-50 text-gray-800"><%- include('../partials/navigation') %>
-<main id="main-content" class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8"><h1 class="text-3xl font-bold mb-6">Categorías</h1><%- include('../partials/notice') %>
-  <% if (error) { %><p role="alert" class="text-red-800 bg-red-50 p-4 mb-6 rounded-lg"><%= error %></p><% } %>
-  <% if (currentUser.role === 'ADMIN') { %><div class="bg-white p-6 rounded-xl shadow-lg mb-6"><h2 class="text-xl font-semibold mb-4">Añadir Categoría</h2><form method="post" action="/categories" class="flex flex-wrap items-end gap-4"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><div class="flex-1 min-w-0"><label for="name" class="block text-sm font-medium mb-1">Nombre de la categoría</label><input id="name" name="name" required minlength="2" maxlength="80" value="<%= !values.id && typeof values.name === 'string' ? values.name : '' %>" class="w-full px-4 py-3 border border-gray-300 rounded-lg"></div><div><label for="color" class="block text-sm font-medium mb-1">Color</label><input id="color" name="color" type="color" value="<%= !values.id && /^#[0-9a-fA-F]{6}$/.test(values.color || '') ? values.color : nextColor %>" class="w-full border border-gray-300 rounded-lg"></div><button class="bg-green-600 text-white px-4 py-3 rounded-lg font-medium hover:bg-green-700">Guardar Categoría</button></form></div><% } %>
-  <% if (!categories.length) { %><div class="bg-white p-8 rounded-xl shadow-lg text-center"><p>No hay categorías registradas.</p></div><% } %>
-  <div class="grid gap-4 sm:grid-cols-2"><% for (const category of categories) { %><section class="bg-white p-6 rounded-xl shadow-lg min-w-0"><h2 class="text-xl font-semibold break-words"><%= category.name %></h2><p class="text-gray-600 my-3"><%= category._count.items %> productos</p>
-    <% if (currentUser.role === 'ADMIN') { %><form method="post" action="/categories/<%= category.id %>/edit" class="space-y-3"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><label for="name-<%= category.id %>" class="block text-sm font-medium">Editar nombre de <%= category.name %></label><input id="name-<%= category.id %>" name="name" required minlength="2" maxlength="80" value="<%= values.id === category.id && typeof values.name === 'string' ? values.name : category.name %>" class="w-full px-4 py-3 border border-gray-300 rounded-lg"><label for="color-<%= category.id %>" class="block text-sm font-medium">Color de <%= category.name %></label><input id="color-<%= category.id %>" name="color" type="color" value="<%= values.id === category.id && /^#[0-9a-fA-F]{6}$/.test(values.color || '') ? values.color : (category.color || '#45453F') %>" class="w-full border border-gray-300 rounded-lg"><div class="flex flex-wrap items-center gap-4"><button class="text-blue-700 font-medium">Actualizar</button><a href="/categories/<%= category.id %>/delete" class="text-red-700 font-medium">Eliminar</a></div></form><% } %>
-  </section><% } %></div>
-</main></body></html>
+<% const admin = currentUser.role === 'ADMIN'; const txtN = k => `${k} ${k === 1 ? 'producto' : 'productos'}`; %>
+<%- include('../partials/fwf-ficha-inicio', { title: 'Categorías', volver: '/inventory', ancho: true }) %>
+    <p class="etiqueta ficha-marca">Estantes de tu refri</p>
+    <h1 id="ficha-titulo" class="t-modal">Categorías</h1>
+    <p class="ficha-sub ayuda"><%= admin ? 'Edita el nombre o el color, o elimina las que ya no uses. Cada categoría es un estante de tu refri.' : 'Cada categoría es un estante de tu refri. Solo administración puede cambiarlas.' %></p>
+    <%- include('../partials/notice') %>
+    <% if (error) { %><p role="alert" class="ficha-aviso error"><%= error %></p><% } %>
+
+    <% if (!categories.length) { %>
+    <p class="ficha-aviso pronto">No hay categorías registradas.</p>
+    <% } else { %>
+    <ul class="cat-lista" aria-label="Categorías creadas">
+      <% for (const category of categories) { const editando = values.id === category.id; const color = (category.color || '').toUpperCase(); %>
+      <li class="cat-item">
+        <div class="cat-fila">
+          <i class="pc t-<%= color.slice(1) %>" data-color="<%= color %>" aria-hidden="true"></i>
+          <span class="nom"><b><%= category.name %></b><span><%= txtN(category._count.items) %></span></span>
+          <% if (admin) { %><a class="enlace peligro cat-borrar" href="/categories/<%= category.id %>/delete">Eliminar<span class="sr-only"> <%= category.name %></span></a><% } %>
+        </div>
+        <% if (admin) { %>
+        <details class="cat-editar"<% if (editando) { %> open<% } %>>
+          <summary>Editar<span class="sr-only"> <%= category.name %></span></summary>
+          <form method="post" action="/categories/<%= category.id %>/edit">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div class="campo"><label for="name-<%= category.id %>">Nombre de <%= category.name %></label><input id="name-<%= category.id %>" name="name" required minlength="2" maxlength="80" value="<%= editando && typeof values.name === 'string' ? values.name : category.name %>"></div>
+            <%- include('../partials/fwf-tintes', { palette, nombreGrupo: 'Color de ' + category.name, prefijo: 'color-' + category.id, elegido: editando && typeof values.color === 'string' ? values.color : (category.color || '') }) %>
+            <div class="ficha-botones"><button type="submit" class="btn btn-pri">Actualizar</button></div>
+          </form>
+        </details>
+        <% } %>
+      </li>
+      <% } %>
+    </ul>
+    <% } %>
+
+    <% if (admin) { %>
+    <form method="post" action="/categories" class="cat-nueva">
+      <h2 class="t-tarjeta">Nueva categoría</h2>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="campo"><label for="name">Nombre de la categoría</label><input id="name" name="name" required minlength="2" maxlength="80" placeholder="Congelados" value="<%= !values.id && typeof values.name === 'string' ? values.name : '' %>"></div>
+      <%- include('../partials/fwf-tintes', { palette, nombreGrupo: 'Color', prefijo: 'color-nueva', elegido: !values.id && typeof values.color === 'string' && values.color ? values.color : nextColor }) %>
+      <div class="ficha-botones"><button type="submit" class="btn btn-pri btn-grande">Guardar Categoría</button></div>
+    </form>
+    <% } %>
+    <p class="ficha-pie"><a class="enlace" href="/inventory">← Volver a la refri</a></p>
+<%- include('../partials/fwf-ficha-fin') %>

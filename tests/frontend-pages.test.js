@@ -237,3 +237,61 @@ describe('Open fridge /inventory and product cards (stage 4)', () => {
     expectCspSafe(remove);
   });
 });
+
+describe('Categories, team and account (stage 5)', async () => {
+  const { CATEGORY_PALETTE } = await import('../src/modules/categories/category-colors.js');
+  const admin = { name: 'Ana Pérez', email: 'ana@tests.example', role: 'ADMIN', company: { name: 'Café Semilla' } };
+  const employee = { ...admin, role: 'EMPLOYEE' };
+  const categories = [
+    { id: 'cat-1', name: 'Lácteos', color: '#4A7FD6', _count: { items: 1 } },
+    { id: 'cat-2', name: 'Bebidas', color: '#123456', _count: { items: 0 } },
+  ];
+  const listLocals = (overrides = {}) => ({ currentUser: admin, csrfToken, message: null, error: null, values: {}, categories, nextColor: '#2F9E5B', palette: CATEGORY_PALETTE, ...overrides });
+
+  it('lets admins edit, colour, delete and create categories through real POST forms', async () => {
+    const html = await render('categories/list', listLocals());
+    expect(html).toContain('method="post" action="/categories/cat-1/edit"');
+    expect(html).toContain('method="post" action="/categories"');
+    expect(html).toContain('href="/categories/cat-1/delete"');
+    expect(html).toContain('1 producto<');
+    expect(html).toContain('0 productos');
+    expect(html).toMatch(/id="color-cat-1-4A7FD6" name="color" value="#4A7FD6" checked/);
+    expect(html).toMatch(/id="color-nueva-2F9E5B" name="color" value="#2F9E5B" checked/);
+    expect(html).toContain('value="#123456" checked');   // a custom colour stays selectable
+    expect(html).toContain('<span class="sr-only">Azul</span>');
+    expectCspSafe(html);
+  });
+
+  it('shows categories read-only to employees and keeps typed values after an error', async () => {
+    const readOnly = await render('categories/list', listLocals({ currentUser: employee }));
+    expect(readOnly).not.toContain('method="post"');
+    expect(readOnly).not.toContain('/delete"');
+    const retry = await render('categories/list', listLocals({ error: 'Ya existe una categoría con ese nombre.', values: { id: 'cat-1', name: 'Repetida', color: '#d2513f' } }));
+    expect(retry).toMatch(/role="alert"[^>]*>Ya existe una categoría con ese nombre\./);
+    expect(retry).toContain('<details class="cat-editar" open>');
+    expect(retry).toContain('value="Repetida"');
+    expect(retry).toMatch(/value="#D2513F" checked/);
+  });
+
+  it('keeps the employee form fields, the people list and CSRF on /team', async () => {
+    const html = await render('users/team', { currentUser: admin, csrfToken, error: null, users: [{ id: 'u1', name: 'Ana Pérez', email: 'ana@tests.example', role: 'ADMIN' }, { id: 'u2', name: 'Luis', email: 'luis@tests.example', role: 'EMPLOYEE' }] });
+    for (const name of ['_csrf', 'name', 'email', 'password', 'confirmPassword']) expect(html).toContain(`name="${name}"`);
+    expect(html).toContain('method="post" action="/team" data-password-form');
+    expect(html).toContain('luis@tests.example');
+    expect(html).toContain('Empleado');
+    expect(html).toContain('/assets/auth.js');
+    expectCspSafe(html);
+  });
+
+  it('account shows the user data, the team link for admins and a CSRF logout', async () => {
+    const html = await render('account', { currentUser: admin, csrfToken });
+    expect(html).toContain('Hola, Ana Pérez');
+    expect(html).toContain('href="/team"');
+    expect(html).toContain(`<form method="post" action="/auth/logout" class="ficha-salir"><input type="hidden" name="_csrf" value="${csrfToken}">`);
+    expectCspSafe(html);
+    expect(await render('account', { currentUser: employee, csrfToken })).not.toContain('href="/team"');
+    const remove = await render('categories/delete', { currentUser: admin, csrfToken, error: null, category: categories[0] });
+    expect(remove).toContain('action="/categories/cat-1/delete"');
+    expect(remove).toContain('name="confirm" value="yes" required');
+  });
+});

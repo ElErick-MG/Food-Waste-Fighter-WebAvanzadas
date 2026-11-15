@@ -1,15 +1,16 @@
 <%#
   Apertura de las páginas de producto (formulario, ficha, eliminar): la cocina queda de
   fondo y la tarjeta de vidrio se centra encima, como un modal. Funciona sin JavaScript.
-  Parámetros: title, volver (URL de la X), scripts (opcional). Se cierra con fwf-ficha-fin.
+  Parámetros: title, volver (URL de la X), scripts, ancho (tarjeta amplia) y acceso
+  (scripts de contraseña), todos opcionales. Se cierra con fwf-ficha-fin.
 %>
 <!DOCTYPE html>
 <html lang="es" class="fwf-raiz">
-<head><%- include('fwf-head', { title, estilos: ['fwf-app', 'ficha'], modulos: ['ficha'], scripts: typeof scripts !== 'undefined' ? scripts : [] }) %></head>
+<head><%- include('fwf-head', { title, estilos: ['fwf-app', 'ficha'], modulos: ['ficha'], scripts: typeof scripts !== 'undefined' ? scripts : [], acceso: typeof acceso !== 'undefined' && acceso }) %></head>
 <body class="fwf">
 <div id="escena" aria-hidden="true">
   <div id="cocinaCapa"><img id="cocinaFoto" src="/assets/fwf/img/cocina.png" alt="" width="1670" height="941"><div id="cocinaVelo"></div></div>
 </div>
 <main id="main-content" class="ficha-capa">
-  <section class="ficha" aria-labelledby="ficha-titulo">
+  <section class="ficha<%= typeof ancho !== 'undefined' && ancho ? ' ficha-ancha' : '' %>" aria-labelledby="ficha-titulo">
     <a class="ficha-x" href="<%= volver %>" aria-label="Cerrar y volver"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>

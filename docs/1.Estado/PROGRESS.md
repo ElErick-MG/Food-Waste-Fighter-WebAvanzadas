@@ -35,7 +35,7 @@ origen, los formularios POST con CSRF y las pruebas existentes.
 | 2 · Datos | Migración aditiva: `FoodItem.imageUrl` (HTTPS opcional) y `Category.color`; validación, servicio, seed y pruebas. | DONE |
 | 3 · Resumen | `/dashboard` con la refri cerrada y datos reales. | DONE |
 | 4 · Refri | `/inventory` como refri abierta: estantes, detalle y formularios reales. | DONE |
-| 5 · Gestión | Categorías con color, equipo y cuenta. | PENDIENTE |
+| 5 · Gestión | Categorías con color, equipo y cuenta. | DONE |
 | 6 · Chat | Burbuja conectada a Socket.IO con los contratos existentes. | PENDIENTE |
 | 7 · Cierre | Recetas, caducidad y errores; accesibilidad, rendimiento y documentación. | PENDIENTE |
 
@@ -201,3 +201,28 @@ backend (kg, g, l, ml, unidad).
   40 escaneos axe sin incidencias, incluido el alta real de un producto y el aviso en
   vivo al otro usuario. Revisión visual con datos ficticios: refri en escritorio y en
   375 px, detalle, filtro, vista de lista y formulario.
+
+### Etapa 5 — registro
+
+- `/categories`: gestor del diseño en una tarjeta de vidrio sobre la cocina. Lista con
+  punto de color, nombre y número de productos. Para ADMIN, cada categoría tiene
+  "Editar" (`details/summary`: nombre y muestras de color) y "Eliminar", y hay un
+  formulario de "Nueva categoría" con el color sugerido de la paleta. Los mismos POST
+  con CSRF, validación, mensajes y respuestas 403/404/409. EMPLOYEE solo ve la lista.
+- Paleta con nombres accesibles (`CATEGORY_PALETTE`: Azul, Verde, Rojo, Ámbar,
+  Violeta, Turquesa) y clases CSS fijas, así que las muestras se ven sin JavaScript.
+  Un color propio fuera de la paleta se conserva como opción "Color actual".
+- `/categories/:id/delete`, `/team` y `/account`: tarjetas de vidrio con los mismos
+  formularios y campos. Equipo muestra a las personas con su rol y el formulario de
+  "Añadir empleado" (con botón para mostrar la contraseña y la validación de
+  `auth.js`). Cuenta añade "Cerrar sesión" (POST con CSRF).
+- Cambios de servidor: solo se pasa `palette` a la vista de categorías.
+- Corrección: los enlaces de "Eliminar" salían en verde (`.enlace` ganaba a
+  `.peligro`); ahora son rojos en todas las vistas.
+- Pruebas: cuatro nuevas en `tests/frontend-pages.test.js` (categorías para ADMIN y
+  EMPLOYEE, valores conservados tras un error, equipo, cuenta y eliminar categoría).
+- Verificación: `npm test` 109/109. Integración con MySQL de pruebas: 57/59, con los
+  dos fallos ya conocidos en Windows (SIGTERM y el conteo global de empresas en
+  paralelo). `verify:browser` con Edge: PASS, 40 escaneos axe sin incidencias.
+  Revisión visual con datos ficticios: categorías, cambio de color real con su
+  aviso, equipo y cuenta.

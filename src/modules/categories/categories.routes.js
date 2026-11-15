@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { requireUser, requireAdmin } from '../../middleware/security.js';
-import { defaultCategoryColor } from './category-colors.js';
+import { CATEGORY_PALETTE, defaultCategoryColor } from './category-colors.js';
 import { BusinessError, businessContext, businessErrors, categorySchema, confirmationSchema, missingRecord, readBusinessForm, redirectWithNotice } from '../business.js';
 
 export function categoriesRoutes({ database, config }) {
@@ -13,7 +13,7 @@ export function categoriesRoutes({ database, config }) {
   };
   async function render(req, res, error = null, status = 200, values = {}) {
     const categories = await database.category.findMany({ where: { companyId: req.user.companyId }, orderBy: [{ name: 'asc' }, { id: 'asc' }], include: { _count: { select: { items: true } } } });
-    res.status(status).render('categories/list', { categories, error, values, nextColor: defaultCategoryColor(categories.length) });
+    res.status(status).render('categories/list', { categories, error, values, nextColor: defaultCategoryColor(categories.length), palette: CATEGORY_PALETTE });
   }
   router.get('/', (req, res) => render(req, res));
   async function save(req, res) {

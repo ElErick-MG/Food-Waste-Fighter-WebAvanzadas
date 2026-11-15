@@ -1,0 +1,14 @@
+<%#
+  Muestras de color para una categoría (radios). La paleta tiene clases CSS fijas, así
+  que se ven sin JavaScript; un color propio fuera de la paleta se pinta con ficha.js.
+  Parámetros: palette, nombreGrupo (texto accesible), prefijo (ids únicos), elegido (#RRGGBB).
+%>
+<% const actual = (elegido || '').toUpperCase(); const opciones = palette.some(c => c.hex === actual) || !/^#[0-9A-F]{6}$/.test(actual) ? palette : [...palette, { hex: actual, name: 'Color actual' }]; %>
+<fieldset class="tintes">
+  <legend><%= nombreGrupo %></legend>
+  <div class="tintes-op">
+    <% for (const color of opciones) { const id = prefijo + '-' + color.hex.slice(1); %>
+    <label class="tinte t-<%= color.hex.slice(1) %>" data-color="<%= color.hex %>" for="<%= id %>"><input type="radio" id="<%= id %>" name="color" value="<%= color.hex %>"<% if (color.hex === actual) { %> checked<% } %>><span class="sr-only"><%= color.name %></span></label>
+    <% } %>
+  </div>
+</fieldset>

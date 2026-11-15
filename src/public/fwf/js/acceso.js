@@ -17,7 +17,8 @@ for (const boton of document.querySelectorAll('.clave .ver')) {
 }
 
 // Antes de enviar, la contraseña vuelve a ocultarse (evita que el navegador la guarde como texto).
-for (const form of document.querySelectorAll('.tarjeta-acceso form')) {
+for (const form of document.querySelectorAll('form')) {
+  if (!form.querySelector('.ver')) continue;
   form.addEventListener('submit', () => {
     for (const boton of form.querySelectorAll('.ver[aria-pressed="true"]')) boton.click();
   });
