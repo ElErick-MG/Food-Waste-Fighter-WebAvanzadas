@@ -1,0 +1,24 @@
+<%#
+  Apertura de las páginas de acceso: la portada queda de fondo (quieta y oculta a
+  tecnologías de apoyo) y la tarjeta de vidrio se centra encima, como un modal.
+  Parámetros: title, titulo, sub, error, message. Se cierra con fwf-acceso-fin.
+%>
+<!DOCTYPE html>
+<html lang="es" class="fwf-raiz">
+<head><%- include('fwf-head', { title, acceso: true }) %></head>
+<body class="fwf">
+<div id="escena" data-modo="fondo" aria-hidden="true" inert>
+  <%- include('fwf-hero', { inicio: false }) %>
+</div>
+<main class="acceso-capa">
+  <section class="tarjeta-acceso" aria-labelledby="acc-titulo">
+    <a class="acc-x" href="/" aria-label="Volver al inicio"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></a>
+    <p class="acc-marca etiqueta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19C5 11 11 5 19 5c0 8-6 14-14 14z"/><path d="M5 19l9-9"/></svg>Food Waste Fighter</p>
+    <h1 id="acc-titulo" class="t-modal"><%= titulo %></h1>
+    <p class="acc-sub ayuda"><%= sub %></p>
+    <% if (error) { %>
+    <div role="alert" class="acc-aviso error"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4.5M12 16v.3"/></svg><span><%= error %></span></div>
+    <% } %>
+    <% if (message) { %>
+    <p role="status" class="acc-aviso ok"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg><span><%= message %></span></p>
+    <% } %>

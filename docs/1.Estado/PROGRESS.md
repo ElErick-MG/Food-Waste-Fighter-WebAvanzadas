@@ -31,7 +31,7 @@ origen, los formularios POST con CSRF y las pruebas existentes.
 | Etapa | Alcance | Estado |
 | --- | --- | --- |
 | 0 · Preparación | Librerías, fuente, texturas e imágenes servidas desde el mismo origen; hoja de estilos del sistema de diseño. Sin cambios visibles. | DONE |
-| 1 · Portada y acceso | `home.ejs` y vistas `/auth/*` con el diseño nuevo y formularios reales. | PENDIENTE |
+| 1 · Portada y acceso | `home.ejs` y vistas `/auth/*` con el diseño nuevo y formularios reales. | DONE |
 | 2 · Datos | Migración aditiva: `FoodItem.imageUrl` (HTTPS opcional) y `Category.color`; validación, servicio, seed y pruebas. | PENDIENTE |
 | 3 · Resumen | `/dashboard` con la refri cerrada y datos reales. | PENDIENTE |
 | 4 · Refri | `/inventory` como refri abierta: estantes, detalle y formularios reales. | PENDIENTE |
@@ -59,3 +59,38 @@ backend (kg, g, l, ml, unidad).
 - Verificación: `npm test` 63/63 (50 previas + 13 nuevas). Las pruebas de
   integración con MySQL no se ejecutaron en esta etapa porque no hay cambios de
   datos; se ejecutarán en la etapa 2.
+
+### Etapa 1 — registro
+
+- Portada (`home.ejs`): refrigeradora 3D con titular, marca, grano y cursor propio.
+  "Iniciar sesión" y "Comenzar gratis" son enlaces a `/auth/login` y
+  `/auth/register`, porque la portada se monta antes de la sesión y no tiene token
+  CSRF. "Toca la refri" (o el clic sobre la refri) entreabre las puertas y navega a
+  `/dashboard`; sin sesión, `requireUser` redirige al inicio de sesión. La
+  transición hoja/tinta hacia el resumen se incorporará en la etapa 3.
+- Acceso (`/auth/login`, `/auth/register`, `/auth/forgot`, `/auth/reset`): tarjeta de
+  vidrio sobre la portada quieta (`aria-hidden` e `inert`). Se mantienen los
+  formularios POST, `_csrf`, nombres de campos, `#email`, `name="password"`, el
+  botón "Iniciar Sesión", `data-password-form` y `#errorContrasena` (lógica de
+  `/assets/auth.js` sin cambios). El botón para mostrar la contraseña es mejora
+  progresiva (`acceso.js`).
+- Archivos nuevos: `src/public/fwf/js/refri3d.js` (modelo 3D reutilizable, generado
+  del modelo original con las texturas como archivos), `fwf-motion.js` (Motion con
+  respaldo propio), `portada.js`, `acceso.js`, `css/portada.css`, `img/grano.svg` y
+  los parciales `fwf-head`, `fwf-hero`, `fwf-acceso-inicio`, `fwf-acceso-fin` y
+  `fwf-clave`. Sin `<style>`, `style=""`, scripts en línea ni URI `data:`; la
+  entrada de la portada es CSS puro y respeta `prefers-reduced-motion`.
+- Contenido retirado de la portada anterior (por el diseño a pantalla completa): la
+  sección de características, la franja de propósito y el pie con enlaces a redes y
+  a `/ready`. `/ready` y `/health` siguen disponibles.
+- Prueba ajustada conscientemente: `tests/system.test.js` esperaba
+  `/assets/styles.css` en la portada; ahora espera `/assets/fwf/css/fwf-base.css`.
+  El resto de vistas sigue usando `styles.css`.
+- `tests/frontend-pages.test.js` (13 pruebas): portada y vistas de acceso sin código
+  en línea, ganchos de las pruebas de navegador, CSRF, alertas y escape de datos.
+- Verificación: `npm test` 76/76. En el navegador (servidor de desarrollo local):
+  sin errores de consola ni bloqueos de CSP, refri 3D visible a 1280 y 320 px sin
+  desbordamiento horizontal, inicio de sesión fallido devuelve 401 con alerta y
+  conserva el correo, la confirmación de contraseña sigue validando. No se ejecutó
+  `npm run verify:browser` (axe) ni las pruebas de integración con MySQL: requieren
+  la base de pruebas, que no estaba levantada; quedan pendientes para la etapa 2.

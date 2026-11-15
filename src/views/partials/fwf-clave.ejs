@@ -1,0 +1,11 @@
+<%#
+  Campo de contraseña con botón para mostrarla (el botón aparece solo con JavaScript).
+  Parámetros: id, name, label, autocomplete, placeholder, minlength (opcional), describedby (opcional).
+%>
+<div class="campo">
+  <label for="<%= id %>"><%= label %></label>
+  <div class="clave">
+    <input type="password" id="<%= id %>" name="<%= name %>" autocomplete="<%= autocomplete %>" maxlength="128" required<% if (typeof minlength !== 'undefined' && minlength) { %> minlength="<%= minlength %>"<% } %><% if (typeof placeholder !== 'undefined' && placeholder) { %> placeholder="<%= placeholder %>"<% } %><% if (typeof describedby !== 'undefined' && describedby) { %> aria-describedby="<%= describedby %>"<% } %>>
+    <button type="button" class="ver" aria-label="Mostrar contraseña" aria-pressed="false" aria-controls="<%= id %>" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+  </div>
+</div>

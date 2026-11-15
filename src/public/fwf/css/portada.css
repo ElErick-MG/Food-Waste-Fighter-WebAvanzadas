@@ -1,0 +1,113 @@
+/*
+ * Food Waste Fighter — portada (refri 3D) y tarjetas de acceso.
+ * Requiere fwf-base.css. Sin estilos en línea: las posiciones calculadas se
+ * escriben desde JS mediante el CSSOM, permitido por la CSP 'self'.
+ */
+
+/* ---------- Pantalla completa (full-bleed, sin desplazamiento) ---------- */
+html.fwf-raiz, html.fwf-raiz body { height: 100%; overflow: hidden; }
+.fwf .hidden { display: none !important; }
+
+#escena { position: fixed; inset: 0; isolation: isolate; overflow: hidden; background: var(--crema); }
+#hero, #lienzo { position: absolute; inset: 0; }
+#hero { z-index: 1; user-select: none; -webkit-user-select: none; overflow: hidden; }
+#lienzo { z-index: 3; pointer-events: none; }
+#lienzo canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.sin-3d #lienzo { display: none; }
+#escena.sobre-refri { cursor: pointer; }
+
+.grano { position: absolute; inset: 0; z-index: 5; pointer-events: none; mix-blend-mode: multiply; opacity: .6; background: url('/assets/fwf/img/grano.svg') 0 0 / 220px 220px; }
+
+/* Líneas que se revelan desde una máscara */
+.m { display: block; overflow: hidden; }
+.m > span { display: block; }
+
+/* Titular: tinta con trama de semitono */
+.titular { position: absolute; left: 3.2vw; top: 4.5vh; z-index: 2; font-size: min(25vh, 12.6vw); font-weight: 700; line-height: .84; letter-spacing: -.045em; }
+.titular .m { padding-bottom: .06em; margin-bottom: -.06em; }
+.titular .m > span { color: transparent; background: radial-gradient(circle at 50% 50%, rgba(20, 20, 20, .95) 0 38%, transparent 42%) 0 0 / 3px 3px, rgba(20, 20, 20, .8); -webkit-background-clip: text; background-clip: text; }
+.bajada { position: absolute; left: 3.4vw; bottom: 5vh; z-index: 2; display: flex; align-items: center; gap: var(--s4); color: var(--tinta); }
+.bajada i { display: block; width: 40px; height: 1px; background: var(--tinta); }
+.marca { position: absolute; right: 3.2vw; bottom: 4.2vh; z-index: 2; text-align: right; color: var(--tinta); }
+.marca .etiqueta { display: flex; justify-content: flex-end; align-items: center; gap: var(--s2); color: var(--acento); margin-bottom: var(--s3); }
+.marca b { padding-bottom: .16em; margin-bottom: -.16em; display: block; font-size: clamp(30px, 4.6vw, 76px); font-weight: 700; line-height: .9; letter-spacing: -.035em; }
+
+/* Acceso en la portada */
+.acceso { position: absolute; top: var(--s6); right: 3.2vw; z-index: 6; display: flex; gap: var(--s2); }
+.acceso .btn { height: 44px; padding: 0 var(--s5); border-radius: var(--r-pill); }
+.acceso .btn-sec { background: rgba(255, 255, 255, .7); border: 1px solid rgba(20, 20, 20, .12); }
+
+/* Pista "Toca la refri": sin JS queda centrada abajo; con JS se coloca bajo la refri */
+#pista { position: absolute; left: 50%; bottom: 14vh; translate: -50% 0; z-index: 6; height: 44px; padding: 0 var(--s5); border-radius: var(--r-pill); background: var(--acento); color: #fff; font-weight: 600; font-size: 13px; display: inline-flex; align-items: center; gap: var(--s2); white-space: nowrap; transition: background var(--t1); }
+#pista.colocada { bottom: auto; translate: none; }
+#pista:hover { background: var(--acento-h); }
+#pista::before { content: ""; position: absolute; inset: -5px; border: 1.5px solid var(--acento); border-radius: inherit; animation: latido 1.8s var(--ease) infinite; pointer-events: none; }
+@keyframes latido { from { transform: scale(1); opacity: .6; } to { transform: scale(1.18); opacity: 0; } }
+
+/* Entrada de la portada (CSS puro: no depende de que cargue el JS) */
+@keyframes subir { from { transform: translateY(110%); } to { transform: none; } }
+@keyframes descubrir { from { clip-path: inset(0 0 100% 0); transform: translateY(28px); } to { clip-path: inset(0 0 0 0); transform: none; } }
+[data-modo="inicio"] .m > span { animation: subir .9s var(--ease) both; }
+[data-modo="inicio"] .titular .m:nth-child(1) > span { animation-delay: .15s; }
+[data-modo="inicio"] .titular .m:nth-child(2) > span { animation-delay: .225s; }
+[data-modo="inicio"] .titular .m:nth-child(3) > span { animation-delay: .3s; }
+[data-modo="inicio"] .bajada .m > span { animation-delay: .375s; }
+[data-modo="inicio"] .bajada .m:last-child > span { animation-delay: .45s; }
+[data-modo="inicio"] .marca .m > span { animation-delay: .525s; }
+[data-modo="inicio"] .marca b.m > span { animation-delay: .6s; }
+[data-modo="inicio"] .marca b.m:last-child > span { animation-delay: .675s; }
+[data-modo="inicio"] .acceso .btn { animation: descubrir .7s var(--ease) .7s both; }
+[data-modo="inicio"] .acceso .btn + .btn { animation-delay: .775s; }
+[data-modo="inicio"] #pista { animation: descubrir .7s var(--ease) 1.2s both; }
+
+/* Cursor propio (solo puntero fino, solo en la portada) */
+#cursor { position: fixed; left: 0; top: 0; width: 58px; height: 58px; margin: -29px 0 0 -29px; z-index: 100; pointer-events: none; }
+html:not(.cursor-on) #cursor { display: none; }
+html.cursor-on, html.cursor-on * { cursor: none !important; }
+#cursor .anillo { position: absolute; inset: 0; border: 1.5px solid var(--tinta); border-radius: 50%; transition: transform .5s var(--ease), background-color .4s, border-color .4s; }
+#cursor .punto { position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--tinta); transition: transform .4s var(--ease), opacity .4s; }
+#cursor .txt { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .12em; line-height: 1; transform: scale(.4); opacity: 0; transition: transform .45s var(--ease), opacity .3s; }
+#cursor.open .anillo { transform: scale(1.75); background: var(--acento); border-color: var(--acento); }
+#cursor.open .punto { transform: scale(0); }
+#cursor.open .txt { transform: scale(1); opacity: 1; }
+#cursor.btn .anillo { transform: scale(.55); }
+#cursor.btn .punto { opacity: 0; }
+
+/* ---------- Tarjeta de acceso sobre la portada ---------- */
+.acceso-capa { position: fixed; inset: 0; z-index: 10; overflow-y: auto; overscroll-behavior: contain; display: grid; place-items: center; padding: var(--s6) var(--s4); background: rgba(20, 20, 20, .26); -webkit-backdrop-filter: blur(10px) saturate(120%); backdrop-filter: blur(10px) saturate(120%); }
+.tarjeta-acceso { position: relative; width: min(420px, 100%); padding: 36px 28px 28px; border-radius: var(--r-panel); background: linear-gradient(150deg, rgba(255, 255, 255, .86), rgba(255, 255, 255, .66)); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); border: 1px solid rgba(255, 255, 255, .75); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 40px 80px -36px rgba(20, 20, 20, .55); animation: tarjeta .42s var(--ease) both; }
+@keyframes tarjeta { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
+.acc-x { position: absolute; top: var(--s3); right: var(--s3); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gris); transition: background var(--t1), color var(--t1); }
+.acc-x:hover { background: rgba(20, 20, 20, .06); color: var(--tinta); }
+.acc-marca { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--acento); margin-bottom: var(--s3); }
+.tarjeta-acceso h1 { text-align: center; }
+.acc-sub { text-align: center; margin: var(--s2) 0 var(--s6); }
+.acc-aviso { display: flex; gap: var(--s2); align-items: flex-start; border-radius: var(--r-ctl); padding: var(--s3) var(--s4); font-size: 14px; line-height: 1.5; margin-bottom: var(--s4); }
+.acc-aviso svg { margin-top: 2px; }
+.acc-aviso.error { background: var(--caducado-bg); border: 1px solid var(--caducado-bd); color: var(--caducado-tx); }
+.acc-aviso.ok { background: rgba(17, 128, 62, .08); border: 1px solid rgba(17, 128, 62, .3); color: #0C5A2B; }
+.clave { position: relative; }
+.fwf .clave input:not([type=radio]):not([type=checkbox]) { padding-right: 52px; }
+.ver { position: absolute; right: 4px; top: 4px; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--gris); transition: color var(--t1), background var(--t1); }
+.ver:hover { color: var(--tinta); background: rgba(20, 20, 20, .05); }
+.ver[aria-pressed="true"] { color: var(--acento); }
+.ver[hidden] { display: none; }
+.acc-enviar { width: 100%; margin-top: var(--s2); }
+.acc-pie { text-align: center; margin-top: var(--s5); }
+.acc-pie + .acc-pie { margin-top: var(--s3); }
+
+/* ---------- Móvil ---------- */
+@media (max-width: 760px) {
+  .acceso { top: 14px; right: 5vw; left: 5vw; justify-content: flex-end; }
+  .acceso .btn { height: 44px; padding: 0 var(--s4); font-size: 13px; }
+  .titular { font-size: min(18vh, 15.5vw); top: 72px; left: 5vw; }
+  .bajada { left: 5vw; bottom: auto; top: calc(72px + min(18vh, 15.5vw) * 2.6 + 14px); }
+  .marca { right: 5vw; bottom: 3vh; }
+  .marca b { font-size: 30px; }
+  .tarjeta-acceso { padding: 32px 20px 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-modo="inicio"] .m > span, [data-modo="inicio"] .acceso .btn, [data-modo="inicio"] #pista, .tarjeta-acceso { animation: none; }
+  #pista::before { animation: none; display: none; }
+}

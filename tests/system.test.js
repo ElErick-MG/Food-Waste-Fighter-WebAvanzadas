@@ -22,7 +22,8 @@ describe('Phase 1 HTTP foundation (not business-feature acceptance)', () => {
     expect(response.text).toContain('desperdicio de comida');
     expect(response.text).toContain('/auth/register');
     expect(response.text).not.toContain('2.3M');
-    expect(response.text).toContain('/assets/styles.css');
+    // Front-end redesign (stage 1): the landing uses the new same-origin design stylesheet.
+    expect(response.text).toContain('/assets/fwf/css/fwf-base.css');
   });
   it('liveness does not pretend to check MySQL', async () => {
     const check = vi.fn().mockRejectedValue(new Error('offline'));
