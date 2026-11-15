@@ -33,6 +33,11 @@ export function createApp({ config, checkDatabase, database, sendResetMail }) {
     } },
     strictTransportSecurity: https ? undefined : false,
   }));
+  // New front-end assets are served from this origin so the same-origin CSP stays intact.
+  const fromModules = path => express.static(fileURLToPath(new URL(`../node_modules/${path}`, import.meta.url)), { index: false });
+  app.use('/assets/fonts/plus-jakarta-sans', fromModules('@fontsource/plus-jakarta-sans/files/'));
+  app.use('/assets/vendor/three', fromModules('three/build/'));
+  app.use('/assets/vendor/motion', fromModules('motion/dist/'));
   app.use('/assets/fonts', express.static(fileURLToPath(new URL('../node_modules/@fontsource/inter/files/', import.meta.url)), { index: false }));
   app.use('/assets', express.static(fileURLToPath(new URL('./public/', import.meta.url))));
   app.use(express.urlencoded({ extended: false, limit: '16kb' }));

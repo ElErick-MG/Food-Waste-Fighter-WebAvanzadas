@@ -1,0 +1,119 @@
+/*
+ * Food Waste Fighter — sistema de diseño del front nuevo.
+ * Tokens y componentes compartidos. Se sirve desde el mismo origen (CSP 'self'):
+ * sin estilos en línea, sin CDN y con la fuente alojada en /assets/fonts.
+ *
+ * Reglas del sistema
+ *  - Color 60/30/10: 60 % blanco, 30 % tinta, 10 % acento verde solo en lo que se pulsa.
+ *  - Espaciado en múltiplos de 4 px (--s1 … --s7).
+ *  - Tres radios: píldora, control (14 px) y panel (24 px).
+ *  - Dos elevaciones (--e1 controles, --e2 paneles) y dos duraciones (--t1, --t2).
+ *  - Escala tipográfica: 11 · 12 · 13 · 14 · 16 · 18 · 22/24 · 32 px.
+ *  - Controles de 44 px; principales y campos de 48 px. Campos a 16 px (sin zoom en iOS).
+ */
+
+@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-display: swap; font-weight: 400; src: url('/assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-display: swap; font-weight: 500; src: url('/assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-display: swap; font-weight: 600; src: url('/assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-display: swap; font-weight: 700; src: url('/assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-700-normal.woff2') format('woff2'); }
+
+:root {
+  /* Color: 60 % blanco · 30 % tinta · 10 % acento */
+  --crema: #FAFAF7;
+  --blanco: #FFFFFF;
+  --tinta: #141414;
+  --gris: #45453F;
+  --borde: rgba(20, 20, 20, .12);
+  --neutro: #EEEEEB;
+  --acento: #11803E;
+  --acento-h: #0C6630;
+
+  /* Estados de caducidad (siempre acompañados de icono y texto) */
+  --caducado-bg: #FCEBEB; --caducado-bd: #A32D2D; --caducado-tx: #501313;
+  --critico-bg: #FCEBEB;  --critico-bd: #F09595;  --critico-tx: #791F1F;
+  --pronto-bg: #FAEEDA;   --pronto-bd: #EF9F27;   --pronto-tx: #633806;
+  --bien-bg: #F1EFE8;     --bien-bd: #B4B2A9;     --bien-tx: #444441;
+
+  /* Vidrio translúcido (estilo Apple/visionOS) */
+  --vidrio: linear-gradient(140deg, rgba(255, 255, 255, .62), rgba(255, 255, 255, .34));
+  --vidrio-filo: rgba(255, 255, 255, .6);
+  --vidrio-blur: blur(26px) saturate(170%);
+
+  /* Espaciado, radios, elevación y movimiento */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 24px; --s7: 32px;
+  --r-pill: 999px; --r-ctl: 14px; --r-panel: 24px;
+  --e1: inset 0 1px 0 rgba(255, 255, 255, .7), 0 1px 2px rgba(20, 20, 20, .06), 0 4px 12px -6px rgba(20, 20, 20, .22);
+  --e2: inset 0 1px 0 rgba(255, 255, 255, .75), 0 2px 6px -2px rgba(20, 20, 20, .1), 0 24px 48px -24px rgba(20, 20, 20, .42);
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --ease-hoja: cubic-bezier(.76, 0, .18, 1);
+  --t1: .18s var(--ease);
+  --t2: .32s var(--ease);
+
+  --fuente: 'Plus Jakarta Sans', 'Segoe UI', system-ui, Arial, sans-serif;
+}
+
+/* ---------- Base ---------- */
+.fwf, .fwf *, .fwf *::before, .fwf *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.fwf { font-family: var(--fuente); color: var(--tinta); background: var(--crema); -webkit-font-smoothing: antialiased; }
+.fwf a, .fwf button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-decoration: none; }
+.fwf input, .fwf select, .fwf textarea { font: inherit; color: inherit; }
+.fwf svg { flex: none; }
+.fwf :focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+.fwf ::selection { background: var(--neutro); color: var(--tinta); }
+.fwf input, .fwf textarea { caret-color: var(--acento); }
+.fwf * { scrollbar-color: rgba(20, 20, 20, .3) transparent; }
+.fwf .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Tipografía por rol ---------- */
+.fwf .etiqueta { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; line-height: 1; }
+.fwf .t-pantalla { font-size: 32px; font-weight: 700; letter-spacing: -.03em; line-height: 1.05; }
+.fwf .t-modal { font-size: 24px; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; }
+.fwf .t-tarjeta { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+.fwf .t-meta { font-size: 12px; line-height: 1.5; color: var(--gris); }
+
+/* ---------- Superficies de vidrio ---------- */
+.fwf .vidrio { background: var(--vidrio); -webkit-backdrop-filter: var(--vidrio-blur); backdrop-filter: var(--vidrio-blur); border: 1px solid var(--vidrio-filo); }
+.fwf .panel { border-radius: var(--r-panel); box-shadow: var(--e2); padding: var(--s5); }
+
+/* ---------- Botones ---------- */
+.fwf .btn { height: 44px; border-radius: var(--r-ctl); font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); padding: 0 var(--s4); white-space: nowrap; transition: background var(--t1), box-shadow var(--t1), transform var(--t1); }
+.fwf .btn:active { transform: scale(.97); }
+.fwf .btn-grande { height: 48px; font-size: 16px; }
+.fwf .btn-pri { background: var(--acento); color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 10px 20px -10px rgba(17, 128, 62, .75); }
+.fwf .btn-pri:hover { background: var(--acento-h); }
+.fwf .btn-sec { background: var(--vidrio); -webkit-backdrop-filter: var(--vidrio-blur); backdrop-filter: var(--vidrio-blur); border: 1px solid var(--vidrio-filo); box-shadow: var(--e1); color: var(--tinta); }
+.fwf .btn-sec:hover { background: rgba(255, 255, 255, .8); }
+.fwf .btn-tinta { background: rgba(20, 20, 20, .66); color: #fff; border: 1px solid rgba(255, 255, 255, .18); border-radius: var(--r-pill); }
+.fwf .btn-tinta:hover { background: rgba(20, 20, 20, .82); }
+.fwf .btn-pildora { border-radius: var(--r-pill); }
+.fwf .enlace { color: var(--acento); font-weight: 600; font-size: 14px; border-radius: 8px; padding: 12px 6px; margin: -12px -6px; transition: color var(--t1); }
+.fwf .enlace:hover { color: var(--acento-h); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Campos de formulario ---------- */
+.fwf .campo { margin-bottom: var(--s4); }
+.fwf .campo > label, .fwf .campo > .lbl { display: block; font-size: 13px; font-weight: 600; color: var(--tinta); margin-bottom: 6px; }
+.fwf .campo input:not([type=radio]):not([type=checkbox]), .fwf .campo select, .fwf .campo textarea {
+  width: 100%; height: 48px; border-radius: var(--r-ctl); border: 1px solid rgba(20, 20, 20, .12); background: rgba(255, 255, 255, .72);
+  padding: 0 14px; font-size: 16px; outline: none; transition: border-color var(--t1), box-shadow var(--t1), background var(--t1);
+}
+.fwf .campo textarea { height: auto; padding: 11px 14px; resize: vertical; line-height: 1.4; }
+.fwf .campo input:focus, .fwf .campo select:focus, .fwf .campo textarea:focus { background: #fff; border-color: var(--acento); box-shadow: 0 0 0 4px rgba(17, 128, 62, .16); }
+.fwf .campo input::placeholder, .fwf .campo textarea::placeholder { color: #8A8A84; }
+.fwf .err { font-size: 12px; color: #A32D2D; margin-top: 4px; }
+.fwf .err:empty { display: none; }
+.fwf .ayuda { font-size: 13px; line-height: 1.5; color: var(--gris); }
+
+/* ---------- Chips y punto de color ---------- */
+.fwf .chip { height: 36px; padding: 0 var(--s2) 0 var(--s3); border-radius: var(--r-pill); background: var(--vidrio); -webkit-backdrop-filter: var(--vidrio-blur); backdrop-filter: var(--vidrio-blur); border: 1px solid var(--vidrio-filo); box-shadow: var(--e1); font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; transition: background var(--t1), color var(--t1), border-color var(--t1), transform var(--t1); }
+.fwf .chip:hover { background: rgba(255, 255, 255, .8); }
+.fwf .chip[aria-pressed="true"] { background: var(--tinta); border-color: var(--tinta); color: #fff; font-weight: 600; }
+.fwf .pc { display: inline-block; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--gris)); box-shadow: 0 0 0 2px rgba(255, 255, 255, .75); }
+
+/* ---------- Avatares ---------- */
+.fwf .av { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--tinta); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.fwf .av.suave { background: var(--neutro); color: var(--tinta); }
+
+/* Movimiento reducido: cada componente define su alternativa (sin apagar todo el feedback). */
+@media (prefers-reduced-motion: reduce) {
+  .fwf .btn:active { transform: none; }
+}
