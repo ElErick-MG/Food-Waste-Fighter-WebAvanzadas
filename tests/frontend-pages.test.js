@@ -4,6 +4,7 @@ import ejs from 'ejs';
 import { fileURLToPath } from 'node:url';
 import { createApp } from '../src/app.js';
 import { parseEnv } from '../src/config/env.js';
+import { expiration, displayDate } from '../src/modules/expiration/expiration.js';
 
 // Front-end redesign, stage 1: landing and access pages in the new design.
 // They keep the same-origin CSP (no inline scripts or styles) and the hooks that
@@ -24,7 +25,8 @@ function expectCspSafe(html) {
   expect(html).not.toMatch(/<style[\s>]/i);
   expect(html).not.toMatch(/\son[a-z]+\s*=/i);
   for (const tag of html.match(/<script\b[^>]*>/gi) || []) expect(tag).toMatch(/\ssrc="\/(assets|socket\.io)\//);
-  expect(html).not.toMatch(/(src|href)="https?:\/\//i);
+  // Scripts and stylesheets stay same-origin; only product images (img-src https:) may be remote.
+  expect(html).not.toMatch(/<(script|link)\b[^>]*(src|href)="https?:\/\//i);
   expect(html).not.toContain('data:');
 }
 
@@ -109,5 +111,62 @@ describe('New access pages (stage 1)', () => {
     expect(html).not.toContain('id="pista"');
     expect(html.match(/<main\b/g)).toHaveLength(1);
     expect(html.match(/<h1\b/g)).toHaveLength(1);
+  });
+});
+
+describe('New summary page /dashboard (stage 3)', () => {
+  const today = new Date('2026-11-15T00:00:00Z');
+  const day = n => new Date(today.getTime() + n * 86400000);
+  const decimal = low => ({ lte: () => low });
+  const base = (overrides = {}) => ({
+    csrfToken, currentPath: '/dashboard', message: null, today, businessTimezone: 'America/Guayaquil',
+    displayDate, expiration: date => expiration(date, today),
+    currentUser: { name: 'Ana Pérez', email: 'ana@tests.example', role: 'ADMIN', company: { name: 'Café Semilla' } },
+    metrics: { total: 6, soon: 4, expired: 1, low: 1 },
+    alerts: [
+      { id: 'item-1', name: 'Leche', expiresDate: day(-1), quantity: decimal(true), minimumStock: 1, imageUrl: 'https://images.example.com/leche.jpg', category: { name: 'Lácteos', color: '#4A7FD6' } },
+      { id: 'item-2', name: 'Tomate', expiresDate: day(2), quantity: decimal(false), minimumStock: 1, imageUrl: null, category: { name: 'Verduras', color: null } },
+    ],
+    suggested: [{ id: 'recipe-1', name: 'Salsa de tomate', description: 'Para tomates maduros.', matches: ['Tomate'] }],
+    ...overrides,
+  });
+
+  it('renders real metrics, alerts and recipes with links to the existing pages', async () => {
+    const html = await render('dashboard', base());
+    for (const [key, value] of Object.entries({ total: 6, soon: 4, expired: 1, low: 1 })) expect(html).toContain(`data-metric="${key}">${value}</p>`);
+    for (const href of ['/inventory', '/expiration?status=soon', '/expiration?status=expired', '/inventory?status=low', '/expiration', '/inventory/item-1', '/recipes/recipe-1']) expect(html).toContain(`href="${href}"`);
+    expect(html).toContain('¡Hola, Ana Pérez!');
+    expect(html).toContain('Caducado · 14/11/2026');
+    expect(html).toContain('Crítico: 2 días');
+    expect(html).toContain('Stock bajo');
+    expect(html).toContain('src="https://images.example.com/leche.jpg"');
+    expect(html).toContain('Coincide por nombre: Tomate');
+    expect(html).toContain('Fechas del negocio: 15/11/2026 (America/Guayaquil)');
+    expect(html).toContain('id="inventory-live"');
+    expect(html).toContain('<meta name="csrf-token"');
+    expectCspSafe(html);
+  });
+
+  it('keeps every section reachable from the account menu and logout as a CSRF POST', async () => {
+    const admin = await render('dashboard', base());
+    for (const href of ['/inventory', '/expiration', '/recipes', '/categories', '/chat', '/account', '/team']) expect(admin).toContain(`<a href="${href}"`);
+    expect(admin).toMatch(/<form method="post" action="\/auth\/logout"><input type="hidden" name="_csrf" value="f{64}">/);
+    const employee = await render('dashboard', base({ currentUser: { ...base().currentUser, role: 'EMPLOYEE' } }));
+    expect(employee).not.toContain('href="/team"');
+  });
+
+  it('shows empty states and only plays the arrival animation when asked', async () => {
+    const html = await render('dashboard', base({ alerts: [], suggested: [], metrics: { total: 0, soon: 0, expired: 0, low: 0 } }));
+    expect(html).toContain('¡Tu inventario está vacío!');
+    expect(html).toContain('href="/inventory/new"');
+    expect(html).toContain('No hay recetas que coincidan');
+    expect(html).not.toContain('data-transicion');
+    expect(await render('dashboard', base({ transicion: true }))).toContain('<body class="fwf" data-transicion>');
+  });
+
+  it('escapes user and company names', async () => {
+    const html = await render('dashboard', base({ currentUser: { ...base().currentUser, name: '<script>alert(1)</script>', company: { name: '<img src=x onerror=alert(1)>' } } }));
+    expect(html).not.toContain('<script>alert(1)</script>');
+    expect(html).not.toContain('<img src=x');
   });
 });

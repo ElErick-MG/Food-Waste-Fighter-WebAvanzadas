@@ -33,7 +33,7 @@ origen, los formularios POST con CSRF y las pruebas existentes.
 | 0 · Preparación | Librerías, fuente, texturas e imágenes servidas desde el mismo origen; hoja de estilos del sistema de diseño. Sin cambios visibles. | DONE |
 | 1 · Portada y acceso | `home.ejs` y vistas `/auth/*` con el diseño nuevo y formularios reales. | DONE |
 | 2 · Datos | Migración aditiva: `FoodItem.imageUrl` (HTTPS opcional) y `Category.color`; validación, servicio, seed y pruebas. | DONE |
-| 3 · Resumen | `/dashboard` con la refri cerrada y datos reales. | PENDIENTE |
+| 3 · Resumen | `/dashboard` con la refri cerrada y datos reales. | DONE |
 | 4 · Refri | `/inventory` como refri abierta: estantes, detalle y formularios reales. | PENDIENTE |
 | 5 · Gestión | Categorías con color, equipo y cuenta. | PENDIENTE |
 | 6 · Chat | Burbuja conectada a Socket.IO con los contratos existentes. | PENDIENTE |
@@ -130,3 +130,37 @@ backend (kg, g, l, ml, unidad).
   Linux/Codespaces.
 - La base de desarrollo necesita `npm run db:migrate` antes de usar el servidor con
   este cambio.
+
+### Etapa 3 — registro
+
+- `/dashboard` es el Resumen del diseño: foto de la cocina a pantalla completa, la
+  refri 3D cerrada en su nicho y dos columnas de vidrio. Izquierda: chip de cuenta,
+  saludo, empresa y los cuatro indicadores (mismos enlaces y `data-metric`).
+  Derecha: alertas de caducidad (miniatura con la imagen del producto o su inicial
+  sobre el color de la categoría, estado, fecha y stock bajo) y recetas sugeridas.
+  "Abrir mi refri" (y el clic sobre la refri) lleva a `/inventory`.
+- Datos: las mismas consultas de antes. Solo se añadió `include` del nombre y color
+  de la categoría en las tres alertas, y `transicion` (`?desde=portada`), que no lee
+  datos: solo activa la animación de llegada.
+- Menú de cuenta (`partials/fwf-cuenta.ejs`, `details/summary`, funciona sin JS):
+  correo, rol, enlaces a todas las secciones (Equipo solo para ADMIN) y cierre de
+  sesión como POST con `_csrf`. Escape y el clic fuera lo cierran.
+- Llegada desde la portada: la hoja crece desde la silueta de la refri, la cocina se
+  descubre con manchas de tinta y la refri aterriza en el nicho; luego se quita
+  `?desde=portada` de la barra. Con `prefers-reduced-motion` o sin WebGL se muestra
+  directamente.
+- Tiempo real: el Resumen carga Socket.IO y `realtime.js`; el aviso
+  `#inventory-live` se muestra como píldora flotante.
+- Archivos: `css/resumen.css`, `js/resumen.js`, `partials/fwf-cuenta.ejs`;
+  `fwf-head.ejs` acepta hojas y módulos por página e incluye Socket.IO con sesión.
+- Pruebas: cuatro nuevas en `tests/frontend-pages.test.js` (datos, enlaces, menú,
+  POST de cierre, estados vacíos, transición y escape). El control de URL externas
+  ahora se limita a scripts y hojas de estilo, porque las imágenes de producto
+  pueden ser HTTPS remotas desde la etapa 2.
+- Verificación: `npm test` 99/99. Integración con MySQL de pruebas: 57/59, con los
+  mismos dos fallos propios de Windows de la etapa 2; todas las pruebas del
+  dashboard pasan. `npm run verify:browser` con Microsoft Edge instalado
+  (`BROWSER_EXECUTABLE_PATH`, sin descargar navegadores de Playwright): PASS,
+  40 escaneos axe sin incidencias, sin errores de JS ni orígenes externos.
+  Revisión visual con datos ficticios en la base de pruebas: escritorio, 320 px,
+  menú de cuenta y transición desde la portada.

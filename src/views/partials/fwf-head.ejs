@@ -1,15 +1,27 @@
-<%# Cabecera del diseño nuevo: todo desde el mismo origen (CSP 'self'). %>
+<%#
+  Cabecera del diseño nuevo: todo desde el mismo origen (CSP 'self').
+  Parámetros: title, acceso (formularios de acceso), estilos y modulos (nombres de
+  archivo en /assets/fwf/css y /assets/fwf/js; por defecto, los de la portada).
+%>
+<% const hojas = typeof estilos !== 'undefined' ? estilos : ['portada']; const mods = typeof modulos !== 'undefined' ? modulos : ['portada']; %>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title><%= title %> — Food Waste Fighter</title>
 <meta name="description" content="Food Waste Fighter: controla las fechas de caducidad de tu cafetería o restaurante y lucha contra el desperdicio de comida.">
 <link rel="preload" href="/assets/fonts/plus-jakarta-sans/plus-jakarta-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fwf/css/fwf-base.css">
-<link rel="stylesheet" href="/assets/fwf/css/portada.css">
+<% for (const hoja of hojas) { %><link rel="stylesheet" href="/assets/fwf/css/<%= hoja %>.css">
+<% } %>
 <script src="/assets/vendor/three/three.min.js" defer></script>
 <script src="/assets/vendor/motion/motion.js" defer></script>
-<script src="/assets/fwf/js/portada.js" type="module"></script>
+<% for (const mod of mods) { %><script src="/assets/fwf/js/<%= mod %>.js" type="module"></script>
+<% } %>
 <% if (typeof acceso !== 'undefined' && acceso) { %>
 <script src="/assets/auth.js" defer></script>
 <script src="/assets/fwf/js/acceso.js" type="module"></script>
+<% } %>
+<% if (typeof currentUser !== 'undefined' && currentUser) { %>
+<meta name="csrf-token" content="<%= csrfToken %>">
+<script src="/socket.io/socket.io.js" defer></script>
+<script src="/assets/realtime.js" defer></script>
 <% } %>

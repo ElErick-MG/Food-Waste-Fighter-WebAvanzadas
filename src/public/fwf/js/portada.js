@@ -90,7 +90,7 @@ function iniciar(escena) {
     tw(pose, { puertas: on ? .06 : 0 }, { type: 'spring', stiffness: 200, damping: 18 });
   }
 
-  /** Entrar: las puertas se entreabren y se navega al resumen (el servidor pide sesión si hace falta). */
+  /** Entrar: las puertas se entreabren y se navega al resumen (sin sesión, el servidor lleva al login). */
   async function abrir() {
     if (estado !== 'hero') return;
     estado = 'saliendo';
@@ -99,7 +99,8 @@ function iniciar(escena) {
     tw(pose, { puertas: .5 }, { type: 'spring', stiffness: 120, damping: 14 });
     if (pista) ocultar([pista], 220);
     await wait(RM ? 0 : .45);
-    location.assign(pista?.href || '/dashboard');
+    // El resumen reproduce la llegada (hoja + tinta) solo cuando se viene de aquí.
+    location.assign('/dashboard?desde=portada');
   }
 
   if (inicio) {

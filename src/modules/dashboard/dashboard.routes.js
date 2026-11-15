@@ -16,11 +16,13 @@ export function dashboardRoutes({ database, config }) {
       food.count({ where: { companyId, ...expirationWhere('soon', today) } }),
       food.count({ where: { companyId, ...expirationWhere('expired', today) } }),
       food.count({ where: { companyId, quantity: { lte: food.fields.minimumStock } } }),
-      food.findMany({ where: { companyId }, orderBy: [{ expiresDate: 'asc' }, { id: 'asc' }], take: 3 }),
+      // Same three soonest items; the category name/color only decorates the alert row.
+      food.findMany({ where: { companyId }, orderBy: [{ expiresDate: 'asc' }, { id: 'asc' }], take: 3, include: { category: { select: { name: true, color: true } } } }),
       food.findMany({ where: { companyId, quantity: { gt: 0 }, ...expirationWhere('soon', today) }, orderBy: [{ expiresDate: 'asc' }, { id: 'asc' }], take: 3, select: { name: true } }),
     ]);
     const suggested = await createRecipesService(database).suggested(companyId, usableSoon);
-    res.render('dashboard', { metrics: { total, soon, expired, low }, alerts, suggested });
+    // ?desde=portada only plays the arrival animation from the landing page; it reads no data.
+    res.render('dashboard', { metrics: { total, soon, expired, low }, alerts, suggested, transicion: req.query.desde === 'portada' });
   });
   return router;
 }

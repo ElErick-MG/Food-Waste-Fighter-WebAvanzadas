@@ -1,0 +1,28 @@
+<%#
+  Chip de cuenta con menú desplegable (details/summary: funciona sin JavaScript).
+  Reúne los enlaces a las demás secciones y el cierre de sesión (POST con CSRF).
+%>
+<% const rolTexto = currentUser.role === 'ADMIN' ? 'Administración' : 'Equipo';
+   const iniciales = currentUser.name.trim().split(/\s+/).slice(0, 2).map(palabra => palabra[0] || '').join('').toUpperCase();
+   const secciones = [['/inventory', 'Mi inventario'], ['/expiration', 'Por caducar'], ['/recipes', 'Recetas'], ['/categories', 'Categorías'], ['/chat', 'Chat del equipo'], ['/account', 'Mi cuenta']];
+   if (currentUser.role === 'ADMIN') secciones.push(['/team', 'Equipo']); %>
+<details class="cuenta">
+  <summary class="cuenta-chip" aria-label="Tu cuenta: <%= currentUser.name %>, <%= rolTexto %>">
+    <span class="av" aria-hidden="true"><%= iniciales %></span>
+    <span class="txt" aria-hidden="true"><b><%= currentUser.name %></b><small><%= rolTexto %></small></span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+  </summary>
+  <div class="perfil">
+    <p class="etiqueta"><%= currentUser.company.name %></p>
+    <p class="t-perfil">Hola, <%= currentUser.name %></p>
+    <dl><div><dt>Correo electrónico</dt><dd><%= currentUser.email %></dd></div><div><dt>Rol</dt><dd><%= rolTexto %></dd></div></dl>
+    <nav aria-label="Secciones">
+      <ul class="perfil-nav">
+        <% for (const [href, texto] of secciones) { const activo = currentPath === href || currentPath.startsWith(href + '/'); %>
+        <li><a href="<%= href %>"<% if (activo) { %> aria-current="page"<% } %>><%= texto %><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a></li>
+        <% } %>
+      </ul>
+    </nav>
+    <form method="post" action="/auth/logout"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button type="submit" class="btn btn-sec">Cerrar sesión</button></form>
+  </div>
+</details>
