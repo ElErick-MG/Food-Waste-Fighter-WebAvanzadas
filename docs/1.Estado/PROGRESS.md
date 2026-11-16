@@ -306,3 +306,30 @@ de mismo origen (solo `img-src` admite `https:` para las imágenes de producto),
 formularios POST con CSRF y la lógica de negocio original. Pendiente antes de la
 entrega: repetir `npm run test:db` y `npm run verify:browser` en Codespaces sobre la
 revisión final, y los puntos académicos de "Pendientes de cierre".
+
+### Ajustes tras la revisión del diseño
+
+- Panel de detalle de la refri: se quita el enlace "Ver ficha" (el propio panel ya es
+  la ficha). La página `/inventory/:id` se mantiene: a ella redirige el servidor tras
+  guardar un producto.
+- Tarjetas superpuestas (`fwf/js/superpuesta.js`), como en el diseño original: en la
+  refri y en el Resumen, agregar/editar/eliminar producto, categorías, equipo, cuenta,
+  recetas y caducidad se abren en un `<dialog>` modal encima de la pantalla actual, en
+  vez de cambiar a una página con solo la cocina de fondo.
+  - Se pide la misma página al servidor y se muestra su tarjeta; los formularios se
+    envían a los mismos POST con su `_csrf`. Servidor, rutas, validación y permisos no
+    cambian.
+  - Errores de validación y avisos del servidor se ven dentro de la tarjeta. Si hubo
+    un cambio, al cerrar se recarga la vista de debajo. Tras eliminar, el aviso
+    ("Producto eliminado.") se conserva en `sessionStorage` y se muestra al volver.
+  - Los ids de la tarjeta se prefijan (`dlg-`) para no repetir los de la página;
+    Escape, la X o un clic fuera cierran. No se usa `<iframe>` (la CSP
+    `frame-ancestors 'none'` lo impide).
+  - Mejora progresiva: sin JavaScript o ante cualquier fallo, el enlace navega a la
+    página completa como antes.
+- `verify:browser` comprueba que "Agregar producto" se abre sobre `/inventory` sin
+  cambiar de página y que Escape la cierra (`overlayCards`).
+- Verificación: `npm test` 115/115 y `verify:browser` con Edge: PASS (40 escaneos axe
+  sin incidencias). Revisión con datos ficticios: alta de producto, categoría
+  repetida (error) y nueva, eliminación con aviso, "Mi cuenta" y receta sobre el
+  Resumen, cierre con Escape y con la X, y móvil a 375 px.

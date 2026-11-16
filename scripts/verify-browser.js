@@ -124,6 +124,14 @@ try {
   assert.equal(employee.url(), before);
   assert.match(await employee.locator('#inventory-live-text').textContent(), /Acelga de revisión.*próximo a caducar/);
   assert.equal(await foreign.locator('#inventory-live').isVisible(), false);
+  // Front-end redesign: card pages open over the fridge (same server page in a <dialog>),
+  // without leaving /inventory; Escape closes them and the fridge stays underneath.
+  await admin.goto(origin + '/inventory');
+  await admin.locator('#lateral .acciones a[href="/inventory/new"]').click();
+  await admin.locator('dialog.superpuesta h1', { hasText: 'Añadir Producto' }).waitFor();
+  assert.equal(new URL(admin.url()).pathname, '/inventory');
+  await admin.keyboard.press('Escape');
+  assert.equal(await admin.locator('dialog.superpuesta').evaluate(node => node.open), false);
   // Front-end redesign (stage 6): the floating chat bubble on the summary uses the same
   // Socket.IO client; a message sent from it reaches the other person's /chat page.
   await admin.goto(origin + '/dashboard');
@@ -139,7 +147,7 @@ try {
   assert.equal(brandColor, 'rgb(17, 128, 62)');
   const report = {
     measuredAt: new Date().toISOString(), sourceRevision: process.env.VERIFICATION_REVISION || 'working-tree', browser: browser.version(), brandColor,
-    scans, issues, functional: { nativeLogin: true, keyboardSkipLink: true, keyboardAccountMenu: true, chatBubble: true, twoDistinctUsers: true, liveExchange: true, persistedHistory: true, companyIsolation: true, notificationWithoutReload: true, websocketObserved: sockets.length > 0 },
+    scans, issues, functional: { nativeLogin: true, keyboardSkipLink: true, keyboardAccountMenu: true, overlayCards: true, chatBubble: true, twoDistinctUsers: true, liveExchange: true, persistedHistory: true, companyIsolation: true, notificationWithoutReload: true, websocketObserved: sockets.length > 0 },
     errors, externalOrigins: [...new Set(external)], limitations: ['Automated axe WCAG A/AA and best-practice checks plus targeted manual/keyboard behavior are not complete WCAG certification.', 'Local HTTP and isolated MySQL; actual Codespaces traffic is not captured by this command. Incomplete axe checks require human review.'],
   };
   await writeFile('work/browser-quality.json', JSON.stringify(report, null, 2) + '\n');

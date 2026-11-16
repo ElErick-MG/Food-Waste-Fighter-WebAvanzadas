@@ -460,7 +460,7 @@ function htmlDetalle(p) {
     <dl class="d-dl"><dt>Cantidad</dt><dd>${esc(cant(p.cantidad, p.unidad))}${p.bajo ? '<span class="bajo">Stock bajo</span>' : ''}</dd>
       <dt>Stock mínimo</dt><dd>${esc(cant(p.stockMin, p.unidad))}</dd><dt>Estante</dt><dd>${esc(c?.nombre || '')}</dd></dl>
     <div class="d-acc"><a class="btn-cons" href="/inventory/${id}/edit"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg>Editar<span class="sr-only"> ${esc(p.nombre)}</span></a>
-      <a class="enlace" href="/inventory/${id}">Ver ficha</a>${DATOS.puedeEliminar ? `<a class="enlace peligro" href="/inventory/${id}/delete">Eliminar<span class="sr-only"> ${esc(p.nombre)}</span></a>` : ''}</div>`;
+      ${DATOS.puedeEliminar ? `<a class="enlace peligro" href="/inventory/${id}/delete">Eliminar<span class="sr-only"> ${esc(p.nombre)}</span></a>` : ''}</div>`;
 }
 async function mostrarDetalle(p) {
   if ((p?.id ?? null) === detId) return;
