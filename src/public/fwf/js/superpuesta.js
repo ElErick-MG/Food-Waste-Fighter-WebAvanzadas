@@ -8,6 +8,8 @@
  * falla, el enlace navega a la página completa como siempre.
  * No se usa <iframe>: la CSP (frame-ancestors 'none') lo impide, y así debe ser.
  */
+import { completarFotos } from './fotos.js';
+
 const RUTAS = [
   /^\/inventory\/new$/, /^\/inventory\/(?!new$)[^/]+$/, /^\/inventory\/[^/]+\/(edit|delete)$/,
   /^\/categories$/, /^\/categories\/[^/]+\/delete$/, /^\/team$/, /^\/account$/,
@@ -66,12 +68,23 @@ async function abrir(url, init = {}) {
     const final = new URL(res.url);
     const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
     const ficha = doc.querySelector('main .ficha');
-    // Sin tarjeta (inicio de sesión, la refri tras eliminar, cierre de sesión…): navegar.
-    // El aviso del servidor ("Producto eliminado.") ya vino en esta respuesta: se conserva
-    // para mostrarlo al llegar, porque la sesión solo lo entrega una vez.
-    if (!ficha) {
+    // El aviso del servidor ("Producto registrado.", "Producto eliminado."…) viene en esta
+    // respuesta y la sesión solo lo entrega una vez: se conserva para mostrarlo al llegar.
+    const guardarAviso = () => {
       const aviso = doc.querySelector('main [role="status"]')?.textContent.trim();
       if (aviso) try { sessionStorage.setItem(CLAVE_AVISO, aviso); } catch { /* sin almacenamiento: solo se pierde el aviso */ }
+    };
+    // Tras registrar o editar un producto, el servidor lleva a su ficha. Aquí no hace falta
+    // verla: se vuelve a la refri con ese producto seleccionado (como desde una alerta).
+    const producto = final.pathname.match(/^\/inventory\/(?!new$)([^/]+)$/);
+    if (init.method === 'POST' && res.redirected && producto) {
+      guardarAviso();
+      volverARefri(producto[1]);
+      return;
+    }
+    // Sin tarjeta (inicio de sesión, la refri tras eliminar, cierre de sesión…): navegar.
+    if (!ficha) {
+      guardarAviso();
       location.assign(final.href);
       return;
     }
@@ -81,6 +94,19 @@ async function abrir(url, init = {}) {
   } finally {
     cargando = false;
     dlg.removeAttribute('aria-busy');
+  }
+}
+
+/** Ir (o recargar) la refri con el producto seleccionado; refri.js lee #producto-ID. */
+function volverARefri(id) {
+  const destino = `/inventory#producto-${encodeURIComponent(decodeURIComponent(id))}`;
+  cambios = false;   // la recarga ya muestra los datos nuevos
+  if (actual === '/inventory') {
+    // Mismo camino: cambiar solo el # no recarga la página, así que se recarga a mano.
+    history.replaceState(null, '', destino);
+    location.reload();
+  } else {
+    location.assign(destino);
   }
 }
 
@@ -130,7 +156,11 @@ function mejorar(raiz) {
   for (const el of raiz.querySelectorAll('[data-color]')) {
     if (/^#[0-9A-F]{6}$/i.test(el.dataset.color)) el.style.setProperty('--c', el.dataset.color);
   }
-  for (const img of raiz.querySelectorAll('.ficha-img img')) img.addEventListener('error', () => img.remove(), { once: true });
+  completarFotos(raiz, '.ficha-img[data-nombre]');
+  for (const b of raiz.querySelectorAll('[data-cerrar-detalles]')) {
+    b.hidden = false;
+    b.addEventListener('click', () => { const d = b.closest('details'); d.open = false; d.querySelector('summary').focus(); });
+  }
   // Fechas del producto (como /assets/inventory.js)
   for (const form of raiz.querySelectorAll('[data-inventory-form]')) {
     const { receivedDate: ingreso, expiresDate: caduca } = form.elements;

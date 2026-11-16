@@ -7,6 +7,7 @@
  */
 import { crearRefri, W, H, D } from './refri3d.js';
 import { tw, parar, RM, EASE, clamp, revelar, ocultar, wait } from './fwf-motion.js';
+import { fotoLocal } from './fotos.js';
 
 const $ = s => document.querySelector(s);
 const DATOS = JSON.parse($('#datos-refri').textContent);
@@ -24,13 +25,10 @@ const CATS = DATOS.categorias.map((c, i) => ({ ...c, color: /^#[0-9A-F]{6}$/i.te
 const catDe = id => CATS.find(c => c.id === id);
 const PRODS = DATOS.productos;
 // Fotos locales de respaldo por nombre (si el producto no tiene imagen propia)
-const FOTOS = { leche: 'leche', yogur: 'yogur', lechuga: 'lechuga', espinaca: 'lechuga', tomate: 'tomate', carne: 'carne', res: 'carne', pescado: 'pescado', salmon: 'pescado', pollo: 'pollo', pechuga: 'pollo' };
-const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 const fallidas = new Set();
 function fotoDe(p) {
   if (p.imagen && !fallidas.has(p.imagen)) return p.imagen;
-  const n = norm(p.nombre), clave = Object.keys(FOTOS).find(k => new RegExp(`(^|[^a-z])${k}`).test(n));
-  return clave ? `/assets/fwf/img/productos/${FOTOS[clave]}.jpg` : '';
+  return fotoLocal(p.nombre);
 }
 const inicial = p => esc((p.nombre.trim()[0] || '?').toUpperCase());
 const parse = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
@@ -556,6 +554,26 @@ function frame(now) {
   layoutInterior();
 }
 
+/* Enlace a un producto concreto (#producto-ID, p. ej. desde una alerta del Resumen):
+   se ajusta el filtro para que su estante esté visible y, al abrir, se selecciona. */
+const seleccionado = (() => {
+  const m = location.hash.match(/^#producto-(.+)$/);
+  if (!m) return null;
+  history.replaceState(null, '', location.pathname + location.search);
+  const p = PRODS.find(x => x.id === decodeURIComponent(m[1]));
+  if (!p) return null;
+  if (!pasaEstado(p)) filtro.estado = 'todos';
+  if (!visibles().some(c => c.id === p.categoriaId)) filtro.cats = new Set([p.categoriaId]);
+  if (filtro.cats) document.querySelector('#hCats').closest('.acord').dataset.abierto = 'true';
+  return p;
+})();
+function seleccionar(p) {
+  const f = filas.get(p.categoriaId), c = f?.tarjetas.find(t => t.p.id === p.id);
+  if (f && c) { f.pos = f.tarjetas.indexOf(c); c.el.focus({ preventScroll: true }); }
+  mostrarDetalle(p);
+  if (movil) abrirHoja();
+}
+
 detIn.innerHTML = htmlVacio();
 sincronizar({ animar: false, snap: true });
 interior.style.opacity = 0;
@@ -574,5 +592,10 @@ interior.style.opacity = 0;
     interior.getAnimations().forEach(a => a.cancel());
   });
   estado = 'dentro';
+  if (seleccionado) {
+    const f = filas.get(seleccionado.categoriaId), c = f?.tarjetas.find(t => t.p.id === seleccionado.id);
+    if (f && c) f.pos = f.tarjetas.indexOf(c);   // la fila entra ya centrada en el producto
+  }
   filasEnOrden().forEach((f, i) => entrarFila(f, i));
+  if (seleccionado) seleccionar(seleccionado);
 });

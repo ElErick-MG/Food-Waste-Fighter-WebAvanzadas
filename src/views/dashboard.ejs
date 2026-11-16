@@ -40,9 +40,9 @@
       <% } else { %>
       <ul class="res-lista">
         <% for (const item of alerts) { const state = expiration(item.expiresDate); %>
-        <li><a class="alerta-it" href="/inventory/<%= item.id %>">
-          <span class="mini" data-color="<%= item.category?.color || '' %>"><% if (item.imageUrl) { %><img src="<%= item.imageUrl %>" alt="" loading="lazy" referrerpolicy="no-referrer"><% } %><span class="ini" aria-hidden="true"><%= item.name.trim().charAt(0).toUpperCase() %></span></span>
-          <span class="txt"><b><%= item.name %></b>
+        <li><a class="alerta-it" href="/inventory#producto-<%= item.id %>">
+          <span class="mini" data-color="<%= item.category?.color || '' %>" data-nombre="<%= item.name %>"><% if (item.imageUrl) { %><img src="<%= item.imageUrl %>" alt="" loading="lazy" referrerpolicy="no-referrer"><% } %><span class="ini" aria-hidden="true"><%= item.name.trim().charAt(0).toUpperCase() %></span></span>
+          <span class="txt"><b><%= item.name %><span class="sr-only">: ver en la refri</span></b>
             <small class="est est-<%= state.code %>"><i class="pc" aria-hidden="true"></i><%= state.label %> · <%= displayDate(item.expiresDate) %></small>
             <% if (item.quantity.lte(item.minimumStock)) { %><small class="est est-bajo">Stock bajo</small><% } %>
           </span>

@@ -61,14 +61,21 @@
 .cat-item .nom { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
 .cat-item .nom b { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cat-item .nom span { font-size: 12px; color: var(--gris); overflow-wrap: anywhere; }
-.cat-borrar { font-size: 13px; }
-.cat-editar { margin-top: -6px; }
-.cat-editar > summary { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; font-weight: 600; color: var(--acento); cursor: pointer; list-style: none; }
+/* Acciones con icono (lápiz y papelera), alineadas a la derecha de la fila */
+.cat-item.con-acciones { position: relative; }
+.cat-item.con-acciones .cat-fila { padding-right: 96px; min-height: 44px; }
+.ib { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--tinta); cursor: pointer; transition: background var(--t1), color var(--t1); }
+.ib:hover { background: rgba(20, 20, 20, .06); }
+.ib.peligro:hover { background: var(--caducado-bg); color: #A32D2D; }
+.cat-borrar { position: absolute; right: 8px; top: 10px; }
+.ib.peligro { color: var(--tinta); }
+.cat-editar > summary { position: absolute; right: 52px; top: 10px; list-style: none; }
 .cat-editar > summary::-webkit-details-marker { display: none; }
-.cat-editar > summary::before { content: ""; width: 7px; height: 7px; margin-right: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform var(--t1); }
-.cat-editar[open] > summary::before { transform: rotate(45deg); }
-.cat-editar form { padding: var(--s2) 0 var(--s2); }
-.cat-editar .ficha-botones { margin-top: var(--s2); }
+.cat-editar[open] > summary { background: var(--tinta); color: #fff; }
+.cat-editar form { padding: var(--s2) 0 var(--s1); }
+.cat-botones { display: flex; justify-content: flex-end; gap: var(--s2); }
+.cat-botones .btn { height: 40px; padding: 0 var(--s4); font-size: 13px; }
+.cat-botones .btn[hidden] { display: none; }
 .cat-nueva { margin-top: var(--s3); padding: var(--s5); border-radius: var(--r-ctl); background: rgba(255, 255, 255, .5); border: 1px solid rgba(255, 255, 255, .75); }
 .cat-nueva h2 { margin-bottom: var(--s3); }
 

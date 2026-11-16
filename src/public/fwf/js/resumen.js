@@ -7,6 +7,7 @@
  */
 import { crearRefri } from './refri3d.js';
 import { tw, RM, EASE, HOJA, revelar, wait } from './fwf-motion.js';
+import { completarFotos } from './fotos.js';
 
 const $ = s => document.querySelector(s);
 const escena = $('#escena'), capa = $('#cocinaCapa'), velo = $('#cocinaVelo');
@@ -18,10 +19,9 @@ const llegando = document.body.hasAttribute('data-transicion');
 for (const mini of document.querySelectorAll('.mini[data-color]')) {
   if (/^#[0-9A-F]{6}$/i.test(mini.dataset.color)) mini.style.setProperty('--c', mini.dataset.color);
 }
-for (const img of document.querySelectorAll('.mini img')) {
-  const quitar = () => img.remove();
-  if (img.complete && !img.naturalWidth) quitar(); else img.addEventListener('error', quitar);
-}
+// Foto propia del producto o, si no tiene, la foto local que corresponde a su nombre.
+for (const img of document.querySelectorAll('.mini img')) if (img.complete && !img.naturalWidth) img.remove();
+completarFotos(document, '.mini[data-nombre]');
 
 /* ---------- Menú de cuenta: se cierra al hacer clic fuera o con Escape ---------- */
 const cuenta = $('.cuenta');
@@ -94,13 +94,21 @@ abrirBtn.addEventListener('click', e => {
   e.preventDefault();
   entrar();
 });
-async function entrar() {
+async function entrar(destino = abrirBtn.href) {
   if (estado !== 'resumen') return;
   estado = 'saliendo';
   espiar(false);
   tw(pose, { puertas: 1 }, RM ? { duration: .2, ease: 'linear' } : { type: 'spring', stiffness: 90, damping: 13 });
   await wait(RM ? 0 : .45);
-  location.assign(abrirBtn.href);
+  location.assign(destino);
+}
+// Una alerta abre la refri con ese producto seleccionado (#producto-ID, lo lee refri.js).
+for (const a of document.querySelectorAll('.alerta-it')) {
+  a.addEventListener('click', e => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !R) return;
+    e.preventDefault();
+    entrar(a.href);
+  });
 }
 addEventListener('pageshow', e => {
   if (!e.persisted) return;

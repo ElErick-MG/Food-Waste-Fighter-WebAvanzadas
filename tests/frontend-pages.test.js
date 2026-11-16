@@ -135,7 +135,7 @@ describe('New summary page /dashboard (stage 3)', () => {
   it('renders real metrics, alerts and recipes with links to the existing pages', async () => {
     const html = await render('dashboard', base());
     for (const [key, value] of Object.entries({ total: 6, soon: 4, expired: 1, low: 1 })) expect(html).toContain(`data-metric="${key}">${value}</p>`);
-    for (const href of ['/inventory', '/expiration?status=soon', '/expiration?status=expired', '/inventory?status=low', '/expiration', '/inventory/item-1', '/recipes/recipe-1']) expect(html).toContain(`href="${href}"`);
+    for (const href of ['/inventory', '/expiration?status=soon', '/expiration?status=expired', '/inventory?status=low', '/expiration', '/inventory#producto-item-1', '/recipes/recipe-1']) expect(html).toContain(`href="${href}"`);
     expect(html).toContain('¡Hola, Ana Pérez!');
     expect(html).toContain('Caducado · 14/11/2026');
     expect(html).toContain('Crítico: 2 días');

@@ -333,3 +333,28 @@ revisión final, y los puntos académicos de "Pendientes de cierre".
   sin incidencias). Revisión con datos ficticios: alta de producto, categoría
   repetida (error) y nueva, eliminación con aviso, "Mi cuenta" y receta sobre el
   Resumen, cierre con Escape y con la X, y móvil a 375 px.
+- Categorías: las acciones son iconos como en el diseño original (lápiz y papelera a
+  la derecha de cada fila). El lápiz despliega debajo el editor (nombre, color,
+  Cancelar y Guardar) con `details/summary`, que funciona sin JavaScript; la papelera
+  abre la confirmación de eliminar. Mismos POST.
+- Alertas del Resumen:
+  - Muestran la foto local de respaldo según el nombre (leche, yogur, tomate…), igual
+    que la refri. La lógica está ahora en un módulo común, `fwf/js/fotos.js`, que
+    usan la refri, el Resumen y la ficha del producto.
+  - Al pulsar una alerta se abren las puertas y se llega a la refri con ese producto
+    seleccionado (`/inventory#producto-ID`; el `#` no llega al servidor, así que la
+    consulta y su validación no cambian), en lugar de abrirse su tarjeta.
+- Verificación: `npm test` 115/115 y `verify:browser` con Edge: PASS (40 escaneos axe
+  sin incidencias). Revisión: editor de categoría con iconos, Cancelar, fotos en las
+  alertas y alerta → refri con el producto seleccionado.
+- Tras registrar o editar un producto desde la tarjeta superpuesta ya no se muestra su
+  ficha: se vuelve a la refri con ese producto seleccionado y el aviso del servidor
+  ("Producto registrado." / "Producto actualizado.") arriba. El servidor sigue
+  redirigiendo a `/inventory/:id`, así que sin JavaScript el flujo es el de antes.
+- Vista de lista de la refri centrada; "Volver a la refri" es ahora una X (con nombre
+  accesible "Volver a la refri").
+- Verificación: `verify:browser` con Edge: PASS (40 escaneos). `npm test` 115/115 en
+  tres ejecuciones seguidas. Hubo un fallo intermitente aislado en
+  `tests/frontend-assets.test.js` al servir `cocina.webp` (antes también con
+  `motion.js`, los archivos estáticos más grandes); no se reproduce y apunta al
+  tiempo límite de la prueba con el disco ocupado en Windows.
