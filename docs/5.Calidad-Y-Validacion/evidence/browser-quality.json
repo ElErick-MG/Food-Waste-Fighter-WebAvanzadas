@@ -1,199 +1,1297 @@
 {
-  "measuredAt": "2026-11-07T20:15:25.100Z",
-  "sourceRevision": "e6dfe81+phase5-working-tree",
-  "browser": "156.0.8078.79",
-  "brandColor": "rgb(22, 163, 74)",
+  "measuredAt": "2026-11-16T00:25:33.164Z",
+  "sourceRevision": "7348144+cambios-etapa-7",
+  "browser": "157.0.4341.60",
+  "brandColor": "rgb(17, 128, 62)",
   "scans": [
     {
       "path": "/",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".titular > .m:nth-child(1) > span"
+            ],
+            [
+              ".titular > .m:nth-child(2) > span"
+            ],
+            [
+              ".titular > .m:nth-child(3) > span"
+            ],
+            [
+              ".bajada > .m:nth-child(1) > span"
+            ],
+            [
+              ".bajada > .m:nth-child(3) > span"
+            ],
+            [
+              ".etiqueta.m > span"
+            ],
+            [
+              "b:nth-child(2) > span"
+            ],
+            [
+              "b:nth-child(3) > span"
+            ],
+            [
+              ".btn-sec"
+            ],
+            [
+              ".btn-pri"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/auth/login",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".acc-marca"
+            ],
+            [
+              "#acc-titulo"
+            ],
+            [
+              ".acc-sub"
+            ],
+            [
+              "label[for=\"email\"]"
+            ],
+            [
+              "#email"
+            ],
+            [
+              "label[for=\"contrasena\"]"
+            ],
+            [
+              "#contrasena"
+            ],
+            [
+              "a[href$=\"forgot\"]"
+            ],
+            [
+              ".acc-pie.ayuda"
+            ],
+            [
+              "a[href$=\"register\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/auth/register",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".acc-marca"
+            ],
+            [
+              "#acc-titulo"
+            ],
+            [
+              ".acc-sub"
+            ],
+            [
+              "label[for=\"companyName\"]"
+            ],
+            [
+              "#companyName"
+            ],
+            [
+              "label[for=\"nombre\"]"
+            ],
+            [
+              "#nombre"
+            ],
+            [
+              "label[for=\"email\"]"
+            ],
+            [
+              "#email"
+            ],
+            [
+              "label[for=\"contrasena\"]"
+            ],
+            [
+              "#contrasena"
+            ],
+            [
+              "label[for=\"confirmarContrasena\"]"
+            ],
+            [
+              "#confirmarContrasena"
+            ],
+            [
+              ".acc-pie"
+            ],
+            [
+              ".enlace"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/auth/forgot",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".acc-marca"
+            ],
+            [
+              "#acc-titulo"
+            ],
+            [
+              ".acc-sub"
+            ],
+            [
+              "label"
+            ],
+            [
+              "#email"
+            ],
+            [
+              ".enlace"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/auth/reset",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".acc-marca"
+            ],
+            [
+              "#acc-titulo"
+            ],
+            [
+              ".acc-sub"
+            ],
+            [
+              "label[for=\"password\"]"
+            ],
+            [
+              "#password"
+            ],
+            [
+              "label[for=\"confirmPassword\"]"
+            ],
+            [
+              "#confirmPassword"
+            ],
+            [
+              ".enlace"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/missing",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".titular > .m:nth-child(1) > span"
+            ],
+            [
+              ".titular > .m:nth-child(2) > span"
+            ],
+            [
+              ".titular > .m:nth-child(3) > span"
+            ],
+            [
+              ".bajada > .m:nth-child(1) > span"
+            ],
+            [
+              ".bajada > .m:nth-child(3) > span"
+            ],
+            [
+              ".etiqueta.m > span"
+            ],
+            [
+              "b:nth-child(2) > span"
+            ],
+            [
+              "b:nth-child(3) > span"
+            ],
+            [
+              ".btn-sec"
+            ],
+            [
+              ".btn-pri"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/auth/login",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".acc-marca"
+            ],
+            [
+              "#acc-titulo"
+            ],
+            [
+              ".acc-sub"
+            ],
+            [
+              "label[for=\"email\"]"
+            ],
+            [
+              "#email"
+            ],
+            [
+              "label[for=\"contrasena\"]"
+            ],
+            [
+              "#contrasena"
+            ],
+            [
+              "a[href$=\"forgot\"]"
+            ],
+            [
+              ".acc-pie.ayuda"
+            ],
+            [
+              "a[href$=\"register\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/auth/register",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".acc-marca"
+            ],
+            [
+              "#acc-titulo"
+            ],
+            [
+              ".acc-sub"
+            ],
+            [
+              "label[for=\"companyName\"]"
+            ],
+            [
+              "#companyName"
+            ],
+            [
+              "label[for=\"nombre\"]"
+            ],
+            [
+              "#nombre"
+            ],
+            [
+              "label[for=\"email\"]"
+            ],
+            [
+              "#email"
+            ],
+            [
+              "label[for=\"contrasena\"]"
+            ],
+            [
+              "#contrasena"
+            ],
+            [
+              "label[for=\"confirmarContrasena\"]"
+            ],
+            [
+              "#confirmarContrasena"
+            ],
+            [
+              ".acc-pie"
+            ],
+            [
+              ".enlace"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/auth/forgot",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".acc-marca"
+            ],
+            [
+              "#acc-titulo"
+            ],
+            [
+              ".acc-sub"
+            ],
+            [
+              "label"
+            ],
+            [
+              "#email"
+            ],
+            [
+              ".enlace"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/auth/reset",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".acc-marca"
+            ],
+            [
+              "#acc-titulo"
+            ],
+            [
+              ".acc-sub"
+            ],
+            [
+              "label[for=\"password\"]"
+            ],
+            [
+              "#password"
+            ],
+            [
+              "label[for=\"confirmPassword\"]"
+            ],
+            [
+              "#confirmPassword"
+            ],
+            [
+              ".enlace"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/missing",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/dashboard",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".av[aria-hidden=\"true\"]"
+            ],
+            [
+              ".txt[aria-hidden=\"true\"] > b"
+            ],
+            [
+              ".txt[aria-hidden=\"true\"] > small"
+            ],
+            [
+              "#resTit"
+            ],
+            [
+              ".res-sub"
+            ],
+            [
+              ".kpi[href$=\"inventory\"] > span"
+            ],
+            [
+              "p[data-metric=\"total\"]"
+            ],
+            [
+              "a[href=\"/expiration?status=soon\"] > span"
+            ],
+            [
+              "p[data-metric=\"soon\"]"
+            ],
+            [
+              "a[href=\"/expiration?status=expired\"] > span"
+            ],
+            [
+              "p[data-metric=\"expired\"]"
+            ],
+            [
+              "a[href=\"/inventory?status=low\"] > span"
+            ],
+            [
+              "p[data-metric=\"low\"]"
+            ],
+            [
+              "#hAlertas"
+            ],
+            [
+              ".enlace[href$=\"expiration\"]"
+            ],
+            [
+              ".ini"
+            ],
+            [
+              ".alerta-it > .txt > b"
+            ],
+            [
+              ".est"
+            ],
+            [
+              "section[aria-labelledby=\"hAlertas\"] > .res-nota"
+            ],
+            [
+              "#hRecetas"
+            ],
+            [
+              ".enlace[href$=\"recipes\"]"
+            ],
+            [
+              "h3"
+            ],
+            [
+              ".coincide"
+            ],
+            [
+              "article > p"
+            ],
+            [
+              "article > .enlace"
+            ],
+            [
+              "section[aria-labelledby=\"hRecetas\"] > .res-nota"
+            ],
+            [
+              "#abrirRefri"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/account",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              "div:nth-child(1) > dt"
+            ],
+            [
+              "div:nth-child(1) > dd"
+            ],
+            [
+              "div:nth-child(2) > dt"
+            ],
+            [
+              "div:nth-child(2) > dd"
+            ],
+            [
+              "button"
+            ],
+            [
+              ".enlace[href$=\"dashboard\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/team",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              "#hPersonas"
+            ],
+            [
+              "li:nth-child(1) > .nom > b"
+            ],
+            [
+              "li:nth-child(1) > .nom > span"
+            ],
+            [
+              "li:nth-child(2) > .nom > b"
+            ],
+            [
+              "li:nth-child(2) > .nom > span"
+            ],
+            [
+              "form > h2"
+            ],
+            [
+              "label[for=\"name\"]"
+            ],
+            [
+              "#name"
+            ],
+            [
+              "label[for=\"email\"]"
+            ],
+            [
+              "#email"
+            ],
+            [
+              "label[for=\"password\"]"
+            ],
+            [
+              "#password"
+            ],
+            [
+              "label[for=\"confirmPassword\"]"
+            ],
+            [
+              "#confirmPassword"
+            ],
+            [
+              ".ayuda"
+            ],
+            [
+              ".enlace[href$=\"dashboard\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast",
+        "skip-link"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".ini-g"
+            ],
+            [
+              ".etq > span"
+            ],
+            [
+              "summary > .av"
+            ],
+            [
+              ".txt > b"
+            ],
+            [
+              "small"
+            ],
+            [
+              ".lat-cab > .etiqueta"
+            ],
+            [
+              "#refriTit"
+            ],
+            [
+              ".conteo > span:nth-child(1)"
+            ],
+            [
+              "#cTot"
+            ],
+            [
+              ".alerta"
+            ],
+            [
+              "#cPor"
+            ],
+            [
+              ".acciones > .btn-pri.btn[href$=\"new\"]"
+            ],
+            [
+              ".btn-sec.btn[href$=\"categories\"]"
+            ],
+            [
+              "#verLista"
+            ],
+            [
+              "#hEst > span:nth-child(1)"
+            ],
+            [
+              "#vEst"
+            ],
+            [
+              "#hCats > span:nth-child(1)"
+            ],
+            [
+              "#vCats"
+            ],
+            [
+              ".det-vacio > p"
+            ],
+            [
+              "#cerrarRefri"
+            ]
+          ]
+        },
+        {
+          "id": "skip-link",
+          "targets": [
+            [
+              ".salto"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory/new",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "label[for=\"name\"]"
+            ],
+            [
+              "#name"
+            ],
+            [
+              "label[for=\"categoryId\"]"
+            ],
+            [
+              "#categoryId"
+            ],
+            [
+              "label[for=\"quantity\"]"
+            ],
+            [
+              "#quantity"
+            ],
+            [
+              "label[for=\"unit\"]"
+            ],
+            [
+              "#unit"
+            ],
+            [
+              "label[for=\"minimumStock\"]"
+            ],
+            [
+              "#minimumStock"
+            ],
+            [
+              "label[for=\"receivedDate\"]"
+            ],
+            [
+              "#receivedDate"
+            ],
+            [
+              "label[for=\"expiresDate\"]"
+            ],
+            [
+              "#expiresDate"
+            ],
+            [
+              "label[for=\"imageUrl\"]"
+            ],
+            [
+              "#imageUrl"
+            ],
+            [
+              "#imageUrl-help"
+            ],
+            [
+              "#ayuda-decimales"
+            ],
+            [
+              ".btn-sec"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory/:id",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#ficha-titulo"
+            ],
+            [
+              "div:nth-child(1) > dt"
+            ],
+            [
+              "div:nth-child(1) > dd"
+            ],
+            [
+              "div:nth-child(2) > dt"
+            ],
+            [
+              "div:nth-child(2) > dd"
+            ],
+            [
+              "div:nth-child(3) > dt"
+            ],
+            [
+              "div:nth-child(3) > dd"
+            ],
+            [
+              "div:nth-child(4) > dt"
+            ],
+            [
+              "div:nth-child(4) > dd"
+            ],
+            [
+              "div:nth-child(5) > dt"
+            ],
+            [
+              "div:nth-child(5) > dd"
+            ],
+            [
+              ".btn-sec"
+            ],
+            [
+              ".ficha-pie > .enlace[href$=\"inventory\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory/:id/edit",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "label[for=\"name\"]"
+            ],
+            [
+              "#name"
+            ],
+            [
+              "label[for=\"categoryId\"]"
+            ],
+            [
+              "#categoryId"
+            ],
+            [
+              "label[for=\"quantity\"]"
+            ],
+            [
+              "#quantity"
+            ],
+            [
+              "label[for=\"unit\"]"
+            ],
+            [
+              "#unit"
+            ],
+            [
+              "label[for=\"minimumStock\"]"
+            ],
+            [
+              "#minimumStock"
+            ],
+            [
+              "label[for=\"receivedDate\"]"
+            ],
+            [
+              "#receivedDate"
+            ],
+            [
+              "label[for=\"expiresDate\"]"
+            ],
+            [
+              "#expiresDate"
+            ],
+            [
+              "label[for=\"imageUrl\"]"
+            ],
+            [
+              "#imageUrl"
+            ],
+            [
+              "#imageUrl-help"
+            ],
+            [
+              "#ayuda-decimales"
+            ],
+            [
+              ".btn-sec"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory/:id/delete",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "label > span"
+            ],
+            [
+              ".btn-sec"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/categories",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "b"
+            ],
+            [
+              ".nom > span"
+            ],
+            [
+              ".peligro"
+            ],
+            [
+              "summary"
+            ],
+            [
+              "h2"
+            ],
+            [
+              "label[for=\"name\"]"
+            ],
+            [
+              "#name"
+            ],
+            [
+              ".cat-nueva > fieldset > legend"
+            ],
+            [
+              ".ficha-pie > .enlace[href$=\"inventory\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/categories/:id/delete",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "label > span"
+            ],
+            [
+              ".btn-sec"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/expiration",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".est-expired"
+            ],
+            [
+              "ul > .est-critical"
+            ],
+            [
+              ".est-warning"
+            ],
+            [
+              ".est-normal"
+            ],
+            [
+              "label[for=\"q\"]"
+            ],
+            [
+              "#q"
+            ],
+            [
+              "label[for=\"categoryId\"]"
+            ],
+            [
+              "#categoryId"
+            ],
+            [
+              "label[for=\"status\"]"
+            ],
+            [
+              "#status"
+            ],
+            [
+              "button"
+            ],
+            [
+              "a[href$=\"expiration\"]"
+            ],
+            [
+              "th[scope=\"col\"]:nth-child(1)"
+            ],
+            [
+              "th[scope=\"col\"]:nth-child(2)"
+            ],
+            [
+              "th[scope=\"col\"]:nth-child(3)"
+            ],
+            [
+              "th[scope=\"col\"]:nth-child(4)"
+            ],
+            [
+              "th[scope=\"col\"]:nth-child(5)"
+            ],
+            [
+              "th[scope=\"col\"]:nth-child(6)"
+            ],
+            [
+              "th[scope=\"row\"] > .enlace"
+            ],
+            [
+              "td:nth-child(2)"
+            ],
+            [
+              ".nowrap:nth-child(3)"
+            ],
+            [
+              ".nowrap:nth-child(4)"
+            ],
+            [
+              "td:nth-child(5) > .est-critical"
+            ],
+            [
+              ".fila-acc > .enlace:nth-child(1)"
+            ],
+            [
+              ".peligro"
+            ],
+            [
+              "nav > p"
+            ],
+            [
+              "h2"
+            ],
+            [
+              ".ayuda"
+            ],
+            [
+              ".ficha-pie"
+            ],
+            [
+              ".ficha-pie > .enlace[href$=\"inventory\"]"
+            ],
+            [
+              ".enlace[href$=\"dashboard\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/recipes",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "li > h2"
+            ],
+            [
+              "li > p"
+            ],
+            [
+              "li > .enlace"
+            ],
+            [
+              "nav > p"
+            ],
+            [
+              ".t-tarjeta"
+            ],
+            [
+              "aside > .ayuda"
+            ],
+            [
+              ".enlace[href$=\"dashboard\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
@@ -208,7 +1306,46 @@
           "id": "color-contrast",
           "targets": [
             [
-              ".ingredient-check"
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "#hIngredientes"
+            ],
+            [
+              "section[aria-labelledby=\"hIngredientes\"] > .ayuda"
+            ],
+            [
+              ".marca"
+            ],
+            [
+              "span:nth-child(2)"
+            ],
+            [
+              "strong"
+            ],
+            [
+              "#hPreparacion"
+            ],
+            [
+              "ol > li:nth-child(1)"
+            ],
+            [
+              "li:nth-child(2)"
+            ],
+            [
+              "aside > h2"
+            ],
+            [
+              "aside > .ayuda"
+            ],
+            [
+              ".enlace[href$=\"recipes\"]"
             ]
           ]
         }
@@ -219,104 +1356,679 @@
       "path": "/chat",
       "width": 1280,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "b"
+            ],
+            [
+              "small"
+            ],
+            [
+              "a[href$=\"dashboard\"]"
+            ],
+            [
+              "#chatTit"
+            ],
+            [
+              ".tit > p"
+            ],
+            [
+              "#chat-count"
+            ],
+            [
+              "#chatConectTxt"
+            ],
+            [
+              "#chat-status"
+            ],
+            [
+              "#chat-empty"
+            ],
+            [
+              "#chat-content"
+            ],
+            [
+              ".chat-ayuda"
+            ],
+            [
+              "#chatCont"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/dashboard",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".txt[aria-hidden=\"true\"] > b"
+            ],
+            [
+              ".txt[aria-hidden=\"true\"] > small"
+            ],
+            [
+              "#resTit"
+            ],
+            [
+              ".res-sub"
+            ],
+            [
+              ".kpi[href$=\"inventory\"] > span"
+            ],
+            [
+              "p[data-metric=\"total\"]"
+            ],
+            [
+              "a[href=\"/expiration?status=soon\"] > span"
+            ],
+            [
+              "p[data-metric=\"soon\"]"
+            ],
+            [
+              "a[href=\"/expiration?status=expired\"] > span"
+            ],
+            [
+              "p[data-metric=\"expired\"]"
+            ],
+            [
+              "a[href=\"/inventory?status=low\"] > span"
+            ],
+            [
+              "p[data-metric=\"low\"]"
+            ],
+            [
+              "#hAlertas"
+            ],
+            [
+              ".enlace[href$=\"expiration\"]"
+            ],
+            [
+              ".alerta-it > .txt > b"
+            ],
+            [
+              ".est"
+            ],
+            [
+              "section[aria-labelledby=\"hAlertas\"] > .res-nota"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/account",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              "div:nth-child(1) > dt"
+            ],
+            [
+              "div:nth-child(1) > dd"
+            ],
+            [
+              "div:nth-child(2) > dt"
+            ],
+            [
+              "div:nth-child(2) > dd"
+            ],
+            [
+              "button"
+            ],
+            [
+              ".enlace[href$=\"dashboard\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/team",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              "#hPersonas"
+            ],
+            [
+              "li:nth-child(1) > .nom > b"
+            ],
+            [
+              "li:nth-child(1) > .nom > span"
+            ],
+            [
+              "li:nth-child(2) > .nom > b"
+            ],
+            [
+              "li:nth-child(2) > .nom > span"
+            ],
+            [
+              "form > h2"
+            ],
+            [
+              "label[for=\"name\"]"
+            ],
+            [
+              "#name"
+            ],
+            [
+              "label[for=\"email\"]"
+            ],
+            [
+              "#email"
+            ],
+            [
+              "label[for=\"password\"]"
+            ],
+            [
+              "#password"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast",
+        "skip-link"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".ini-g"
+            ],
+            [
+              ".etq > span"
+            ],
+            [
+              "summary > .av"
+            ],
+            [
+              ".acciones > .btn-pri.btn[href$=\"new\"]"
+            ],
+            [
+              "#cerrarRefri"
+            ]
+          ]
+        },
+        {
+          "id": "skip-link",
+          "targets": [
+            [
+              ".salto"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory/new",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "label[for=\"name\"]"
+            ],
+            [
+              "#name"
+            ],
+            [
+              "label[for=\"categoryId\"]"
+            ],
+            [
+              "#categoryId"
+            ],
+            [
+              "label[for=\"quantity\"]"
+            ],
+            [
+              "#quantity"
+            ],
+            [
+              "label[for=\"unit\"]"
+            ],
+            [
+              "#unit"
+            ],
+            [
+              "label[for=\"minimumStock\"]"
+            ],
+            [
+              "#minimumStock"
+            ],
+            [
+              "label[for=\"receivedDate\"]"
+            ],
+            [
+              "#receivedDate"
+            ],
+            [
+              "label[for=\"expiresDate\"]"
+            ],
+            [
+              "#expiresDate"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory/:id",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "#ficha-titulo"
+            ],
+            [
+              "div:nth-child(1) > dt"
+            ],
+            [
+              "div:nth-child(1) > dd"
+            ],
+            [
+              "div:nth-child(2) > dt"
+            ],
+            [
+              "div:nth-child(2) > dd"
+            ],
+            [
+              "div:nth-child(3) > dt"
+            ],
+            [
+              "div:nth-child(3) > dd"
+            ],
+            [
+              "div:nth-child(4) > dt"
+            ],
+            [
+              "div:nth-child(4) > dd"
+            ],
+            [
+              "div:nth-child(5) > dt"
+            ],
+            [
+              "div:nth-child(5) > dd"
+            ],
+            [
+              ".btn-sec"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory/:id/edit",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "label[for=\"name\"]"
+            ],
+            [
+              "#name"
+            ],
+            [
+              "label[for=\"categoryId\"]"
+            ],
+            [
+              "#categoryId"
+            ],
+            [
+              "label[for=\"quantity\"]"
+            ],
+            [
+              "#quantity"
+            ],
+            [
+              "label[for=\"unit\"]"
+            ],
+            [
+              "#unit"
+            ],
+            [
+              "label[for=\"minimumStock\"]"
+            ],
+            [
+              "#minimumStock"
+            ],
+            [
+              "label[for=\"receivedDate\"]"
+            ],
+            [
+              "#receivedDate"
+            ],
+            [
+              "label[for=\"expiresDate\"]"
+            ],
+            [
+              "#expiresDate"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/inventory/:id/delete",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "label > span"
+            ],
+            [
+              ".btn-sec"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/categories",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "b"
+            ],
+            [
+              ".nom > span"
+            ],
+            [
+              ".peligro"
+            ],
+            [
+              "summary"
+            ],
+            [
+              "h2"
+            ],
+            [
+              "label[for=\"name\"]"
+            ],
+            [
+              "#name"
+            ],
+            [
+              ".cat-nueva > fieldset > legend"
+            ],
+            [
+              ".ficha-pie > .enlace[href$=\"inventory\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/categories/:id/delete",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "label > span"
+            ],
+            [
+              ".btn-sec"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/expiration",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".est-expired"
+            ],
+            [
+              "ul > .est-critical"
+            ],
+            [
+              ".est-warning"
+            ],
+            [
+              ".est-normal"
+            ],
+            [
+              "label[for=\"q\"]"
+            ],
+            [
+              "#q"
+            ],
+            [
+              "label[for=\"categoryId\"]"
+            ],
+            [
+              "#categoryId"
+            ],
+            [
+              "label[for=\"status\"]"
+            ],
+            [
+              "#status"
+            ],
+            [
+              "button"
+            ],
+            [
+              "a[href$=\"expiration\"]"
+            ],
+            [
+              "th[scope=\"col\"]:nth-child(1)"
+            ],
+            [
+              "th[scope=\"col\"]:nth-child(2)"
+            ],
+            [
+              "th[scope=\"col\"]:nth-child(3)"
+            ],
+            [
+              "th[scope=\"row\"] > .enlace"
+            ],
+            [
+              "td:nth-child(2)"
+            ],
+            [
+              ".nowrap:nth-child(3)"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
       "path": "/recipes",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "li > h2"
+            ],
+            [
+              "li > p"
+            ],
+            [
+              "li > .enlace"
+            ],
+            [
+              "nav > p"
+            ],
+            [
+              ".t-tarjeta"
+            ],
+            [
+              "aside > .ayuda"
+            ],
+            [
+              ".enlace[href$=\"dashboard\"]"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     },
     {
@@ -331,7 +2043,46 @@
           "id": "color-contrast",
           "targets": [
             [
-              ".ingredient-check"
+              ".etiqueta"
+            ],
+            [
+              "#ficha-titulo"
+            ],
+            [
+              ".ficha-sub"
+            ],
+            [
+              "#hIngredientes"
+            ],
+            [
+              "section[aria-labelledby=\"hIngredientes\"] > .ayuda"
+            ],
+            [
+              ".marca"
+            ],
+            [
+              "span:nth-child(2)"
+            ],
+            [
+              "strong"
+            ],
+            [
+              "#hPreparacion"
+            ],
+            [
+              "ol > li:nth-child(1)"
+            ],
+            [
+              "li:nth-child(2)"
+            ],
+            [
+              "aside > h2"
+            ],
+            [
+              "aside > .ayuda"
+            ],
+            [
+              ".enlace[href$=\"recipes\"]"
             ]
           ]
         }
@@ -342,8 +2093,52 @@
       "path": "/chat",
       "width": 320,
       "violations": 0,
-      "incomplete": [],
-      "incompleteDetails": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "incompleteDetails": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              "b"
+            ],
+            [
+              "small"
+            ],
+            [
+              "a[href$=\"dashboard\"]"
+            ],
+            [
+              "#chatTit"
+            ],
+            [
+              ".tit > p"
+            ],
+            [
+              "#chat-count"
+            ],
+            [
+              "#chatConectTxt"
+            ],
+            [
+              "#chat-status"
+            ],
+            [
+              "#chat-empty"
+            ],
+            [
+              "#chat-content"
+            ],
+            [
+              ".chat-ayuda"
+            ],
+            [
+              "#chatCont"
+            ]
+          ]
+        }
+      ],
       "overflow": false
     }
   ],
@@ -351,7 +2146,8 @@
   "functional": {
     "nativeLogin": true,
     "keyboardSkipLink": true,
-    "keyboardMobileMenu": true,
+    "keyboardAccountMenu": true,
+    "chatBubble": true,
     "twoDistinctUsers": true,
     "liveExchange": true,
     "persistedHistory": true,

@@ -25,7 +25,7 @@ De acuerdo con la guía académica oficial y [AGENTS.md](file:///d:/levantamient
 
 * **Arquitectura:** **Monolito en un único proceso Node.js 24 + Express 5.**
   * ❌ **PROHIBIDO:** No introducir React, Vue, Angular, arquitecturas SPA ni microservicios durante el primer bimestre.
-  * ✔️ **Frontend:** Server-Side Rendering (SSR) con plantillas **EJS**, HTML5 semántico, **Tailwind CSS v4** y JavaScript nativo para interacción en el navegador.
+  * ✔️ **Frontend:** Server-Side Rendering (SSR) con plantillas **EJS**, HTML5 semántico, CSS propio (sistema de diseño en `src/public/fwf/css`) y JavaScript nativo en módulos (`src/public/fwf/js`); la refri 3D usa Three.js r128 y las animaciones Motion, ambos servidos desde el mismo origen. Tailwind CSS v4 queda solo como compilación heredada (`/assets/styles.css`), sin uso en las vistas.
 * **Persistencia:** **MySQL 8.4** mediante **Prisma ORM 7.10.1** (usando el adaptador `@prisma/adapter-mariadb`).
 * **Sesiones de Usuario:** `express-session` con almacén persistente en MySQL (`PrismaSessionStore`). Las sesiones duran 8 horas, usan cookies `HttpOnly`, `SameSite=Lax` y `Secure` en HTTPS.
 * **Tiempo Real:** **Socket.IO 4** integrado en el mismo servidor HTTP, compartiendo la sesión de Express y validando tokens CSRF y origen.

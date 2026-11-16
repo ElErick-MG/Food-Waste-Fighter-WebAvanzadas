@@ -27,7 +27,8 @@ Socket.IO forman un único proyecto y proceso Node.js. MySQL se ejecuta como
 dependencia de base de datos en Docker Compose. El entorno de desarrollo es
 GitHub Codespaces; el equipo local solo requiere navegador.
 
-Stack: Node.js 24, Express 5, EJS, HTML5, Tailwind CSS, JavaScript, MySQL 8.4,
+Stack: Node.js 24, Express 5, EJS, HTML5, CSS propio con Three.js r128 y Motion
+(mismo origen), JavaScript, MySQL 8.4,
 Prisma 7.10.1, Socket.IO 4, express-session con almacén MySQL, Argon2id, Zod,
 Helmet, Vitest/Supertest y Playwright/axe para verificación.
 

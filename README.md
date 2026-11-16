@@ -4,8 +4,9 @@ Aplicación para una cafetería o restaurante pequeño: inventario de alimentos,
 alertas de caducidad, consulta de recetas y coordinación del personal mediante
 chat. Se utilizan datos ficticios y se separa la información de cada empresa.
 
-Se implementa un monolito con Node.js 24, Express 5, EJS, HTML5/Tailwind CSS,
-JavaScript, MySQL 8.4, Prisma 7.10.1 y Socket.IO 4. La seguridad utiliza Argon2id,
+Se implementa un monolito con Node.js 24, Express 5, EJS, HTML5, CSS propio (sistema
+de diseño en `src/public/fwf/`, con Three.js r128 y Motion servidos desde el mismo
+origen), JavaScript, MySQL 8.4, Prisma 7.10.1 y Socket.IO 4. La seguridad utiliza Argon2id,
 express-session persistente, Zod y Helmet. Se verifica con Vitest/Supertest y
 Playwright/axe.
 

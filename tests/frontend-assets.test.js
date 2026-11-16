@@ -22,7 +22,7 @@ describe('New front-end assets (stage 0)', () => {
     ['/assets/fwf/css/fwf-base.css', /text\/css/],
     ['/assets/fwf/refri/puertas.jpg', /image\/jpeg/],
     ['/assets/fwf/refri/interior-der.jpg', /image\/jpeg/],
-    ['/assets/fwf/img/cocina.png', /image\/png/],
+    ['/assets/fwf/img/cocina.webp', /image\/webp/],
     ['/assets/fwf/img/productos/leche.jpg', /image\/jpeg/],
   ])('serves %s from the same origin', async (path, type) => {
     const response = await request(app()).get(path);

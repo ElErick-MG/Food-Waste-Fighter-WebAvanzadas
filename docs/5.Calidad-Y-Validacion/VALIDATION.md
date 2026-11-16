@@ -30,7 +30,23 @@ permite seleccionar el binario. Las capturas y nuevos JSON se guardan en `work/`
 Los informes versionados en `evidence/` se conservan como referencia y no
 se sobrescriben automáticamente al ejecutar los comandos.
 
-## Cobertura y resultados disponibles
+## Resultados tras el rediseño del front-end (15 de noviembre de 2026)
+
+Ejecución local en Windows 11 con Microsoft Edge 157 (Chromium) mediante
+`BROWSER_EXECUTABLE_PATH`; no sustituye la verificación en Codespaces/Linux.
+
+| Comprobación | Resultado registrado |
+| --- | --- |
+| Pruebas independientes | **115 satisfactorias** (`npm test`), incluidas las del front: assets de mismo origen, vistas sin código en línea, datos de la refri y validación de imagen y color. |
+| Integración con MySQL separado | 57–58 de 59. Fallan solo en Windows: el apagado por SIGTERM (Windows no entrega la señal a Node) y, de forma intermitente, el conteo global de empresas en `auth.integration.test.js` cuando corre en paralelo con otros archivos (ese archivo solo pasa 21/21). `npm run test:db` no arranca en Windows porque llama a `npx` sin shell; se ejecutaron los mismos pasos con `shell: true`. |
+| Navegador y axe | **40 combinaciones** de 20 rutas a 1280×900 y 320×740: cero infracciones, sin overflow horizontal, errores JavaScript ni peticiones externas. |
+| Interacción en navegador | Login nativo, salto de teclado, menú de cuenta con teclado (sustituye al menú hamburguesa), dos usuarios, burbuja de chat, historial tras recarga, aislamiento y aviso de inventario sin navegación. |
+
+Evidencia regenerada: [browser-quality.json](evidence/browser-quality.json)
+(revisión `7348144` más los cambios de la etapa 7). Pendiente: repetir
+`npm run test:db` y `npm run verify:browser` en Codespaces sobre la revisión final.
+
+## Cobertura y resultados disponibles (registro anterior)
 
 Resultados registrados el 7 de noviembre de 2026:
 

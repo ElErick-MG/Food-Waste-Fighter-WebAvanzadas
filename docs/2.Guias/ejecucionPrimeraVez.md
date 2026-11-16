@@ -27,7 +27,7 @@ He analizado el contexto completo de tu proyecto a partir de la documentación t
 ### 1. Resumen del Contexto del Proyecto
 
 - **Propósito:** _Food Waste Fighter — Business Edition_ es un sistema web académico para cafeterías y pequeños restaurantes orientado a la reducción de desperdicio de alimentos mediante control de inventario, detección de caducidades, sugerencias de recetas basadas en existencias y coordinación del personal en tiempo real.
-- **Arquitectura:** Monolito en **Node.js 24 + Express 5** con vistas server-side en **EJS** y Tailwind CSS.
+- **Arquitectura:** Monolito en **Node.js 24 + Express 5** con vistas server-side en **EJS** y un sistema de diseño propio (CSS y módulos JS en `src/public/fwf/`, con Three.js y Motion locales).
 - **Persistencia y Datos:** **MySQL 8.4** mediante **Prisma ORM** (`@prisma/adapter-mariadb`). Las sesiones de usuario (`express-session`) se guardan directamente en MySQL (`PrismaSessionStore`).
 - **Tiempo Real:** **Socket.IO 4** integrado en el mismo proceso para el chat del equipo (sala _General_) y notificaciones automáticas de cambios de inventario sin recargar la página.
 - **Seguridad:** Hashing con **Argon2id**, protección CSRF vinculada a sesión, cabeceras seguras con Helmet, validación estricta con **Zod** y aislamiento estricto por empresa (_multi-tenant_ lógico).

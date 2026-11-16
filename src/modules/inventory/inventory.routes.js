@@ -16,7 +16,7 @@ export function inventoryRoutes({ database, config, expirationPage = false }) {
     const { total, items } = await service.list(req.user.companyId, filters, res.locals.today);
     const categories = await service.categories(req.user.companyId);
     const page = pagination(total, filters.page, expirationPage ? '/expiration' : '/inventory', { q: filters.q, categoryId: filters.categoryId, status: filters.status });
-    if (expirationPage) return res.render('inventory/list', { items, filters, categories, expirationPage, pagination: page });
+    if (expirationPage) return res.render('inventory/caducidad', { items, filters, categories, expirationPage, pagination: page });
     // /inventory is the open fridge (stage 4). The same filtered, paginated list stays in the
     // page as the accessible/no-JS "list view"; it opens on its own after a search or page change.
     const shelf = await service.shelf(req.user.companyId);

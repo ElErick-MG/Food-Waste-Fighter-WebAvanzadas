@@ -328,3 +328,49 @@ describe('Team chat: bubble and /chat page (stage 6)', () => {
     expectCspSafe(dashboard);
   });
 });
+
+describe('Recipes, expiration and error pages (stage 7)', () => {
+  const currentUser = { name: 'Ana Pérez', email: 'ana@tests.example', role: 'ADMIN', company: { name: 'Café Semilla' } };
+  const today = new Date('2026-11-15T00:00:00Z');
+  const pagination = { total: 1, page: 1, pages: 1, previous: null, next: null };
+
+  it('labels one critical day in singular', () => {
+    expect(expiration(new Date('2026-11-16T00:00:00Z'), today).label).toBe('Crítico: 1 día');
+    expect(expiration(new Date('2026-11-17T00:00:00Z'), today).label).toBe('Crítico: 2 días');
+  });
+
+  it('recipes list and detail keep their links and the ingredient availability hooks', async () => {
+    const list = await render('recipes/list', { currentUser, csrfToken, recipes: [{ id: 'r1', name: 'Sopa', description: 'Caliente' }], pagination });
+    expect(list).toContain('href="/recipes/r1"');
+    expect(list).toContain('1 registros');
+    expectCspSafe(list);
+    const detail = await render('recipes/detail', { currentUser, csrfToken, recipe: { name: 'Sopa', description: 'Caliente', preparation: 'Lavar.\nCocinar al vapor.' }, ingredients: [{ id: 'i1', name: 'Zanahoria', quantity: '1', unit: 'kg', available: true }, { id: 'i2', name: 'Sal', quantity: '0.01', unit: 'kg', available: false }] });
+    expect(detail).toContain('data-ingredient="i1" data-available="true"');
+    expect(detail).toContain('data-ingredient="i2" data-available="false"');
+    expect(detail).toContain('Cocinar al vapor.');
+    expectCspSafe(detail);
+  });
+
+  it('expiration keeps the filter form, data-item rows and the business date', async () => {
+    const html = await render('inventory/caducidad', {
+      currentUser, csrfToken, message: null, today, businessTimezone: 'America/Guayaquil', displayDate, expiration: date => expiration(date, today),
+      filters: { q: '', categoryId: '', status: 'soon', page: 1 }, categories: [], pagination,
+      items: [{ id: 'item-1', name: 'Leche', expiresDate: new Date('2026-11-16T00:00:00Z'), quantity: { lte: () => false, toString: () => '1' }, minimumStock: 0, unit: 'l', category: { name: 'Lácteos' } }],
+    });
+    expect(html).toContain('method="get" action="/expiration"');
+    expect(html).toContain('data-item="item-1"');
+    expect(html).toContain('Crítico: 1 día');
+    expect(html).toContain('<option value="soon" selected>');
+    expect(html).toContain('15/11/2026 (America/Guayaquil)');
+    expectCspSafe(html);
+  });
+
+  it('error page works without a session and shows the reference code', async () => {
+    const anonymous = await render('error', { title: 'Solicitud rechazada', message: 'El formulario caducó.', errorCode: 'FWF_FORM_TOKEN_CHANGED' });
+    expect(anonymous).toContain('Referencia: FWF_FORM_TOKEN_CHANGED');
+    expect(anonymous).toContain('href="/"');
+    expect(anonymous).not.toContain('Ir al resumen');
+    expectCspSafe(anonymous);
+    expect(await render('error', { title: 'Página no encontrada', message: 'No existe.', currentUser, csrfToken })).toContain('href="/dashboard"');
+  });
+});

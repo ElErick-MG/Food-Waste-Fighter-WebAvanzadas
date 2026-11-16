@@ -12,7 +12,7 @@ export const addDays = (date, days) => new Date(date.getTime() + days * DAY);
 export function expiration(date, today) {
   const days = Math.round((date.getTime() - today.getTime()) / DAY);
   if (days < 0) return { code: 'expired', label: 'Caducado', days, classes: 'bg-red-100 text-red-800 border-red-500' };
-  if (days <= 2) return { code: 'critical', label: days === 0 ? 'Crítico: caduca hoy' : `Crítico: ${days} días`, days, classes: 'bg-red-50 text-red-700 border-red-500' };
+  if (days <= 2) return { code: 'critical', label: days === 0 ? 'Crítico: caduca hoy' : `Crítico: ${days} ${days === 1 ? 'día' : 'días'}`, days, classes: 'bg-red-50 text-red-700 border-red-500' };
   if (days <= 5) return { code: 'warning', label: `Advertencia: ${days} días`, days, classes: 'bg-yellow-50 text-yellow-800 border-yellow-500' };
   return { code: 'normal', label: 'Normal (6+ días)', days, classes: 'bg-white text-gray-700 border-gray-300' };
 }

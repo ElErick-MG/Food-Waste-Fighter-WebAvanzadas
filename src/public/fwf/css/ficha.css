@@ -97,6 +97,29 @@
 .eq-form .btn { width: 100%; margin-top: var(--s3); }
 .eq-form .ayuda { margin-top: var(--s2); }
 
+/* ---------- Caducidad y recetas ---------- */
+.leyenda { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); padding: var(--s3) var(--s4); border-radius: var(--r-ctl); background: rgba(255, 255, 255, .6); border: 1px solid rgba(255, 255, 255, .8); }
+.ficha-consejo { margin-top: var(--s3); padding: var(--s4) var(--s5); border-radius: var(--r-ctl); background: rgba(17, 128, 62, .07); border: 1px solid rgba(17, 128, 62, .2); display: flex; flex-direction: column; gap: var(--s1); }
+.ficha .lista-filtros { margin-top: var(--s2); }
+.recetas-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s3); margin-top: var(--s2); }
+.receta { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s2); padding: var(--s4); border-radius: var(--r-ctl); background: rgba(255, 255, 255, .7); border: 1px solid rgba(255, 255, 255, .85); box-shadow: var(--e1); transition: background var(--t1), border-color var(--t1); }
+.receta h2 { font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
+.receta p { font-size: 13px; line-height: 1.5; color: var(--gris); overflow-wrap: anywhere; flex: 1; }
+.receta h2, .receta p, .receta .enlace { transition: color var(--t1); }
+.receta:hover, .receta:focus-within { background: var(--tinta); border-color: var(--tinta); }
+.receta:hover h2, .receta:focus-within h2 { color: #fff; }
+.receta:hover p, .receta:focus-within p { color: rgba(255, 255, 255, .78); }
+.receta:hover .enlace, .receta:focus-within .enlace { color: #8EDBA8; }
+.receta .enlace:focus-visible { outline-color: #8EDBA8; }
+.rec-bloque { display: flex; flex-direction: column; gap: var(--s2); padding-top: var(--s3); border-top: 1px solid var(--borde); }
+.ingredientes { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.ingrediente { display: flex; align-items: flex-start; gap: var(--s3); padding: var(--s2) var(--s3); border-radius: var(--r-ctl); background: rgba(255, 255, 255, .66); font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.ingrediente .marca { flex: none; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; background: var(--neutro); color: var(--gris); }
+.ingrediente.disponible .marca { background: var(--acento); color: #fff; }
+.pasos { list-style: none; counter-reset: paso; display: flex; flex-direction: column; gap: var(--s3); }
+.pasos li { counter-increment: paso; display: flex; gap: var(--s3); font-size: 14px; line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere; }
+.pasos li::before { content: counter(paso); flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--tinta); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
 @media (max-width: 640px) {
   .eq-grid { grid-template-columns: 1fr; }
 }

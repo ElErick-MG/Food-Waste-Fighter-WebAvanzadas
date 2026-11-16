@@ -6,7 +6,7 @@
 | --- | --- |
 | Alcance | Primer bimestre: monolito Node.js/Express/EJS, MySQL y Socket.IO. |
 | Funcionalidad | Autenticación, recuperación, roles/equipo, inventario, dashboard, recetas, caducidad, chat y avisos por empresa implementados. |
-| Calidad | 106 pruebas registradas, 40 escaneos de navegador y medición reproducible de consultas; alcance y resultados en [VALIDATION.md](../5.Calidad-Y-Validacion/VALIDATION.md). |
+| Calidad | Tras el rediseño: 115 pruebas independientes, integración MySQL 58/59 en Windows (pendiente Codespaces) y 40 escaneos de navegador sin incidencias; medición reproducible de consultas; alcance y resultados en [VALIDATION.md](../5.Calidad-Y-Validacion/VALIDATION.md). |
 | Documentación | Consolidada y cotejada con la guía oficial; enlaces, once modelos del ER y rúbrica de 11 criterios verificados. |
 | Rúbrica | Pesos y máximos oficiales completos: 100 % y 20 puntos. Evidencias y pendientes en [COMPLIANCE_MATRIX.md](../6.Evaluacion-Y-Entrega/COMPLIANCE_MATRIX.md). |
 | Entrega | Preparación técnica/documental disponible; cierre académico pendiente. |
@@ -37,7 +37,7 @@ origen, los formularios POST con CSRF y las pruebas existentes.
 | 4 · Refri | `/inventory` como refri abierta: estantes, detalle y formularios reales. | DONE |
 | 5 · Gestión | Categorías con color, equipo y cuenta. | DONE |
 | 6 · Chat | Burbuja conectada a Socket.IO con los contratos existentes. | DONE |
-| 7 · Cierre | Recetas, caducidad y errores; accesibilidad, rendimiento y documentación. | PENDIENTE |
+| 7 · Cierre | Recetas, caducidad y errores; accesibilidad, rendimiento y documentación. | DONE |
 
 Decisiones: la imagen de producto es una URL HTTPS opcional, por lo que la etapa 2
 ampliará únicamente `img-src` con `https:`; scripts, estilos y fuentes siguen en
@@ -268,3 +268,41 @@ backend (kg, g, l, ml, unidad).
   sin incidencias y todas las comprobaciones funcionales, incluida la burbuja. Revisión
   visual: burbuja y envío en el Resumen y la refri, `/chat` en 1280 y 320 px, no
   leídos y vista previa (simulando un mensaje ajeno) y ventana en móvil.
+
+### Etapa 7 — registro
+
+- Recetas (`/recipes`, `/recipes/:id`), caducidad (`/expiration`) y páginas de error
+  pasan a tarjetas de vidrio sobre la cocina, con los mismos datos, filtros,
+  paginación, `data-item`, `data-ingredient`/`data-available` y textos. La página de
+  error no depende de la sesión (sirve también para el 404 de la portada) y muestra la
+  referencia `FWF_*` cuando existe.
+- `/expiration` usa la vista nueva `inventory/caducidad.ejs`. Se retiran las vistas que
+  ya nadie usaba: `inventory/list.ejs` y los parciales `head`, `navigation`, `logo` y
+  `pagination`. `/assets/styles.css` (Tailwind) se sigue compilando y sirviendo porque
+  `tests/database.integration.test.js` lo comprueba, pero ninguna vista lo carga.
+- Texto: "Crítico: 1 días" pasa a "Crítico: 1 día" en `expiration.js` (solo la
+  etiqueta; umbrales y códigos sin cambios).
+- Rendimiento: `cocina.png` (1,7 MB) se sustituye por `cocina.webp` (63 KB, mismas
+  dimensiones y sin transparencia), y `lechuga.jpg` (249 → 155 KB) y `leche.jpg`
+  (124 → 93 KB) se recomprimen. Se hizo con el Edge instalado (canvas) sin añadir
+  dependencias. Las texturas de la refri ya eran ligeras (30–118 KB).
+- Estilos de tabla y filtros compartidos entre la refri y caducidad, movidos a
+  `fwf-app.css`.
+- Documentación: stack del front actualizado en README, `contextoProyecto.md`,
+  `ejecucionPrimeraVez.md` y `PROJECT_SPEC.md`. Nuevos resultados en `VALIDATION.md`
+  (se conserva el registro anterior), y evidencia de navegador regenerada en
+  `docs/5.Calidad-Y-Validacion/evidence/browser-quality.json`.
+- Pruebas: cuatro nuevas en `tests/frontend-pages.test.js` (etiqueta en singular,
+  recetas, caducidad y página de error con y sin sesión).
+- Verificación: `npm test` 115/115. Integración con MySQL de pruebas: 58/59 (solo
+  SIGTERM, propio de Windows). `verify:browser` con Edge: PASS, 40 escaneos axe sin
+  incidencias y todas las comprobaciones funcionales. Revisión visual de caducidad,
+  detalle de receta y 404.
+
+### Cierre del rediseño
+
+Las siete etapas están completas: todas las vistas usan el diseño nuevo con la CSP
+de mismo origen (solo `img-src` admite `https:` para las imágenes de producto),
+formularios POST con CSRF y la lógica de negocio original. Pendiente antes de la
+entrega: repetir `npm run test:db` y `npm run verify:browser` en Codespaces sobre la
+revisión final, y los puntos académicos de "Pendientes de cierre".

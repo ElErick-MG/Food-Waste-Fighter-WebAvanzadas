@@ -1,0 +1,42 @@
+<%- include('../partials/fwf-ficha-inicio', { title: 'Productos por Caducar', volver: '/dashboard', ancho: true }) %>
+    <p class="etiqueta ficha-marca">Tu refri</p>
+    <h1 id="ficha-titulo" class="t-modal">Productos por Caducar</h1>
+    <ul class="leyenda" aria-label="Leyenda de estados">
+      <li class="est est-expired"><i class="pc" aria-hidden="true"></i>Caducado: antes de hoy</li>
+      <li class="est est-critical"><i class="pc" aria-hidden="true"></i>Crítico: hoy–2 días</li>
+      <li class="est est-warning"><i class="pc" aria-hidden="true"></i>Advertencia: 3–5 días</li>
+      <li class="est est-normal"><i class="pc" aria-hidden="true"></i>Normal: 6+ días</li>
+    </ul>
+    <%- include('../partials/notice') %>
+    <form method="get" action="/expiration" class="lista-filtros">
+      <div class="campo"><label for="q">Buscar por nombre o categoría</label><input id="q" name="q" value="<%= filters.q %>" maxlength="80"></div>
+      <div class="campo"><label for="categoryId">Categoría</label><select id="categoryId" name="categoryId"><option value="">Todas</option><% for (const category of categories) { %><option value="<%= category.id %>" <%= filters.categoryId === category.id ? 'selected' : '' %>><%= category.name %></option><% } %></select></div>
+      <div class="campo"><label for="status">Estado</label><select id="status" name="status"><% for (const [value, label] of [['', 'Todos'], ['soon', 'Próximos (0–5 días)'], ['expired', 'Caducados'], ['critical', 'Críticos (0–2 días)'], ['warning', 'Advertencia (3–5 días)'], ['normal', 'Normal (6+ días)'], ['low', 'Stock bajo']]) { %><option value="<%= value %>" <%= filters.status === value ? 'selected' : '' %>><%= label %></option><% } %></select></div>
+      <div class="lista-botones"><button type="submit" class="btn btn-tinta">Buscar</button><a class="enlace" href="/expiration">Limpiar</a></div>
+    </form>
+    <% if (!items.length) { %>
+    <div class="lista-vacia"><h2 class="t-tarjeta">No hay productos en esta página</h2><p class="ayuda">Añade productos o ajusta los filtros de búsqueda.</p><% if (pagination.page > 1) { %><a class="enlace" href="/expiration">Volver a la primera página</a><% } %></div>
+    <% } else { %>
+    <div class="tabla-envoltura" role="region" aria-label="Tabla de productos por caducar" tabindex="0">
+      <table>
+        <caption class="sr-only">Productos de tu empresa, ordenados por fecha de caducidad</caption>
+        <thead><tr><% for (const label of ['Producto', 'Categoría', 'Fecha Caducidad', 'Cantidad', 'Estado', 'Acciones']) { %><th scope="col"><%= label %></th><% } %></tr></thead>
+        <tbody>
+          <% for (const item of items) { const state = expiration(item.expiresDate); %>
+          <tr data-item="<%= item.id %>">
+            <th scope="row"><a class="enlace" href="/inventory/<%= item.id %>"><%= item.name %></a></th>
+            <td><%= item.category.name %></td>
+            <td class="nowrap"><%= displayDate(item.expiresDate) %></td>
+            <td class="nowrap"><%= item.quantity %> <%= item.unit %></td>
+            <td><span class="est est-<%= state.code %>"><i class="pc" aria-hidden="true"></i><%= state.label %></span><% if (item.quantity.lte(item.minimumStock)) { %><span class="est est-bajo">Stock bajo</span><% } %></td>
+            <td><div class="fila-acc"><a class="enlace" href="/inventory/<%= item.id %>/edit">Editar<span class="sr-only"> <%= item.name %></span></a><% if (currentUser.role === 'ADMIN') { %><a class="enlace peligro" href="/inventory/<%= item.id %>/delete">Eliminar<span class="sr-only"> <%= item.name %></span></a><% } %></div></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+    <% } %>
+    <%- include('../partials/fwf-paginacion') %>
+    <aside class="ficha-consejo"><h2 class="t-tarjeta">Consejo</h2><p class="ayuda">Retira los productos caducados y prioriza los críticos y las advertencias. Fecha del negocio: <%= displayDate(today) %> (<%= businessTimezone %>).</p></aside>
+    <p class="ficha-pie"><a class="enlace" href="/inventory">Ver la refri</a> · <a class="enlace" href="/dashboard">Volver al resumen</a></p>
+<%- include('../partials/fwf-ficha-fin') %>
