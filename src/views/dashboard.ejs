@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" class="fwf-raiz">
-<head><%- include('partials/fwf-head', { title: 'Resumen', estilos: ['fwf-app', 'resumen'], modulos: ['resumen'] }) %></head>
+<head><%- include('partials/fwf-head', { title: 'Resumen', estilos: ['fwf-app', 'resumen', 'chat'], modulos: ['resumen', 'chat'] }) %></head>
 <body class="fwf"<% if (typeof transicion !== 'undefined' && transicion) { %> data-transicion<% } %>>
 <%# Fondo: la cocina (se descubre con tinta al llegar desde la portada) y la refri cerrada en su nicho. %>
 <div id="escena" aria-hidden="true">
@@ -77,5 +77,6 @@
 </main>
 
 <div id="inventory-live" class="aviso-vivo hidden" role="status" aria-live="polite"><span id="inventory-live-text"></span> <a class="enlace" href="/inventory">Ver inventario</a></div>
+<%- include('partials/fwf-chat') %>
 </body>
 </html>

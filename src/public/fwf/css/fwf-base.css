@@ -55,8 +55,9 @@
 /* ---------- Base ---------- */
 .fwf, .fwf *, .fwf *::before, .fwf *::after { box-sizing: border-box; margin: 0; padding: 0; }
 .fwf { font-family: var(--fuente); color: var(--tinta); background: var(--crema); -webkit-font-smoothing: antialiased; }
-.fwf a, .fwf button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-decoration: none; }
-.fwf input, .fwf select, .fwf textarea { font: inherit; color: inherit; }
+/* Reinicios sin especificidad (:where) para que cualquier clase de componente los sobrescriba. */
+:where(.fwf) :where(a, button) { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-decoration: none; }
+:where(.fwf) :where(input, select, textarea) { font: inherit; color: inherit; }
 .fwf svg { flex: none; }
 .fwf :focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
 .fwf ::selection { background: var(--neutro); color: var(--tinta); }

@@ -88,11 +88,13 @@ try {
     await admin.keyboard.press('Tab');
     assert.equal(await admin.evaluate(() => document.activeElement.getAttribute('href')), '#main-content');
     if (width === 320) {
-      await admin.locator('#mobile-menu-btn').focus();
+      // Front-end redesign (stage 6): the account menu (details/summary) replaces the
+      // old hamburger #mobile-menu-btn; it must still open and close from the keyboard.
+      await admin.locator('.cuenta > summary').focus();
       await admin.keyboard.press('Enter');
-      assert.equal(await admin.locator('#mobile-menu-btn').getAttribute('aria-expanded'), 'true');
+      assert.equal(await admin.locator('.cuenta').evaluate(node => node.open), true);
       await admin.keyboard.press('Enter');
-      assert.equal(await admin.locator('#mobile-menu-btn').getAttribute('aria-expanded'), 'false');
+      assert.equal(await admin.locator('.cuenta').evaluate(node => node.open), false);
     }
     await admin.screenshot({ path: `work/quality-chat-${width}.png`, fullPage: true });
   }
@@ -122,11 +124,22 @@ try {
   assert.equal(employee.url(), before);
   assert.match(await employee.locator('#inventory-live-text').textContent(), /Acelga de revisión.*próximo a caducar/);
   assert.equal(await foreign.locator('#inventory-live').isVisible(), false);
-  const brandColor = await employee.locator('nav a[href="/dashboard"]').first().evaluate(node => getComputedStyle(node).color);
-  assert.equal(brandColor, 'rgb(22, 163, 74)');
+  // Front-end redesign (stage 6): the floating chat bubble on the summary uses the same
+  // Socket.IO client; a message sent from it reaches the other person's /chat page.
+  await admin.goto(origin + '/dashboard');
+  await admin.locator('#chatBurbuja').click();
+  await admin.waitForFunction(() => document.querySelector('#chat-status').textContent === 'Conectado al chat del equipo');
+  const bubbleMessage = `Desde la burbuja ${randomUUID()}`;
+  await admin.locator('#chat-content').fill(bubbleMessage);
+  await admin.locator('#chat-content').press('Enter');
+  await employee.getByText(bubbleMessage, { exact: true }).waitFor();
+  assert.equal(await foreign.getByText(bubbleMessage, { exact: true }).count(), 0);
+  // The brand accent of the new design (was the old navigation green rgb(22, 163, 74)).
+  const brandColor = await employee.locator('#chat-send').evaluate(node => getComputedStyle(node).backgroundColor);
+  assert.equal(brandColor, 'rgb(17, 128, 62)');
   const report = {
     measuredAt: new Date().toISOString(), sourceRevision: process.env.VERIFICATION_REVISION || 'working-tree', browser: browser.version(), brandColor,
-    scans, issues, functional: { nativeLogin: true, keyboardSkipLink: true, keyboardMobileMenu: true, twoDistinctUsers: true, liveExchange: true, persistedHistory: true, companyIsolation: true, notificationWithoutReload: true, websocketObserved: sockets.length > 0 },
+    scans, issues, functional: { nativeLogin: true, keyboardSkipLink: true, keyboardAccountMenu: true, chatBubble: true, twoDistinctUsers: true, liveExchange: true, persistedHistory: true, companyIsolation: true, notificationWithoutReload: true, websocketObserved: sockets.length > 0 },
     errors, externalOrigins: [...new Set(external)], limitations: ['Automated axe WCAG A/AA and best-practice checks plus targeted manual/keyboard behavior are not complete WCAG certification.', 'Local HTTP and isolated MySQL; actual Codespaces traffic is not captured by this command. Incomplete axe checks require human review.'],
   };
   await writeFile('work/browser-quality.json', JSON.stringify(report, null, 2) + '\n');

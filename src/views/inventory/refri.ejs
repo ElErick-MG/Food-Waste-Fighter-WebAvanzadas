@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" class="fwf-raiz">
 <head>
-<%- include('../partials/fwf-head', { title: 'Mi Inventario', estilos: ['fwf-app', 'refri'], modulos: ['refri'] }) %>
+<%- include('../partials/fwf-head', { title: 'Mi Inventario', estilos: ['fwf-app', 'refri', 'chat'], modulos: ['refri', 'chat'] }) %>
 <noscript><link rel="stylesheet" href="/assets/fwf/css/refri-sin-js.css"></noscript>
 </head>
 <body class="fwf"<% if (listaAbierta) { %> data-lista<% } %>>
@@ -90,6 +90,7 @@
 </main>
 
 <div id="inventory-live" class="aviso-vivo hidden" role="status" aria-live="polite"><span id="inventory-live-text"></span> <a class="enlace" href="/inventory">Actualizar la refri</a></div>
+<%- include('../partials/fwf-chat') %>
 <script type="application/json" id="datos-refri"><%- refri %></script>
 </body>
 </html>

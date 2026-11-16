@@ -295,3 +295,36 @@ describe('Categories, team and account (stage 5)', async () => {
     expect(remove).toContain('name="confirm" value="yes" required');
   });
 });
+
+describe('Team chat: bubble and /chat page (stage 6)', () => {
+  const currentUser = { name: 'Ana Pérez', email: 'ana@tests.example', role: 'ADMIN', company: { name: 'Café Semilla' } };
+  const ids = ['chat-status', 'chat-form', 'chat-content', 'chat-send', 'chat-messages', 'chat-older', 'chat-error', 'chat-empty', 'chat-count', 'chat-users'];
+  const message = { id: 'm1', createdAt: '2026-11-15T15:00:00.000Z', content: '<b>Usar</b> la leche hoy', sender: { id: 'u2', name: 'Luis' } };
+
+  it('/chat keeps every element realtime.js drives, the server room and the history', async () => {
+    const html = await render('chat/index', { currentUser, csrfToken, currentPath: '/chat', businessTimezone: 'America/Guayaquil', room: { id: 'room-1', name: 'General' }, history: { messages: [message], hasMore: true } });
+    for (const id of ids) expect(html).toContain(`id="${id}"`);
+    expect(html).toContain('data-chat-room="room-1"');
+    expect(html).toContain('data-message-id="m1"');
+    expect(html).toContain('data-sender-id="u2"');
+    expect(html).toContain('&lt;b&gt;Usar&lt;/b&gt; la leche hoy');
+    expect(html).toContain('href="#main-content"');
+    expect(html).toContain('/assets/realtime.js');
+    expect(html).toContain('/assets/fwf/js/chat.js');
+    expect(html).not.toContain('id="chatBurbuja"');
+    expectCspSafe(html);
+  });
+
+  it('the summary and the fridge carry the floating bubble with an empty room (from chat:ready)', async () => {
+    const today = new Date('2026-11-15T00:00:00Z');
+    const dashboard = await render('dashboard', {
+      csrfToken, currentPath: '/dashboard', message: null, today, businessTimezone: 'America/Guayaquil', displayDate, expiration: date => expiration(date, today),
+      currentUser, metrics: { total: 0, soon: 0, expired: 0, low: 0 }, alerts: [], suggested: [],
+    });
+    expect(dashboard).toContain('id="chatBurbuja"');
+    expect(dashboard).toContain('data-chat-room=""');
+    expect(dashboard.match(/data-chat-room=/g)).toHaveLength(1);   // realtime.js uses the first one
+    for (const id of ids) expect(dashboard).toContain(`id="${id}"`);
+    expectCspSafe(dashboard);
+  });
+});

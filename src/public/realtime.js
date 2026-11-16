@@ -11,7 +11,9 @@
   const messages = document.getElementById('chat-messages');
   const older = document.getElementById('chat-older');
   const error = document.getElementById('chat-error');
-  const roomId = chat?.dataset.chatRoom;
+  // The chat bubble (front-end redesign) has no room in its markup: it adopts the
+  // company room announced by the server in chat:ready. /chat keeps its own check.
+  let roomId = chat?.dataset.chatRoom || null;
   let ready = false;
   let sending = false;
   let syncing = null;
@@ -30,6 +32,7 @@
       const li = document.createElement('li');
       li.dataset.messageId = message.id;
       li.dataset.createdAt = message.createdAt;
+      li.dataset.senderId = message.sender.id;
       li.className = 'bg-gray-50 p-3 rounded-lg break-words';
       const heading = document.createElement('p');
       heading.className = 'font-semibold';
@@ -68,7 +71,10 @@
   socket.on('connect', () => { if (status) status.textContent = 'Conectado. Sincronizando conversación…'; });
   socket.on('chat:ready', data => {
     if (!chat) return;
-    if (data.roomId !== roomId) { socket.disconnect(); return; }
+    if (roomId && data.roomId !== roomId) { socket.disconnect(); return; }
+    roomId = data.roomId;
+    chat.dataset.chatRoom = roomId;
+    chat.dataset.me = data.userId;
     ready = true;
     syncing = [];
     controls();

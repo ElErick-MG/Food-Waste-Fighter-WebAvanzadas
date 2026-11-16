@@ -36,7 +36,7 @@ origen, los formularios POST con CSRF y las pruebas existentes.
 | 3 · Resumen | `/dashboard` con la refri cerrada y datos reales. | DONE |
 | 4 · Refri | `/inventory` como refri abierta: estantes, detalle y formularios reales. | DONE |
 | 5 · Gestión | Categorías con color, equipo y cuenta. | DONE |
-| 6 · Chat | Burbuja conectada a Socket.IO con los contratos existentes. | PENDIENTE |
+| 6 · Chat | Burbuja conectada a Socket.IO con los contratos existentes. | DONE |
 | 7 · Cierre | Recetas, caducidad y errores; accesibilidad, rendimiento y documentación. | PENDIENTE |
 
 Decisiones: la imagen de producto es una URL HTTPS opcional, por lo que la etapa 2
@@ -226,3 +226,45 @@ backend (kg, g, l, ml, unidad).
   paralelo). `verify:browser` con Edge: PASS, 40 escaneos axe sin incidencias.
   Revisión visual con datos ficticios: categorías, cambio de color real con su
   aviso, equipo y cuenta.
+
+### Etapa 6 — registro
+
+- Burbuja de chat en el Resumen y en la refri: botón flotante con contador de no
+  leídos y globo de vista previa; la ventana de vidrio se abre con la animación del
+  diseño (pantalla completa en móvil), Escape la cierra. `/chat` es la misma ventana
+  a pantalla completa con la sala y el historial del servidor, el menú de cuenta y un
+  enlace de salto al contenido.
+- Mismo cliente y mismos contratos: `/assets/realtime.js` sigue siendo el único cliente
+  de Socket.IO (`chat:ready`, `chat:history`, `chat:send`, `chat:message`,
+  `chat:presence`, `inventory:changed`) y mueve la burbuja con los mismos ids. El
+  servidor no cambia. Cambios mínimos en `realtime.js`: fuera de `/chat` la sala se
+  toma de `chat:ready` (en `/chat` se sigue comprobando), cada mensaje lleva
+  `data-sender-id` y se guarda el id propio (`data-me`, también de `chat:ready`).
+- `fwf/js/chat.js` solo decora: mensajes propios a la derecha, avatares de presencia,
+  no leídos (ignora el historial inicial y las reconexiones), vista previa, Enter para
+  enviar, altura automática y contador de caracteres. `partials/fwf-chat.ejs` y
+  `css/chat.css`.
+- Corrección general de estilos: los reinicios `.fwf a, .fwf button` e
+  `input/select/textarea` de `fwf-base.css` pasan a `:where(...)`, porque eran más
+  específicos que las clases de componente y quitaban fondos (botón de enviar,
+  indicadores del Resumen, "+" de los estantes, tarjetas de producto, enlace de
+  salto). Los contenedores `.chat-capa` y `.ficha-capa` limitan su columna
+  (`minmax(0, 1fr)`) para no desbordar en 320 px.
+- `scripts/verify-browser.js`, cambio consciente:
+  - El menú hamburguesa `#mobile-menu-btn` ya no existe. En su lugar se prueba con
+    el teclado el menú de cuenta (`details/summary`), y el informe registra
+    `keyboardAccountMenu` en vez de `keyboardMobileMenu`.
+  - Se añade un envío desde la burbuja del Resumen que debe llegar a la otra persona
+    y no a otra empresa (`chatBubble`).
+  - El color de marca pasa del verde de la navegación anterior, `rgb(22, 163, 74)`,
+    al acento nuevo, `rgb(17, 128, 62)`, en el botón de enviar.
+  - La evidencia guardada en
+    `docs/5.Calidad-Y-Validacion/evidence/browser-quality.json` es de la ejecución
+    anterior; se regenerará en la etapa 7.
+- Pruebas: dos nuevas en `tests/frontend-pages.test.js` (ids que usa `realtime.js`,
+  sala e historial de `/chat`, escape del contenido y burbuja con sala vacía).
+- Verificación: `npm test` 111/111. Integración con MySQL de pruebas: 57/59, con los
+  dos fallos conocidos de Windows. `verify:browser` con Edge: PASS, 40 escaneos axe
+  sin incidencias y todas las comprobaciones funcionales, incluida la burbuja. Revisión
+  visual: burbuja y envío en el Resumen y la refri, `/chat` en 1280 y 320 px, no
+  leídos y vista previa (simulando un mensaje ajeno) y ventana en móvil.
