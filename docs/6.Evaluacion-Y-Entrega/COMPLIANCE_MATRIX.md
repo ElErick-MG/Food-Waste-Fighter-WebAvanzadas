@@ -15,7 +15,7 @@ se indican evidencias disponibles y pendientes, no calificaciones obtenidas.
 | Pantalla principal con operaciones CRUD | 15 % | 3,0 | Dashboard; alta, búsqueda/categoría, ID, edición, borrado confirmado y paginación. `tests/business.integration.test.js`. |
 | Chat que use WebSockets | 12,5 % | 2,5 | Socket.IO propio, autenticación, dos usuarios, historial, presencia y aviso adicional. `tests/chat.integration.test.js` y verificación de navegador. |
 | Guarda datos en una base de datos (relacional o NoSQL) | 7,5 % | 1,5 | MySQL/Prisma, esquema y ER, claves compuestas e índices. [TECHNICAL_REFERENCE.md](../4.Arquitectura/TECHNICAL_REFERENCE.md) y `tests/database.integration.test.js`. |
-| Calidad: pruebas, README y rendimiento | 7,5 % | 1,5 | 106 pruebas registradas, ejecución y .env.example; medición de consultas y 40 escaneos. [VALIDATION.md](../5.Calidad-Y-Validacion/VALIDATION.md). |
+| Calidad: pruebas, README y rendimiento | 7,5 % | 1,5 | 115 pruebas independientes registradas (más 58 de integración en MySQL), ejecución y .env.example; medición de consultas y 40 escaneos axe sin incidencias. [VALIDATION.md](../5.Calidad-Y-Validacion/VALIDATION.md). |
 | Link de repositorio público con commits de todos los integrantes | 5 % | 1,0 | Repositorio público en README. Pendientes: aportes/commits reales de todos y etiqueta v1.0-b1; no se publican secretos ni datos personales reales. |
 | Presentación en grupo, defensa y evidencias subidas a la plataforma | 15 % | 3,0 | [DELIVERY.md](DELIVERY.md): contenido, demo y participación. Pendientes: exposición de todos, respuestas individuales, presentación y entrega de evidencias. |
 | **Total** | **100 %** | **20,0** | La evaluación corresponde al docente. |

@@ -1,254 +1,150 @@
-Analyzed PROGRESS.md:L1-22
-Analyzed PROJECT_SPEC.md:L1-80
-Analyzed TECHNICAL_REFERENCE.md:L1-257
-Analyzed package.json:L1-52
-Analyzed README.md:L1-128
-Analyzing docker-compose.yml:L1
-Analyzed .env.example:L1-23
-Ran list files in root directory
-Analyzed compose.yaml:L1-38
-Analyzed setup-env.js:L1-30
-Analyzed devcontainer.json:L1-18
-Ran check if .env exists
-Ran list scripts directory
-Ran list prisma directory
-Analyzed seed.js:L1-50
-Ran list auth module files
-Analyzed reset-mail.js:L1-9
-Ran check Node and Docker versions
-Ran check if Docker daemon is running · Exited with code 1
-Ran check if node_modules exists
-Analyzed VALIDATION.md:L1-111
+# Guía de Inicialización y Primera Ejecución
 
-He analizado el contexto completo de tu proyecto a partir de la documentación técnica ([PROJECT_SPEC.md](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/docs/PROJECT_SPEC.md), [TECHNICAL_REFERENCE.md](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/docs/TECHNICAL_REFERENCE.md), [README.md](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/README.md) y [PROGRESS.md](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/PROGRESS.md)).
+Esta guía detalla los pasos para configurar, inicializar y probar *Food Waste Fighter — Business Edition* en tu entorno local (Windows) o en GitHub Codespaces, incluyendo la arquitectura del nuevo front-end.
 
 ---
 
-### 1. Resumen del Contexto del Proyecto
+## 1. Resumen del Contexto del Proyecto
 
-- **Propósito:** _Food Waste Fighter — Business Edition_ es un sistema web académico para cafeterías y pequeños restaurantes orientado a la reducción de desperdicio de alimentos mediante control de inventario, detección de caducidades, sugerencias de recetas basadas en existencias y coordinación del personal en tiempo real.
-- **Arquitectura:** Monolito en **Node.js 24 + Express 5** con vistas server-side en **EJS** y un sistema de diseño propio (CSS y módulos JS en `src/public/fwf/`, con Three.js y Motion locales).
-- **Persistencia y Datos:** **MySQL 8.4** mediante **Prisma ORM** (`@prisma/adapter-mariadb`). Las sesiones de usuario (`express-session`) se guardan directamente en MySQL (`PrismaSessionStore`).
-- **Tiempo Real:** **Socket.IO 4** integrado en el mismo proceso para el chat del equipo (sala _General_) y notificaciones automáticas de cambios de inventario sin recargar la página.
-- **Seguridad:** Hashing con **Argon2id**, protección CSRF vinculada a sesión, cabeceras seguras con Helmet, validación estricta con **Zod** y aislamiento estricto por empresa (_multi-tenant_ lógico).
-- **Entorno principal:** Diseñado para **GitHub Codespaces** o desarrollo local con contenedores Docker para la base de datos ([compose.yaml](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/compose.yaml)).
-
----
-
-### 2. Requisitos Previos en tu Equipo (Windows)
-
-1. **Node.js 24**: Ya lo tienes instalado (`v24.22.1`).
-2. **Docker Desktop**: Está instalado, pero **el servicio/motor de Docker debe estar iniciado** para que el contenedor de MySQL pueda levantarse. (Abre la aplicación _Docker Desktop_ en Windows antes de continuar).
+* **Propósito:** Sistema web para cafeterías y pequeños restaurantes para gestionar inventario con precisión, prevenir el desperdicio con alertas de caducidad, aprovechar existencias con recetas y coordinar al personal en tiempo real.
+* **Arquitectura:** Monolito en **Node.js 24 + Express 5** con vistas server-side en **EJS** y un sistema de diseño propio (CSS modular y JavaScript nativo en `src/public/fwf/`, con Three.js r128 y Motion 11 servidos localmente).
+* **Persistencia:** **MySQL 8.4** mediante **Prisma ORM** (`@prisma/adapter-mariadb`). Las sesiones de usuario (`express-session`) se guardan directamente en MySQL (`PrismaSessionStore`).
+* **Tiempo Real:** **Socket.IO 4** integrado en el mismo proceso para el chat del equipo (burbuja flotante y sala *General*) y avisos de inventario en vivo sin recargar la página.
+* **Seguridad:** Hashing con **Argon2id**, protección CSRF vinculada a sesión, cabeceras seguras con Helmet (CSP estricta en `'self'`, ampliando solo `img-src` con `https:` para fotos opcionales de producto), validación estricta con **Zod** y aislamiento estricto por empresa (*multi-tenant* lógico).
+* **Entorno principal:** Diseñado para **GitHub Codespaces** o desarrollo local con Docker Compose ([compose.yaml](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/compose.yaml)).
 
 ---
 
-### 3. Paso a Paso para Inicializar el Proyecto
+## 2. Requisitos Previos en tu Equipo (Windows)
+
+1. **Node.js 24**: Requiere Node.js 24.x (`node -v`).
+2. **Docker Desktop**: Debe estar abierto y con el motor de Docker iniciado para que el contenedor de MySQL pueda ejecutarse.
+
+---
+
+## 3. Paso a Paso para Inicializar el Proyecto
 
 Ejecuta los siguientes comandos desde tu terminal (PowerShell) en la raíz del proyecto:
 
-#### Paso 3.1: Generar el archivo de entorno `.env`
-
+### Paso 3.1: Generar el archivo de entorno `.env`
 Crea el archivo `.env` a partir de [.env.example](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/.env.example) con contraseñas y secretos criptográficos aleatorios generados automáticamente:
-
 ```powershell
 npm run setup:env
 ```
 
-#### Paso 3.2: Instalar dependencias
-
-Instala los paquetes fijados en `package-lock.json`:
-
+### Paso 3.2: Instalar dependencias
+Instala los paquetes fijados en `package-lock.json` (incluyendo Three.js, Motion y tipografías):
 ```powershell
-npm ci
+npm install
+# o en despliegues automatizados: npm ci
 ```
 
-#### Paso 3.3: Iniciar la base de datos MySQL
-
-Asegúrate de que Docker Desktop esté abierto y corriendo, luego levanta el servicio de base de datos:
-
+### Paso 3.3: Iniciar la base de datos MySQL
+Asegúrate de que Docker Desktop esté corriendo, luego levanta el servicio de base de datos:
 ```powershell
 npm run db:up
 ```
+*(Inicia el contenedor `mysql:8.4` y espera con `--wait` a que el healthcheck confirme que está listo para recibir conexiones en el puerto `3306`).*
 
-_(Este comando iniciará el contenedor `mysql:8.4` y esperará a que el healthcheck confirme que está listo para recibir conexiones en el puerto `3306`)._
-
-#### Paso 3.4: Compilar estilos y generar el cliente de Prisma
-
-Genera el cliente Prisma y compila los estilos Tailwind CSS:
-
+### Paso 3.4: Compilar estilos y generar el cliente de Prisma
+Genera el cliente Prisma actualizado y compila los estilos base:
 ```powershell
 npm run build
 ```
 
-#### Paso 3.5: Aplicar migraciones a la base de datos
-
-Aplica el esquema SQL en la base de datos de desarrollo:
-
+### Paso 3.5: Aplicar migraciones a la base de datos
+Aplica todas las migraciones SQL acumuladas a la base de datos de desarrollo (incluida la migración `20261115000300_product_image_category_color` que añade `Category.color` y `FoodItem.imageUrl`):
 ```powershell
 npm run db:migrate
 ```
+> [!IMPORTANT]
+> Si cambias de rama o incorporas cambios al front-end, ejecutar `npm run db:migrate` es indispensable para evitar errores 500 por columnas faltantes al iniciar sesión o acceder al dashboard.
 
-#### Paso 3.6: Cargar datos iniciales de prueba (Seed)
-
-Ejecuta el script [seed.js](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/prisma/seed.js), que crea la empresa ficticia _Cafetería Semilla_, categorías, alimentos, recetas y usuarios de prueba:
-
+### Paso 3.6: Cargar datos iniciales de prueba (Seed)
+Ejecuta el script [seed.js](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/prisma/seed.js), que crea de forma idempotente la empresa ficticia *Cafetería Semilla*, categorías con color, alimentos en inventario, recetas y usuarios de prueba:
 ```powershell
 npm run db:seed
 ```
 
-#### Paso 3.7: Iniciar el servidor
-
+### Paso 3.7: Iniciar el servidor de desarrollo
 Inicia la aplicación en modo desarrollo con recarga automática:
-
 ```powershell
 npm run dev
 ```
-
-El servidor escuchará en `http://localhost:3000` (puedes verificar su estado en `http://localhost:3000/health` y `http://localhost:3000/ready`).
-
----
-
-### 4. Guía para Probar el Sistema
-
-Abre tu navegador en `http://localhost:3000`. Tienes dos formas de comenzar:
-
-#### Opción A: Registrar una nueva empresa desde cero
-
-1. Ve a `/auth/register` (o haz clic en _Registrarse_).
-2. Completa los datos de la empresa y del usuario administrador.
-3. El sistema creará de forma atómica: la empresa, el usuario con rol `ADMIN`, el inventario principal y la sala de chat `General`.
-
-#### Opción B: Usar los usuarios creados por el Seed
-
-El seed crea dos cuentas en _Cafetería Semilla_:
-
-- **Administrador:** `admin@semilla.example`
-- **Empleado:** `equipo@semilla.example`
-
-> [!NOTE]
-> Por políticas de seguridad, el seed genera contraseñas aleatorias desechadas. Para ingresar con estos usuarios:
->
-> 1. Ve a `/auth/forgot` (o _¿Olvidaste tu contraseña?_).
-> 2. Ingresa `admin@semilla.example` y envía el formulario.
-> 3. La aplicación simula el envío guardando un archivo JSON en la carpeta local `work/outbox/<uuid>.json`.
-> 4. Abre ese archivo, copia el enlace de restablecimiento (ej. `http://localhost:3000/auth/reset?token=...`), ábrelo en el navegador y define tu contraseña.
-
-#### Flujos funcionales a verificar:
-
-1. **Dashboard (`/dashboard`):** Observa los 4 indicadores clave (Total de alimentos, Próximos a caducar, Caducados, Stock bajo).
-2. **Inventario (`/inventory`):**
-   - Agrega un nuevo alimento (`/inventory/new`) especificando nombre, cantidad (admite 3 decimales), unidad (`kg`, `g`, `l`, `ml`, `unidad`), categoría y fechas de ingreso/caducidad.
-   - Filtra por nombre, categoría y prueba la paginación (10 registros por página).
-   - Edita o elimina un producto (la eliminación exige rol `ADMIN` y confirmación explícita con checkbox y token CSRF).
-3. **Alertas de caducidad (`/expiration`):** Verifica la clasificación por semáforo según la zona horaria (`America/Guayaquil`): Caducados, Críticos (0–2 días), Advertencia (3–5 días) y Normal (6+ días).
-4. **Recetas y aprovechamiento (`/recipes`):** Revisa las recetas sugeridas que cruzan automáticamente ingredientes con los alimentos utilizables en stock.
-5. **Gestión de equipo (`/team`):** Si estás con el usuario `ADMIN`, crea un usuario con rol `EMPLOYEE` para la misma empresa.
-6. **Coordinación en tiempo real (`/chat`):**
-   - Abre dos ventanas del navegador (una normal y otra en incógnito o con otro navegador).
-   - Inicia sesión con el administrador en una y con el empleado en la otra.
-   - Entra a `/chat`: comprueba la lista de presencia en vivo, el envío y persistencia de mensajes en la sala _General_.
-   - Modifica o crea un alimento en una ventana y observa cómo en la otra ventana aparece de inmediato el aviso visual de cambio de inventario (`inventory:changed`) sin recargar la página.
+El servidor escuchará en `http://localhost:3000` (`/health` comprueba HTTP y `/ready` comprueba MySQL).
 
 ---
 
-### 5. Ejecución de Pruebas Automatizadas
+## 4. Guía para Probar el Sistema y la Nueva Interfaz
 
-Si deseas ejecutar la suite completa de pruebas unitarias y de integración:
+Abre tu navegador en `http://localhost:3000`.
+
+### Acceso Inicial:
+* **Opción A (Empresa Nueva):** Haz clic en *Comenzar gratis* o ve a `/auth/register` para registrar una nueva empresa y administrador.
+* **Opción B (Usuarios del Seed):**
+  * Administrador: `admin@semilla.example`
+  * Empleado: `equipo@semilla.example`
+  * Si necesitas definir una contraseña para las cuentas semilla:
+    1. Ve a `/auth/forgot`.
+    2. Ingresa `admin@semilla.example`.
+    3. Abre el archivo JSON generado en la carpeta local `work/outbox/<uuid>.json`.
+    4. Copia el enlace de recuperación y ábrelo en el navegador para establecer tu clave.
+
+### Flujos y Componentes de la Nueva Interfaz:
+1. **Portada (`/`):**
+   * Cuenta con un modelo 3D interactivo de una refrigeradora renderizado con **Three.js**.
+   * Al hacer clic en la refrigeradora o en "Toca la refri", se abren las puertas con una animación fluida (**Motion**) y navega hacia el resumen del negocio.
+2. **Acceso Centrado (`/auth/login`, `/auth/register`):**
+   * Las vistas de acceso se presentan como una tarjeta de vidrio centrada sobre la portada quieta, preservando el formulario nativo con validación y CSRF.
+3. **Resumen / Dashboard (`/dashboard`):**
+   * Muestra la refrigeradora cerrada con los 4 indicadores clave (Total, Próximos a caducar, Caducados y Stock bajo).
+   * Alertas de caducidad con fotos predictivas de respaldo (leche, yogur, carne, vegetales) y recetas sugeridas basadas en stock útil.
+   * Al hacer clic en una alerta, navega a la refrigeradora con ese producto seleccionado automáticamente.
+4. **Refrigeradora Interactiva (`/inventory`):**
+   * Representa el inventario como estantes físicos donde los productos se ubican ordenados por fecha de vencimiento más próxima.
+   * Filtros dinámicos por categorías con pastillas de color asignadas (`Category.color`).
+   * Al seleccionar un producto se abre el panel lateral con su ficha técnica, fechas e imagen (si tiene `imageUrl` o foto local).
+   * Botón para alternar a la vista tabular de caducidades (`/inventory/caducidad`).
+5. **Tarjetas Superpuestas (`<dialog>`):**
+   * Registrar alimento (`/inventory/new`), editar (`/inventory/:id/edit`), eliminar (`/inventory/:id/delete`), administrar categorías (`/categories`), gestionar equipo (`/team`) y cuenta (`/account`) se abren en tarjetas modales nativas superpuestas sin perder el contexto visual.
+   * Tienen foco atrapado, se cierran con la tecla `Escape` o la `X`, y refrescan automáticamente la vista inferior si hubo cambios.
+   * *Degradación elegante:* Si un usuario navega sin JavaScript, las acciones cargan como páginas completas tradicionales.
+6. **Burbuja de Chat en Tiempo Real:**
+   * Botón flotante siempre disponible en la esquina inferior para abrir el chat del personal conectado a Socket.IO.
+   * Permite probar presencia en vivo entre dos usuarios simultáneos y muestra alertas de cambios de inventario sin recargar.
+
+---
+
+## 5. Ejecución de Pruebas Automatizadas
+
+Si deseas ejecutar la suite completa de pruebas:
 
 ```powershell
-# Levantar el contenedor aislado de base de datos de pruebas (puerto 3307)
-docker compose --profile test up -d --wait mysql-test
-
-# Ejecutar pruebas unitarias y de integración
+# 1. Pruebas unitarias, de integración ligera, páginas del front y assets (115 pruebas)
 npm test
+
+# 2. Pruebas de integración con base de datos MySQL separada
+docker compose --profile test up -d --wait mysql-test
 npm run test:db
 
-# Medición de rendimiento de consultas SQL (con 1000 registros ficticios)
+# 3. Medición de rendimiento en consultas SQL con 1000 registros
 npm run measure:queries
+
+# 4. Verificación de accesibilidad con axe-core y navegador (40 escaneos)
+npm run verify:browser
 ```
 
 ---
 
-Para inspeccionar la base de datos, ver las tablas, las relaciones y cómo se almacenan las contraseñas hasheadas y las sesiones, tienes **tres formas principales**:
+## 6. Inspección de la Base de Datos
 
----
-
-### Opción 1: Con Prisma Studio (La más rápida y visual)
-
-Prisma incluye un visor web interactivo que se conecta directamente a tu base de datos y te permite explorar todas las tablas sin instalar ningún programa adicional:
-
-1. Asegúrate de tener el contenedor de MySQL corriendo (`npm run db:up`).
-2. En tu terminal ejecuta:
-   ```powershell
-   npx prisma studio
-   ```
-3. Se abrirá automáticamente en tu navegador en `http://localhost:5555`.
-4. Verás las 11 entidades del sistema: `Company`, `User`, `Inventory`, `FoodItem`, `Category`, `Recipe`, `RecipeIngredient`, `ChatRoom`, `ChatMessage`, `PasswordResetToken` y `Session`.
-5. Si haces clic en la tabla **User**, podrás ver las columnas `id`, `email`, `role`, `sessionVersion` y el campo **`passwordHash`**.
-
----
-
-### Opción 2: Desde la terminal con el cliente MySQL en Docker
-
-Dado que MySQL se ejecuta dentro de un contenedor Docker ([compose.yaml](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/compose.yaml)), puedes interactuar directamente con la consola de MySQL:
-
-1. **Entrar al cliente interactivo de MySQL:**
-
-   ```powershell
-   docker compose exec -it mysql mysql -u root -p
-   ```
-
-   _(Te pedirá la contraseña; ingresa el valor de `MYSQL_ROOT_PASSWORD` que se generó en tu archivo `.env`)._
-
-2. **Comandos SQL útiles para inspeccionar:**
-
-   ```sql
-   -- Seleccionar la base de datos
-   USE food_waste_fighter;
-
-   -- Listar todas las tablas
-   SHOW TABLES;
-
-   -- Ver la estructura de la tabla User
-   DESCRIBE User;
-
-   -- Ver los usuarios y cómo se almacenan sus contraseñas hasheadas
-   SELECT id, name, email, role, passwordHash FROM User;
-
-   -- Ver las sesiones activas en la BD
-   SELECT id, userId, expiresAt, data FROM Session;
-
-   -- Salir
-   EXIT;
-   ```
-
----
-
-### Opción 3: Con un cliente gráfico externo (DBeaver, MySQL Workbench, TablePlus)
-
-Si prefieres usar tu gestor de base de datos favorito, puedes conectarte con los siguientes parámetros expuestos en tu máquina local:
-
-- **Host:** `127.0.0.1` o `localhost`
-- **Puerto:** `3306`
-- **Base de datos:** `food_waste_fighter`
-- **Usuario:** `fwf_app` (o `root`)
-- **Contraseña:** Abre tu archivo `.env` y copia el valor de `MYSQL_PASSWORD` (o `MYSQL_ROOT_PASSWORD`).
-
----
-
-### ¿Cómo se guardan las contraseñas y tokens en la BD?
-
-En este proyecto se aplican las recomendaciones de OWASP implementadas en [src/modules/auth/passwords.js](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/src/modules/auth/passwords.js) y [schema.prisma](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/prisma/schema.prisma):
-
-1. **Contraseñas de usuario (`User.passwordHash`):**
-   - Se utiliza **Argon2id** (diseñado contra ataques con GPUs/ASICs).
-   - Parámetros: costo de memoria de 19 MiB (`m=19456`), 2 iteraciones (`t=2`) y 1 hilo de paralelismo (`p=1`).
-   - En la base de datos no verás texto plano, sino una cadena con esta estructura:
-     ```text
-     $argon2id$v=19$m=19456,t=2,p=1$SALT_ALEATORIO_BASE64$HASH_RESULTANTE_BASE64
-     ```
-2. **Tokens de recuperación de clave (`PasswordResetToken.tokenHash`):**
-   - El token que viaja en el enlace al usuario no se almacena en plano.
-   - En la columna `tokenHash` (`CHAR(64)`) solo se almacena su hash criptográfico **SHA-256** de 64 caracteres hexadecimales.
-3. **Sesiones (`Session.data`):**
-   - Las sesiones web se almacenan en la columna `data` en formato **JSON** nativo de MySQL, conteniendo la información de autenticación (`userId`, `companyId`, `role` y token CSRF).
+* **Prisma Studio (visor web):**
+  ```powershell
+  npx prisma studio
+  ```
+  Disponible en `http://localhost:5555`. Permite explorar las tablas `Category` (incluyendo `color`) y `FoodItem` (incluyendo `imageUrl`), contraseñas hasheadas en Argon2id y sesiones activas.
+* **Línea de comandos de MySQL en Docker:**
+  ```powershell
+  docker compose exec -it mysql mysql -u root -p food_waste_fighter
+  # Ingresar la contraseña MYSQL_ROOT_PASSWORD del archivo .env
+  ```

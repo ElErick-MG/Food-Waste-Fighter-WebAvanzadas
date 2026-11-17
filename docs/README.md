@@ -39,17 +39,17 @@ docs/
 * **[1.Estado/AGENTS.md](1.Estado/AGENTS.md):** Reglas operativas y restricciones de desarrollo obligatorias para agentes de IA.
 
 ### 2. Guías de Inicialización
-* **[2.Guias/ejecucionPrimeraVez.md](2.Guias/ejecucionPrimeraVez.md):** Guía práctica para levantar el proyecto desde cero en local (Windows) o en Codespaces. Incluye cómo inicializar Docker/MySQL, ejecutar migraciones, acceder con los datos del seed vía recuperación de correo en `work/outbox/` e interactuar con la base de datos (Prisma Studio y CLI).
+* **[2.Guias/ejecucionPrimeraVez.md](2.Guias/ejecucionPrimeraVez.md):** Guía práctica para levantar el proyecto desde cero en local (Windows) o en Codespaces. Incluye cómo inicializar Docker/MySQL, ejecutar migraciones, acceder con los datos del seed vía recuperación de correo en `work/outbox/`, interactuar con la base de datos (Prisma Studio y CLI) y explorar la nueva interfaz interactiva (portada 3D, refrigeradora con estantes, modales y chat).
 
 ### 3. Especificaciones y Requisitos
 * **[3.Especificaciones/PROJECT_SPEC.md](3.Especificaciones/PROJECT_SPEC.md):** Alcance funcional, objetivos específicos medibles, cronograma de trabajo e historias de usuario priorizadas (**HU01 a HU12**) con criterios de aceptación.
 * **[3.Especificaciones/second-bimester-roadmap.md](3.Especificaciones/second-bimester-roadmap.md):** Hoja de ruta para el segundo bimestre (desacoplamiento frontend/backend y microservicios; meramente referencial durante el primer bimestre).
 
 ### 4. Arquitectura y Referencia Técnica
-* **[4.Arquitectura/TECHNICAL_REFERENCE.md](4.Arquitectura/TECHNICAL_REFERENCE.md):** Diagrama de bloques del monolito Node.js/Express/EJS/MySQL/Socket.IO, modelo de datos ER con las 11 entidades y restricciones SQL, rutas/permisos, seguridad (Argon2id, CSRF, CSP, sesiones persistentes) y contratos de eventos en tiempo real.
+* **[4.Arquitectura/TECHNICAL_REFERENCE.md](4.Arquitectura/TECHNICAL_REFERENCE.md):** Diagrama de bloques del monolito Node.js/Express/EJS/MySQL/Socket.IO, modelo de datos ER con las 11 entidades y restricciones SQL, rutas/permisos, arquitectura del nuevo front-end (Three.js 3D, Motion, tarjetas modales nativas, assets locales y fotos predictivas), seguridad (Argon2id, CSRF, CSP, sesiones persistentes) y contratos de eventos en tiempo real.
 
 ### 5. Calidad y Validación
-* **[5.Calidad-Y-Validacion/VALIDATION.md](5.Calidad-Y-Validacion/VALIDATION.md):** Cobertura y resultados de las 106 pruebas automatizadas, 40 escaneos de accesibilidad con `axe-core`, contrastes WCAG y mediciones de rendimiento de consultas SQL con 1000 registros sintéticos.
+* **[5.Calidad-Y-Validacion/VALIDATION.md](5.Calidad-Y-Validacion/VALIDATION.md):** Cobertura y resultados tras el rediseño del front-end (115 pruebas independientes aprobadas al 100 %, 58 de integración en MySQL), 40 escaneos de accesibilidad con `axe-core`, contrastes WCAG y mediciones de rendimiento de consultas SQL con 1000 registros sintéticos.
 * **[5.Calidad-Y-Validacion/evidence/](5.Calidad-Y-Validacion/evidence/):** Archivos JSON versionados con las evidencias de ejecución de navegadores (`browser-quality.json`) y tiempos de respuesta de base de datos (`query-performance.json`).
 
 ### 6. Evaluación y Entrega Académica

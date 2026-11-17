@@ -70,10 +70,10 @@ De acuerdo con la guía académica oficial y [AGENTS.md](file:///d:/levantamient
 │   │   ├── expiration/      # Lógica de cálculo de semáforo de fechas de caducidad
 │   │   ├── recipes/         # Recetas, ingredientes y coincidencias con stock disponible
 │   │   └── chat/            # Socket.IO, sala General, historial, presencia y eventos
-│   ├── views/               # Vistas EJS (partials de cabecera, navegación, footer y alertas)
-│   ├── public/              # Archivos estáticos servidos localmente (CSS compilado, JS cliente)
-│   └── styles/              # Fuente de Tailwind CSS (app.css)
-├── tests/                   # 106 pruebas automatizadas (unitarias, integración, BD, chat)
+│   ├── views/               # Vistas EJS (diseño inmersivo: portada 3D, refri, caducidad, modales)
+│   ├── public/              # Sistema de diseño fwf (CSS, módulos JS, texturas refri e imágenes)
+│   └── styles/              # Fuente de Tailwind CSS heredada (app.css)
+├── tests/                   # 115 pruebas independientes (unitarias, páginas, assets) + integración MySQL
 ├── scripts/                 # Herramientas auxiliares (setup-env, measure-queries, verify-browser)
 ├── compose.yaml             # Servicios Docker: MySQL desarrollo (3306) y MySQL pruebas (3307)
 └── README.md                # Entrada pública principal del repositorio en GitHub
@@ -113,8 +113,9 @@ Consulte siempre [PROGRESS.md](PROGRESS.md) para el detalle más reciente:
   * Catálogo de recetas con motor de coincidencias según alimentos utilizables (`/recipes`).
   * Chat en tiempo real con presencia en vivo, historial persistido y avisos automáticos de inventario (`/chat`).
 * **Calidad y Pruebas:**
-  * **106 pruebas automatizadas exitosas** (50 unitarias/configuración + 56 de integración contra MySQL).
-  * **40 escaneos de navegador** con `Playwright` y `axe-core` sin violaciones de accesibilidad.
+  * **115 pruebas independientes exitosas** (`npm test`, 100 % aprobadas), incluyendo pruebas del nuevo frontend (assets locales, renderizado sin JS inline, datos de la refri y validación de `imageUrl` y `color`).
+  * **58 pruebas de integración** contra MySQL (`test:db`).
+  * **40 escaneos de navegador** con `Playwright` y `axe-core` sin violaciones de accesibilidad ni errores de consola.
   * Medición de rendimiento en consultas SQL con 1000 registros sintéticos documentada en [docs/5.Calidad-Y-Validacion/VALIDATION.md](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/docs/5.Calidad-Y-Validacion/VALIDATION.md).
 * **Pendientes de Cierre Académico (No funcionales):**
   * Completar nombres y datos reales de integrantes y docente en [README.md](file:///d:/levantamientoProyectos/Food-Waste-Fighter-WebAvanzadas/README.md).

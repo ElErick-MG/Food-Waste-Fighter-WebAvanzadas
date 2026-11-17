@@ -171,14 +171,15 @@ erDiagram
 | /auth/login | Verificación contra MySQL y regeneración del ID de sesión. |
 | /auth/logout | POST con CSRF; destrucción de sesión y cookie. |
 | /auth/forgot, /auth/reset | Recuperación privada con token de un uso y caducidad. |
-| /dashboard, /account | Usuario autenticado; métricas y cuenta de su empresa. |
-| /team | Solo ADMIN; listado y alta de EMPLOYEE de la misma empresa. |
-| /inventory, /inventory/:id | Consulta, filtros, paginación y detalle de la empresa. |
-| /inventory/new, /inventory/:id/edit | ADMIN y EMPLOYEE crean o editan alimentos. |
-| /inventory/:id/delete | Solo ADMIN; GET muestra confirmación y POST elimina con checkbox y CSRF. |
-| /categories | Consulta autenticada; crear, renombrar y eliminar corresponde a ADMIN. |
+| /dashboard, /account | Resumen con la refri cerrada, contadores, alertas con fotos de respaldo y accesos superpuestos. |
+| /team | Solo ADMIN; listado y alta de EMPLOYEE de la misma empresa (tarjeta modal o página completa). |
+| /inventory, /inventory/:id | Refrigeradora interactiva con estantes, filtros por categoría con color y panel de detalle. |
+| /inventory/caducidad | Vista tabular complementaria centrada en fechas y semáforo de vencimiento. |
+| /inventory/new, /inventory/:id/edit | ADMIN y EMPLOYEE crean o editan alimentos (modal superpuesta o página completa). |
+| /inventory/:id/delete | Solo ADMIN; confirmación explícita con checkbox y CSRF; GET no elimina. |
+| /categories | Consulta autenticada; editor inline por fila con color y nombre (solo ADMIN). |
 | /expiration, /recipes, /recipes/:id | Consulta autenticada limitada a la empresa. |
-| /chat | Sala General e historial de la empresa autenticada. |
+| /chat | Sala General e historial persistido; accesible vía burbuja flotante y página dedicada. |
 
 El inventario valida nombre de 2–120 caracteres, categoría autorizada, cantidad
 y mínimo entre 0 y 999999999.999 con hasta tres decimales, unidad permitida y
@@ -212,7 +213,9 @@ unidades. Los datos se renderizan escapados en EJS.
   de origen reescrito requiere TRUST_PROXY=1, HTTPS y Sec-Fetch-Site:same-origin.
   Las solicitudes cross-site explícitas se rechazan.
 - Consultas y contenido: Prisma/Prisma.sql parametrizados, escape EJS y
-  textContent para datos en vivo; Helmet/CSP restringe recursos al mismo origen.
+  textContent para datos en vivo; Helmet/CSP restringe recursos al mismo origen,
+  ampliando únicamente `img-src` con `https:` para permitir imágenes de producto
+  externas opcionales. Scripts, estilos y tipografías se sirven estrictamente desde `'self'`.
 - Límites de cuentas: diez intentos por IP cada quince minutos en login,
   registro, recuperación, reset y alta de empleados. Errores públicos genéricos;
   los diagnósticos de formularios contienen referencias y banderas sin secretos.
@@ -220,6 +223,29 @@ unidades. Los datos se renderizan escapados en EJS.
 `.env`, sesiones, cookies, enlaces de recuperación y `work/outbox/` no se
 publican. El secreto de sesión se configura por entorno; en producción se exige
 APP_ORIGIN HTTPS. La bandeja simulada usa directorio 0700 y archivos 0600.
+
+## Sistema de diseño y arquitectura de front-end
+
+El front-end implementa un diseño inmersivo y responsivo mediante Server-Side Rendering
+(EJS) y módulos JavaScript nativos, sin introducir frameworks SPA:
+
+* **Estructura de estilos (`src/public/fwf/css/`):**
+  * `fwf-base.css`: Tokens de diseño (colores, sombras, tipografía Plus Jakarta Sans e Inter) y utilidades bajo la clase de alcance `.fwf`.
+  * `fwf-app.css`: Estilos compartidos de aplicación, barras superiores, modales y tablas de datos.
+  * `portada.css`, `resumen.css`, `refri.css`, `ficha.css`, `chat.css`: Estilos especializados para cada pantalla y componente.
+* **Componentes e interacción JavaScript (`src/public/fwf/js/`):**
+  * `refri3d.js`: Canvas WebGL interactivo con Three.js (r128) que renderiza la refrigeradora en 3D con puertas abatibles y texturas optimizadas en `fwf/refri/`.
+  * `refri.js`: Distribución visual de alimentos en estantes según categoría y orden de caducidad más próxima.
+  * `superpuesta.js`: Sistema de tarjetas modales montadas sobre `<dialog>` HTML5 nativo; permite abrir altas, ediciones, detalle de recetas y gestión de categorías de forma superpuesta sin abandonar la vista actual, con foco atrapado y recarga al cerrar. Funciona con degradación elegante: sin JS, navega a la página completa estándar.
+  * `fotos.js`: Resolución predictiva de fotografías locales de producto (`fwf/img/productos/*.jpg`) cuando el alimento no cuenta con una URL HTTPS (`imageUrl`).
+  * `chat.js`: Integración de Socket.IO en burbuja flotante persistente en pantalla y en la vista dedicada.
+  * `fwf-motion.js`: Animaciones de entrada fluidas basadas en Motion 11 servido localmente.
+* **Distribución de activos estáticos (`src/app.js`):**
+  * `/assets/vendor/three/` → `node_modules/three/build/`
+  * `/assets/vendor/motion/` → `node_modules/motion/dist/`
+  * `/assets/fonts/plus-jakarta-sans/` → `node_modules/@fontsource/plus-jakarta-sans/files/`
+  * `/assets/fonts/` → `node_modules/@fontsource/inter/files/`
+  * `/assets/` → `src/public/`
 
 ## Socket.IO: handshake y contratos
 
