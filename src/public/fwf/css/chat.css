@@ -70,7 +70,10 @@
 .chat-cab { min-width: 0; }
 .chat-barra { min-width: 0; }
 .chat-barra { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); }
+.chat-barra-acc { position: relative; display: flex; align-items: center; gap: var(--s3); min-width: 0; }
+.chat-barra-acc .avisos-panel { left: auto; right: 0; }
 .chat-barra .enlace { color: #fff; text-shadow: 0 1px 2px rgba(20, 20, 20, .4); }
+.chat-barra-acc .avisos-panel .enlace { color: var(--acento); text-shadow: none; }
 .chat-principal { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .chat-principal:focus { outline: none; }
 .chat-pagina { flex: 1; min-height: 0; }

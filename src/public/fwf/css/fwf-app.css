@@ -61,6 +61,32 @@ body.sobre-refri { cursor: pointer; }
 .perfil-nav svg { color: var(--gris); }
 .perfil .btn { width: 100%; }
 
+/* ---------- Campana de avisos del chat (misma familia que el chip de cuenta) ---------- */
+.barra-cuenta { position: relative; z-index: 4; display: flex; align-items: flex-start; gap: var(--s3); max-width: 100%; }
+.barra-cuenta .cuenta { min-width: 0; }
+.avisos { flex: none; }
+.avisos > summary { list-style: none; }
+.avisos > summary::-webkit-details-marker { display: none; }
+.avisos-chip { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: var(--vidrio); -webkit-backdrop-filter: var(--vidrio-blur); backdrop-filter: var(--vidrio-blur); border: 1px solid var(--vidrio-filo); box-shadow: var(--e1); color: var(--tinta); cursor: pointer; transition: background var(--t1), border-color var(--t1); }
+.avisos-chip:hover { background: rgba(255, 255, 255, .86); }
+.avisos[open] > .avisos-chip { border-color: var(--tinta); }
+.avisos-ico { display: flex; }
+.avisos-badge { position: absolute; top: -2px; right: -2px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: var(--r-pill); background: var(--acento); color: #fff; font-size: 11px; font-weight: 700; line-height: 1; display: flex; align-items: center; justify-content: center; border: 2px solid var(--crema); }
+.avisos-badge[hidden] { display: none; }
+.avisos-panel { position: absolute; left: 0; top: calc(100% + var(--s2)); width: min(296px, calc(100vw - 32px)); padding: var(--s5); border-radius: var(--r-panel); background: linear-gradient(150deg, rgba(255, 255, 255, .94), rgba(255, 255, 255, .8)); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); border: 1px solid rgba(255, 255, 255, .8); box-shadow: var(--e2); display: flex; flex-direction: column; gap: var(--s3); animation: avisos .22s var(--ease) both; }
+@keyframes avisos { from { opacity: 0; transform: translateY(-6px) scale(.98); } to { opacity: 1; transform: none; } }
+.avisos-cab { display: flex; flex-direction: column; gap: var(--s1); }
+.avisos-cab .etiqueta { color: var(--acento); }
+.avisos-vacio { font-size: 13px; line-height: 1.5; color: var(--gris); }
+.avisos-vacio[hidden] { display: none; }
+.avisos-lista { list-style: none; display: flex; flex-direction: column; }
+.avisos-it { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: var(--s2) 0; border-bottom: 1px solid var(--borde); }
+.avisos-it:first-child { padding-top: 0; }
+.avisos-it:last-child { padding-bottom: 0; border-bottom: 0; }
+.avisos-it b { font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.avisos-it span { font-size: 13px; line-height: 1.4; color: var(--gris); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+.avisos-panel .enlace { align-self: flex-start; margin-top: var(--s1); }
+
 /* ---------- Listas del servidor: filtros, tabla paginada (refri y caducidad) ---------- */
 .lista-filtros { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 var(--s3); align-items: end; }
 .lista-filtros .campo { margin-bottom: var(--s3); }
@@ -89,4 +115,5 @@ body.sobre-refri { cursor: pointer; }
 }
 @media (prefers-reduced-motion: reduce) {
   .perfil { animation: none; }
+  .avisos-panel { animation: none; }
 }

@@ -358,3 +358,30 @@ revisión final, y los puntos académicos de "Pendientes de cierre".
   `tests/frontend-assets.test.js` al servir `cocina.webp` (antes también con
   `motion.js`, los archivos estáticos más grandes); no se reproduce y apunta al
   tiempo límite de la prueba con el disco ocupado en Windows.
+
+### Campana de avisos del chat (rama `feature/campana-notificacion`) — IN_PROGRESS
+
+Objetivo: avisar de los mensajes del equipo sin cambiar la arquitectura ni el modelo
+de datos (sin tabla, evento Socket.IO ni ruta nuevos).
+
+- Parcial nuevo `src/views/partials/fwf-avisos.ejs`: `<details class="avisos">` con la
+  campana, el badge y un panel de vistas previas. Sin JavaScript sigue siendo un
+  desplegable con el enlace a `/chat`.
+- Se incluye junto al chip de cuenta en `/dashboard`, `/inventory` y `/chat`
+  (`barra-cuenta` en `fwf-app.css`; `chat-barra-acc` en `chat.css`). No se añade en las
+  páginas tipo tarjeta.
+- Estilos en `fwf-app.css` con los tokens existentes (`--vidrio`, `--r-pill`, `--e1`,
+  `--e2`, `--acento`, `--t1`); badge `9+` y etiqueta accesible con el total. En la refri
+  el panel se ajusta al ancho de `#lateral` y en móvil se abre fijo, como el menú de
+  cuenta.
+- `src/public/realtime.js` sigue siendo el único cliente Socket.IO: al recibir
+  `chat:ready` guarda el usuario, siembra el contador con `chat:history` y escucha
+  `chat:message`. El último mensaje leído se guarda en `localStorage`
+  (`fwf:avisos:<userId>`), por lo que el badge sobrevive a la navegación. Un mensaje
+  propio o con el chat/campana abiertos no suma.
+- `fwf/js/chat.js` solo comparte el estado con dos eventos internos (`fwf:leido` y
+  `fwf:avisos-sembrados`): la burbuja y la campana no muestran totales distintos.
+- Pruebas: se añaden comprobaciones en `tests/frontend-pages.test.js` (campana única,
+  etiqueta accesible, sin `data-chat-room` adicional y CSP sin cambios).
+- Verificación pendiente: `npm test` y `verify:browser` (40 escaneos axe) en esta rama.
+

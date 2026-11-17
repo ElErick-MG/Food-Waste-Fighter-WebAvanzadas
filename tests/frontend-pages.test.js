@@ -191,6 +191,7 @@ describe('Open fridge /inventory and product cards (stage 4)', () => {
   it('renders the fridge shell, the server list (data-item, pagination) and a JSON island', async () => {
     const html = await render('inventory/refri', base());
     expect(html).toContain('id="hueco"');
+    expect(html).toContain('id="avisos"');
     expect(html).toContain('<script type="application/json" id="datos-refri">{"productos":[]}</script>');
     expect(html).toContain('data-item="item-1"');
     expect(html).toContain('23 registros');
@@ -311,6 +312,8 @@ describe('Team chat: bubble and /chat page (stage 6)', () => {
     expect(html).toContain('href="#main-content"');
     expect(html).toContain('/assets/realtime.js');
     expect(html).toContain('/assets/fwf/js/chat.js');
+    expect(html).toContain('id="avisos"');
+    expect(html).toContain('aria-label="Notificaciones del chat del equipo"');
     expect(html).not.toContain('id="chatBurbuja"');
     expectCspSafe(html);
   });
@@ -322,6 +325,7 @@ describe('Team chat: bubble and /chat page (stage 6)', () => {
       currentUser, metrics: { total: 0, soon: 0, expired: 0, low: 0 }, alerts: [], suggested: [],
     });
     expect(dashboard).toContain('id="chatBurbuja"');
+    expect(dashboard).toContain('id="avisos"');
     expect(dashboard).toContain('data-chat-room=""');
     expect(dashboard.match(/data-chat-room=/g)).toHaveLength(1);   // realtime.js uses the first one
     for (const id of ids) expect(dashboard).toContain(`id="${id}"`);

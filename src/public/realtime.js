@@ -17,6 +17,134 @@
   let ready = false;
   let sending = false;
   let syncing = null;
+
+  /* ---------- Campana de avisos: misma conexión y mismos eventos del chat ---------- */
+  const avisos = document.getElementById('avisos');
+  const avisosBoton = document.getElementById('avisosBoton');
+  const avisosBadge = document.getElementById('avisosBadge');
+  const avisosLista = document.getElementById('avisosLista');
+  const avisosVacio = document.getElementById('avisosVacio');
+  const avisosEstado = document.getElementById('avisosEstado');
+  const MAX_VISTAS = 5;
+  const vistos = new Set();
+  let me = null;
+  let claveAvisos = null;
+  let leido = { createdAt: '', id: '' };
+  let ultimo = null;
+  let noLeidos = 0;
+
+  // Orden estable del servidor: createdAt y, a igualdad, id.
+  const posterior = (a, b) => Boolean(a && b) && (a.createdAt > b.createdAt || (a.createdAt === b.createdAt && a.id > b.id));
+  function leerAvisos() {
+    try {
+      const guardado = JSON.parse(localStorage.getItem(claveAvisos) || 'null');
+      if (guardado && typeof guardado.createdAt === 'string' && typeof guardado.id === 'string') leido = guardado;
+    } catch { /* sin almacenamiento: el contador empieza en cero */ }
+  }
+  function guardarAvisos(mensaje) {
+    if (!claveAvisos || !mensaje) return;
+    leido = { createdAt: mensaje.createdAt, id: mensaje.id };
+    try { localStorage.setItem(claveAvisos, JSON.stringify(leido)); } catch { /* solo se pierde entre recargas */ }
+  }
+  function pintarBadge() {
+    if (!avisosBadge || !avisosBoton) return;
+    avisosBadge.textContent = noLeidos > 9 ? '9+' : String(noLeidos);
+    avisosBadge.hidden = noLeidos === 0;
+    avisosBoton.setAttribute('aria-label', noLeidos === 0 ? 'Notificaciones del chat del equipo'
+      : noLeidos === 1 ? 'Notificaciones: 1 mensaje sin leer'
+      : noLeidos > 9 ? 'Notificaciones: más de 9 mensajes sin leer'
+      : `Notificaciones: ${noLeidos} mensajes sin leer`);
+  }
+  function vistaPrevia(mensaje) {
+    if (!avisosLista) return;
+    const item = document.createElement('li');
+    item.className = 'avisos-it';
+    const autor = document.createElement('b');
+    autor.textContent = mensaje.sender.name;
+    const texto = document.createElement('span');
+    texto.textContent = mensaje.content;
+    item.append(autor, texto);
+    avisosLista.prepend(item);
+    while (avisosLista.children.length > MAX_VISTAS) avisosLista.lastElementChild.remove();
+    if (avisosVacio) avisosVacio.hidden = true;
+  }
+  function limpiarVistas() {
+    avisosLista?.replaceChildren();
+    if (avisosVacio) avisosVacio.hidden = false;
+  }
+  function marcarLeido() {
+    if (ultimo) guardarAvisos(ultimo);
+    else {
+      leido = { createdAt: new Date().toISOString(), id: '' };
+      try { if (claveAvisos) localStorage.setItem(claveAvisos, JSON.stringify(leido)); } catch { /* sin almacenamiento */ }
+    }
+    noLeidos = 0;
+    pintarBadge();
+  }
+  // En /chat la conversación está a la vista; en la burbuja, solo cuando no está oculta.
+  function ventanaAbierta() {
+    const ventana = document.getElementById('chatVentana');
+    if (!ventana) return false;
+    return ventana.classList.contains('chat-pagina') || !ventana.hidden;
+  }
+  // Si el chat o la propia campana están a la vista, el mensaje ya se está leyendo.
+  const leyendo = () => ventanaAbierta() || Boolean(avisos?.open);
+  function sumarAviso(mensaje) {
+    if (!avisos || !me) return;
+    if (!ultimo || posterior(mensaje, ultimo)) ultimo = mensaje;
+    if (mensaje.sender.id === me) return;
+    if (leyendo()) {
+      guardarAvisos(ultimo);
+      noLeidos = 0;
+      pintarBadge();
+      if (avisos?.open) vistaPrevia(mensaje);
+      return;
+    }
+    if (!posterior(mensaje, leido) || vistos.has(mensaje.id)) return;
+    vistos.add(mensaje.id);
+    noLeidos += 1;
+    vistaPrevia(mensaje);
+    pintarBadge();
+    if (avisosEstado) avisosEstado.textContent = `Nuevo mensaje de ${mensaje.sender.name}`;
+  }
+  function sembrarAvisos(lista) {
+    if (!avisos || !me) return;
+    for (const mensaje of lista) if (!ultimo || posterior(mensaje, ultimo)) ultimo = mensaje;
+    if (leyendo()) { marcarLeido(); return; }
+    for (const mensaje of lista) {
+      if (mensaje.sender.id === me || !posterior(mensaje, leido) || vistos.has(mensaje.id)) continue;
+      vistos.add(mensaje.id);
+      noLeidos += 1;
+      vistaPrevia(mensaje);
+    }
+    pintarBadge();
+    // La burbuja flotante muestra el mismo total que la campana tras una recarga.
+    document.dispatchEvent(new CustomEvent('fwf:avisos-sembrados', { detail: { total: noLeidos } }));
+  }
+  function pedirAvisos() {
+    if (!avisos || !roomId) return;
+    socket.timeout(10000).emit('chat:history', { roomId }, (timeout, result) => {
+      if (timeout || !result?.ok) return;
+      sembrarAvisos(result.messages);
+    });
+  }
+  if (avisos) {
+    avisos.addEventListener('toggle', () => {
+      if (avisos.open) {
+        marcarLeido();
+        document.dispatchEvent(new CustomEvent('fwf:leido'));
+      } else limpiarVistas();
+    });
+    // chat.js avisa cuando se abre la burbuja: mismo estado de leído para ambos.
+    document.addEventListener('fwf:leido', () => { if (noLeidos) marcarLeido(); });
+    window.addEventListener('storage', event => {
+      if (!claveAvisos || event.key !== claveAvisos || !event.newValue) return;
+      try {
+        const valor = JSON.parse(event.newValue);
+        if (posterior(valor, leido)) { leido = valor; noLeidos = 0; pintarBadge(); }
+      } catch { /* valor ajeno: se ignora */ }
+    });
+  }
   function controls() {
     if (!chat) return;
     content.disabled = !ready;
@@ -63,6 +191,7 @@
         // that query was in flight, without leaving gaps from an older view.
         messages.replaceChildren();
         merge([...result.messages, ...(syncing || [])], true);
+        sembrarAvisos([...(syncing || []), ...result.messages]);
         syncing = null;
       } else merge(result.messages);
       older.hidden = !result.hasMore;
@@ -70,7 +199,17 @@
   }
   socket.on('connect', () => { if (status) status.textContent = 'Conectado. Sincronizando conversación…'; });
   socket.on('chat:ready', data => {
-    if (!chat) return;
+    if (!me) {
+      me = data.userId;
+      claveAvisos = `fwf:avisos:${me}`;
+      leerAvisos();
+    }
+    // Sin ventana de chat (páginas de tarjeta) la campana igualmente se siembra.
+    if (!chat) {
+      roomId = data.roomId;
+      pedirAvisos();
+      return;
+    }
     if (roomId && data.roomId !== roomId) { socket.disconnect(); return; }
     roomId = data.roomId;
     chat.dataset.chatRoom = roomId;
@@ -93,7 +232,7 @@
     controls();
     if (status) status.textContent = event.message === 'AUTH_REQUIRED' ? 'La sesión caducó. Inicia sesión de nuevo.' : 'No se pudo conectar al chat. Comprueba tu conexión o recarga la página.';
   });
-  socket.on('chat:message', message => { syncing?.push(message); merge([message], true); });
+  socket.on('chat:message', message => { syncing?.push(message); merge([message], true); sumarAviso(message); });
   socket.on('chat:presence', ({ users }) => {
     if (!chat) return;
     document.getElementById('chat-count').textContent = String(users.length);

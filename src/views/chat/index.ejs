@@ -10,7 +10,10 @@
   <div class="chat-marco">
     <nav class="chat-barra" aria-label="Cuenta y navegación">
       <%- include('../partials/fwf-cuenta') %>
-      <a class="enlace" href="/dashboard">← Volver al resumen</a>
+      <div class="chat-barra-acc">
+        <%- include('../partials/fwf-avisos') %>
+        <a class="enlace" href="/dashboard">← Volver al resumen</a>
+      </div>
     </nav>
     <main id="main-content" class="chat-principal" tabindex="-1">
       <%- include('../partials/fwf-chat', { pagina: true }) %>

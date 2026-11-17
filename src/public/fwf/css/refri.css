@@ -36,6 +36,7 @@
 /* ---------- Columna de controles ---------- */
 #lateral { position: absolute; left: var(--s7); top: var(--s7); width: 272px; max-height: calc(100% - 2 * var(--s7)); display: flex; flex-direction: column; gap: var(--s6); overflow-y: auto; overflow-x: hidden; pointer-events: auto; padding: 2px; scrollbar-width: thin; }
 #lateral .perfil { width: min(262px, calc(100vw - 32px)); }
+#lateral .avisos-panel { width: min(252px, calc(100vw - 32px)); }
 .lat-cab { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s2); }
 .lat-cab .etiqueta { color: var(--acento); overflow-wrap: anywhere; }
 .lat-cab h1 { font-size: 32px; font-weight: 700; letter-spacing: -.03em; line-height: 1; }
@@ -125,8 +126,11 @@
   #main-content::before { width: auto; right: 0; bottom: auto; height: 150px; background: linear-gradient(180deg, rgba(250, 250, 247, .88), rgba(250, 250, 247, 0)); }
   #lateral { left: 0; right: 0; top: 12px; width: auto; max-height: none; flex-direction: row; align-items: center; gap: var(--s2); overflow-x: auto; overflow-y: hidden; padding: 4px 12px 8px; }
   #lateral > .cuenta { flex: none; }
+  #lateral > .barra-cuenta { display: contents; }
+  #lateral > .barra-cuenta > .cuenta { flex: none; }
   #lateral .cuenta-chip .txt { display: none; }
   #lateral .perfil { position: fixed; left: 16px; top: 68px; }
+  #lateral .avisos-panel { position: fixed; left: 16px; right: auto; top: 68px; }
   .lat-cab, .lat-nota { display: none; }
   .acciones { flex-direction: row; flex: none; }
   .filtro { flex-direction: row; align-items: center; gap: var(--s2); flex: none; }

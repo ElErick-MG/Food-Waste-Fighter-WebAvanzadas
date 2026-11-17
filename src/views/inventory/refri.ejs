@@ -18,7 +18,10 @@
   <div id="interior" aria-label="Estantes de tu refri" role="region"><div id="hueco"></div></div>
 
   <aside id="lateral" aria-labelledby="refriTit">
-    <%- include('../partials/fwf-cuenta') %>
+    <div class="barra-cuenta">
+      <%- include('../partials/fwf-cuenta') %>
+      <%- include('../partials/fwf-avisos') %>
+    </div>
     <header class="lat-cab">
       <p class="etiqueta"><%= currentUser.company.name %></p>
       <h1 id="refriTit">Tu refri</h1>

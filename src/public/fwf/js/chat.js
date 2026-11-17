@@ -103,6 +103,10 @@ function iniciar() {
   }
 
   /* ---------- Burbuja flotante ---------- */
+  // La campana de avisos comparte el estado de leído: si se abre desde ella, se limpia.
+  document.addEventListener('fwf:leido', () => { sinLeer = 0; pintarBurbuja(); ocultarAsoma(); });
+  // Y al cargar la página, la burbuja arranca con el mismo total que la campana.
+  document.addEventListener('fwf:avisos-sembrados', event => { sinLeer = event.detail?.total || 0; pintarBurbuja(); });
   burbuja.hidden = false;
   const CERRADO = 'inset(calc(100% - 56px) 0 0 calc(100% - 56px) round 28px)', ABIERTO = 'inset(0 0 0 0 round 24px)';
   function pintarBurbuja() {
@@ -117,6 +121,7 @@ function iniciar() {
   function abrir() {
     if (abierto) return;
     abierto = true; sinLeer = 0; ocultarAsoma(); pintarBurbuja();
+    document.dispatchEvent(new CustomEvent('fwf:leido'));
     ventana.hidden = false;
     ventana.getAnimations().forEach(a => a.cancel());
     ventana.animate([{ clipPath: CERRADO }, { clipPath: ABIERTO }], { duration: RM ? 1 : 420, easing: HOJA });
