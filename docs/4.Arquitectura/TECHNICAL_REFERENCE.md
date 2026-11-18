@@ -197,6 +197,16 @@ bidireccional de nombres sin distinguir mayúsculas y excluyen alimentos
 caducados o sin stock; no garantizan suficiencia de cantidades ni convierten
 unidades. Los datos se renderizan escapados en EJS.
 
+El Resumen y `/recipes` muestran hasta dos sugerencias por cantidad de
+ingredientes que coinciden con cualquier producto utilizable de la empresa.
+Se recalculan en cada consulta.
+
+El catálogo inicial vive en `src/modules/recipes/default-recipes.js` y usa los
+modelos existentes `Recipe` y `RecipeIngredient`. El registro de empresa carga
+una copia dentro de la misma transacción y el seed permite cargarla para
+empresas existentes. Los IDs se derivan de la empresa y de la clave de receta
+para que una carga repetida preserve los registros existentes.
+
 ## Autenticación y seguridad
 
 - Contraseñas: Argon2id con 19456 KiB, dos iteraciones y paralelismo uno. Las

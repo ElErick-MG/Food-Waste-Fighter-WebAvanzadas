@@ -257,6 +257,8 @@ describe('Phase 3 business HTTP routes against isolated real MySQL', () => {
     const list = await f.agent.get('/recipes');
     expect(list.status).toBe(200);
     expect(list.text).toContain('Sopa de prueba');
+    expect(list.text).toContain('En tu refri: ZANAHORIA');
+    expect(list.text).not.toMatch(/En tu refri:[^<]*(Leche|Tomate)/);
     const detail = await f.agent.get(`/recipes/${recipe.id}`);
     expect(detail.status).toBe(200);
     expect(detail.text).toContain('Cocinar al vapor.');
@@ -278,6 +280,13 @@ describe('Phase 3 business HTTP routes against isolated real MySQL', () => {
     expect((await f.agent.get('/dashboard')).text).not.toContain('Receta coincidente');
     await database.foodItem.update({ where: { id: item.id }, data: { quantity: '2', expiresDate: addDays(today, -1) } });
     expect((await f.agent.get('/dashboard')).text).not.toContain('Receta coincidente');
+    expect((await f.agent.get('/recipes')).text).not.toContain('En tu refri: Zanahoria fresca');
+    await database.foodItem.update({ where: { id: item.id }, data: { expiresDate: addDays(today, 30) } });
+    expect((await f.agent.get('/recipes')).text).toContain('En tu refri: Zanahoria fresca');
+    const dashboard = await f.agent.get('/dashboard');
+    expect(dashboard.status).toBe(200);
+    expect(dashboard.text).toContain('Receta coincidente');
+    expect(dashboard.text).toContain('En tu refri: Zanahoria fresca');
   });
   it('escapes stored HTML in food, category and recipe views without external scripts', async () => {
     const f = await fixture();

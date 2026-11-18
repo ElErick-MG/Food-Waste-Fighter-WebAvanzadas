@@ -9,7 +9,7 @@ export function ingredientMatches(ingredient, food) {
   return Boolean(a && b && (a.includes(b) || b.includes(a)));
 }
 export function createRecipesService(database) {
-  return {
+  const service = {
     async list(companyId, page) {
       const [total, recipes] = await database.$transaction([
         database.recipe.count({ where: { companyId } }),
@@ -39,5 +39,13 @@ export function createRecipesService(database) {
         matches: recipe.ingredients.filter(ingredient => soonFoods.some(food => ingredientMatches(ingredient.name, food.name))).map(ingredient => ingredient.name),
       })).filter(recipe => recipe.matches.length);
     },
+    async suggestedFromInventory(companyId, today) {
+      const foods = await database.foodItem.groupBy({
+        by: ['name'],
+        where: { companyId, quantity: { gt: 0 }, expiresDate: { gte: today } },
+      });
+      return service.suggested(companyId, foods);
+    },
   };
+  return service;
 }

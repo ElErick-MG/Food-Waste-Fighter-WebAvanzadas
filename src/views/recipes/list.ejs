@@ -1,9 +1,25 @@
 <%- include('../partials/fwf-ficha-inicio', { title: 'Recetas', volver: '/dashboard', ancho: true }) %>
     <p class="etiqueta ficha-marca">Aprovecha lo que tienes</p>
     <h1 id="ficha-titulo" class="t-modal">Recetas Sugeridas</h1>
-    <p class="ficha-sub ayuda">Consulta las recetas de tu empresa. En cada detalle se indican las coincidencias con los alimentos de tu inventario.</p>
+    <section aria-labelledby="recetas-refri">
+      <h2 id="recetas-refri" class="t-tarjeta">Con lo que tienes en tu refri</h2>
+      <% if (!suggested.length) { %>
+      <p class="ayuda">Aún no hay recetas que coincidan con tus productos disponibles.</p>
+      <% } else { %>
+      <ul class="recetas-grid">
+        <% for (const recipe of suggested) { %>
+        <li class="receta">
+          <h3><a class="enlace" href="/recipes/<%= recipe.id %>"><%= recipe.name %></a></h3>
+          <p>En tu refri: <%= recipe.matches.join(', ') %></p>
+        </li>
+        <% } %>
+      </ul>
+      <p class="ayuda">Abre la receta para consultar todos los ingredientes y las cantidades.</p>
+      <% } %>
+    </section>
+    <h2 class="t-tarjeta">Catálogo de recetas</h2>
     <% if (!recipes.length) { %>
-    <div class="lista-vacia"><h2 class="t-tarjeta">No hay recetas disponibles en esta página</h2><p class="ayuda">La empresa de demostración incluye una receta ficticia. Las empresas nuevas comienzan sin recetas.</p></div>
+    <div class="lista-vacia"><p class="ayuda">No hay recetas disponibles en esta página.</p></div>
     <% } else { %>
     <ul class="recetas-grid">
       <% for (const recipe of recipes) { %>

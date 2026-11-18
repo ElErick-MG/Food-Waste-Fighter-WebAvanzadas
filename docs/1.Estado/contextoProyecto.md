@@ -111,6 +111,8 @@ Consulte siempre [PROGRESS.md](PROGRESS.md) para el detalle más reciente:
   * Inventario completo con validación Zod, búsqueda, paginación y eliminación segura con CSRF (`/inventory`).
   * Semáforo de caducidades y dashboard con contadores de métricas (`/expiration`, `/dashboard`).
   * Catálogo de recetas con motor de coincidencias según alimentos utilizables (`/recipes`).
+  * «Recetas sugeridas» en el Resumen y «Con lo que tienes en tu refri» en Recetas muestran hasta dos sugerencias según los productos vigentes y con stock de la empresa. Se recalculan al abrir o recargar cada pantalla.
+  * Cada empresa nueva recibe seis recetas de ejemplo con cantidades, unidades y pasos. Para cargar el mismo catálogo en empresas existentes, ejecuta `npm run db:seed` después de aplicar las migraciones. Repetir la carga conserva las recetas existentes y evita duplicar las de ejemplo.
   * Chat en tiempo real con presencia en vivo, historial persistido y avisos automáticos de inventario (`/chat`).
 * **Calidad y Pruebas:**
   * **115 pruebas independientes exitosas** (`npm test`, 100 % aprobadas), incluyendo pruebas del nuevo frontend (assets locales, renderizado sin JS inline, datos de la refri y validación de `imageUrl` y `color`).

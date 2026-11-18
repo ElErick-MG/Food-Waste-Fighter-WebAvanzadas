@@ -66,6 +66,10 @@ Ejecuta el script [seed.js](file:///d:/levantamientoProyectos/Food-Waste-Fighter
 npm run db:seed
 ```
 
+El seed también incorpora el catálogo inicial a las empresas existentes. Puedes
+volver a ejecutarlo y consultar las recetas en `/recipes` tras iniciar sesión.
+Las empresas nuevas reciben el catálogo al registrarse.
+
 ### Paso 3.7: Iniciar el servidor de desarrollo
 Inicia la aplicación en modo desarrollo con recarga automática:
 ```powershell

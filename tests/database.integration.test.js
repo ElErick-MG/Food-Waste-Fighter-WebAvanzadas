@@ -102,7 +102,7 @@ describe('real MySQL/Prisma Phase 1 bootstrap', () => {
       database.chatMessage.count({ where: { companyId: where.id } }),
     ]);
     const seededCounts = await counts();
-    expect(seededCounts).toEqual([2, 1, 1, 1, 1, 1, 1, 1]);
+    expect(seededCounts).toEqual([2, 1, 1, 1, 7, 24, 1, 1]);
     const adminBefore = await database.user.findUniqueOrThrow({ where: { id: 'demo-admin' } });
     expect((await startProcess('prisma/seed.js').exited).code).toBe(0);
     expect(await database.company.count({ where })).toBe(1);

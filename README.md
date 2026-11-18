@@ -60,7 +60,7 @@ editan alimentos; solo ADMIN elimina productos con confirmación.
 - `/dashboard`: métricas, alertas y acceso al inventario y chat.
 - `/inventory`: búsqueda, filtros, detalle y CRUD con páginas de 10 alimentos.
 - `/expiration`: caducados, crítico 0–2 días, advertencia 3–5 y normal desde 6.
-- `/recipes`: ingredientes, preparación y coincidencias con existencias útiles.
+- `/recipes`: catálogo inicial por empresa, ingredientes, preparación y coincidencias con existencias útiles. Las empresas registradas antes de este cambio reciben el catálogo al ejecutar `npm run db:seed`.
 - `/chat`: mensajes persistidos, presencia y avisos de inventario sin recarga.
 - `/account`: datos de la cuenta; cierre de sesión mediante POST protegido.
 

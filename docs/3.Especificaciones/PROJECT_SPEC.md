@@ -48,7 +48,7 @@ Los modelos, permisos y contratos se describen en [TECHNICAL_REFERENCE.md](../4.
 | HU06 | Obligatoria | Como ADMIN, se requiere eliminar un alimento: confirmación explícita, POST y CSRF; GET no elimina. |
 | HU07 | Obligatoria | Como empleado, se requiere buscar y consultar alimentos: filtros por nombre/categoría, detalle por ID y paginación SQL. |
 | HU08 | Obligatoria | Como responsable, se requiere consultar alertas: dashboard, caducidad y stock bajo limitados a la empresa. |
-| HU09 | Obligatoria | Como empleado, se requiere consultar recetas: ingredientes, pasos y coincidencias con existencias utilizables. |
+| HU09 | Obligatoria | Como empleado, se requiere consultar recetas: catálogo inicial por empresa, ingredientes, pasos y coincidencias con existencias utilizables. |
 | HU10 | Obligatoria | Como empleado, se requiere coordinar con otra persona: chat autenticado, General, historial, presencia y mensajes en vivo. |
 | HU11 | Obligatoria | Como usuario conectado, se requiere conocer cambios de inventario: aviso sin recarga y aislamiento entre empresas. |
 | HU12 | Obligatoria | Como equipo, se requiere ejecutar, probar y demostrar la aplicación desde Codespaces con instrucciones reproducibles. |

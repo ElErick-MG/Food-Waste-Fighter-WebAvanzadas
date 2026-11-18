@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { randomBytes } from 'node:crypto';
 import { createDatabase } from '../src/config/database.js';
 import { hashPassword } from '../src/modules/auth/passwords.js';
+import { loadDefaultRecipes } from '../src/modules/recipes/default-recipes.js';
 
 const database = createDatabase(process.env.DATABASE_URL);
 try {
@@ -41,6 +42,10 @@ try {
       id: 'demo-message', companyId: 'demo-cafeteria', roomId: 'demo-general', userId: 'demo-admin', content: 'Bienvenido al equipo de la Cafetería Semilla.',
     } });
   });
+  const companies = await database.company.findMany({ select: { id: true } });
+  for (const { id } of companies) {
+    await database.$transaction(tx => loadDefaultRecipes(tx, id));
+  }
   console.log('Fictional company seed completed (idempotent; access through password recovery).');
 } catch {
   console.error('Seed failed. Check database availability and applied migrations.');

@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { hashPassword, verifyPassword } from './passwords.js';
 import { deliverResetMail } from './reset-mail.js';
+import { loadDefaultRecipes } from '../recipes/default-recipes.js';
 
 export const hashToken = value => createHash('sha256').update(value).digest('hex');
 export class AuthError extends Error {}
@@ -14,6 +15,7 @@ export function createAuthService(database, config, sendResetMail = deliverReset
           inventory: { create: { name: 'Inventario principal' } },
           rooms: { create: { name: 'General' } },
         } });
+        await loadDefaultRecipes(tx, company.id);
         return tx.user.create({ data: { name, email, passwordHash, companyId: company.id, role: 'ADMIN' } });
       });
     },

@@ -141,7 +141,7 @@ describe('New summary page /dashboard (stage 3)', () => {
     expect(html).toContain('Crítico: 2 días');
     expect(html).toContain('Stock bajo');
     expect(html).toContain('src="https://images.example.com/leche.jpg"');
-    expect(html).toContain('Coincide por nombre: Tomate');
+    expect(html).toContain('En tu refri: Tomate');
     expect(html).toContain('Fechas del negocio: 15/11/2026 (America/Guayaquil)');
     expect(html).toContain('id="inventory-live"');
     expect(html).toContain('<meta name="csrf-token"');
@@ -160,7 +160,7 @@ describe('New summary page /dashboard (stage 3)', () => {
     const html = await render('dashboard', base({ alerts: [], suggested: [], metrics: { total: 0, soon: 0, expired: 0, low: 0 } }));
     expect(html).toContain('¡Tu inventario está vacío!');
     expect(html).toContain('href="/inventory/new"');
-    expect(html).toContain('No hay recetas que coincidan');
+    expect(html).toContain('Aún no hay recetas que coincidan con tus productos disponibles.');
     expect(html).not.toContain('data-transicion');
     expect(await render('dashboard', base({ transicion: true }))).toContain('<body class="fwf" data-transicion>');
   });
@@ -340,7 +340,7 @@ describe('Recipes, expiration and error pages (stage 7)', () => {
   });
 
   it('recipes list and detail keep their links and the ingredient availability hooks', async () => {
-    const list = await render('recipes/list', { currentUser, csrfToken, recipes: [{ id: 'r1', name: 'Sopa', description: 'Caliente' }], pagination });
+    const list = await render('recipes/list', { currentUser, csrfToken, recipes: [{ id: 'r1', name: 'Sopa', description: 'Caliente' }], suggested: [], pagination });
     expect(list).toContain('href="/recipes/r1"');
     expect(list).toContain('1 registros');
     expectCspSafe(list);

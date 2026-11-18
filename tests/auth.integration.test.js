@@ -81,6 +81,17 @@ describe('Phase 2 real MySQL authentication and tenant boundaries', () => {
     expect(response.headers['set-cookie'][0]).toContain('HttpOnly');
     expect(response.headers['set-cookie'][0]).toContain('SameSite=Lax');
     expect((await agent.get('/dashboard')).status).toBe(200);
+    const recipes = await database.recipe.findMany({ where: { companyId: user.companyId }, include: { ingredients: true }, orderBy: { name: 'asc' } });
+    expect(recipes.map(recipe => recipe.name)).toEqual([
+      'Arroz salteado con verduras', 'Batido de banano y yogur', 'Crema de zanahoria',
+      'Ensalada de garbanzos y tomate', 'Pasta con tomate y albahaca', 'Tortilla de papa y cebolla',
+    ]);
+    expect(recipes.every(recipe => recipe.ingredients.length > 0 && recipe.preparation.includes('\n'))).toBe(true);
+    const list = await agent.get('/recipes');
+    expect(list.status).toBe(200);
+    for (const recipe of recipes) expect(list.text).toContain(recipe.name);
+    const { agent: otherAgent } = await account();
+    expect((await otherAgent.get(`/recipes/${recipes[0].id}`)).status).toBe(404);
   });
   it('rejects duplicate email and rolls back the attempted company and defaults', async () => {
     const { input } = await account();

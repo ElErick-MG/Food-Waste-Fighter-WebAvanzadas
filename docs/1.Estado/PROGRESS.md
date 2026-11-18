@@ -11,6 +11,33 @@
 | Rúbrica | Pesos y máximos oficiales completos: 100 % y 20 puntos. Evidencias y pendientes en [COMPLIANCE_MATRIX.md](../6.Evaluacion-Y-Entrega/COMPLIANCE_MATRIX.md). |
 | Entrega | Preparación técnica/documental disponible; cierre académico pendiente. |
 
+## Catálogo inicial de recetas
+
+- **DONE** El catálogo inicial pasó de tres a seis recetas al añadir
+  tortilla de papa y cebolla, pasta con tomate y albahaca y batido de
+  banano y yogur. Se verificó el registro de una empresa nueva, la
+  repetición del seed y la carga de las tres recetas en la base local.
+
+- **DONE** La tarjeta «Recetas sugeridas» del Resumen usa todo el inventario
+  utilizable y muestra los ingredientes coincidentes y el enlace directo
+  a cada receta. Pasaron nueve pruebas enfocadas en Resumen y Recetas.
+
+- **DONE** Sugerencias en `/recipes` a partir de todo el inventario
+  utilizable, con los ingredientes coincidentes visibles. Cinco pruebas
+  de recetas pasaron, incluida la verificación con MySQL de productos
+  vigentes, caducados y sin stock.
+
+- **DONE** Tres recetas de ejemplo con ingredientes, cantidades y pasos. El
+  registro las incorpora en su transacción y `npm run db:seed` permite
+  cargarlas para empresas existentes. La implementación y su documentación
+  se realizaron con apoyo de IA.
+- Verificado en MySQL: dos ejecuciones consecutivas del seed dejaron tres
+  recetas de ejemplo por empresa. La prueba de registro comprobó el listado
+  y que el detalle de otra empresa responde con 404.
+- Regresión en Windows: 114/115 pruebas independientes y 58/59 de integración.
+  Los fallos registrados corresponden al tiempo de respuesta de un recurso
+  estático y al cierre del servidor mediante SIGTERM, respectivamente.
+
 ## Pendientes de cierre
 
 - Completar integrantes, roles, aportes y commits reales, fecha, presentación y datos del curso.

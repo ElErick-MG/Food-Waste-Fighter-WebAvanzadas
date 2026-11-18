@@ -56,13 +56,13 @@
     <section class="res-bloque" aria-labelledby="hRecetas">
       <header><h2 id="hRecetas" class="t-tarjeta">Recetas sugeridas</h2><a class="enlace" href="/recipes">Ver recetas →</a></header>
       <% if (!suggested.length) { %>
-      <p class="res-vacio">No hay recetas que coincidan con los productos próximos a caducar con stock disponible.</p>
+      <p class="res-vacio">Aún no hay recetas que coincidan con tus productos disponibles.</p>
       <% } else { %>
       <div class="recetas">
         <% for (const recipe of suggested) { %>
         <article class="receta">
           <h3><%= recipe.name %></h3>
-          <span class="coincide">Coincide por nombre: <%= recipe.matches.join(', ') %></span>
+          <span class="coincide">En tu refri: <%= recipe.matches.join(', ') %></span>
           <p><%= recipe.description %></p>
           <a class="enlace" href="/recipes/<%= recipe.id %>">Ver receta completa<span class="sr-only">: <%= recipe.name %></span> →</a>
         </article>
