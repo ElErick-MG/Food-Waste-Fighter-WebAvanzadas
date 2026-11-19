@@ -112,6 +112,7 @@ Resultados de referencia y evidencias → [VALIDATION.md](docs/5.Calidad-Y-Valid
 | [🌍 Contexto del proyecto](docs/1.Estado/contextoProyecto.md) | Qué es, cómo funciona, estado actual |
 | [📈 Estado y pendientes](docs/1.Estado/PROGRESS.md) | Avance detallado por tarea |
 | [🛠️ Guía de ejecución](docs/2.Guias/ejecucionPrimeraVez.md) | Paso a paso para levantar el proyecto |
+| [🗄️ Guía de BD y comandos](docs/2.Guias/comandos.md) | Métodos de acceso, consultas SQL y estructura |
 | [📝 Especificaciones](docs/3.Especificaciones/PROJECT_SPEC.md) | Objetivos, historias de usuario y cronograma |
 | [🏛️ Referencia técnica](docs/4.Arquitectura/TECHNICAL_REFERENCE.md) | Arquitectura, modelo, permisos, seguridad, eventos |
 | [✅ Validación y calidad](docs/5.Calidad-Y-Validacion/VALIDATION.md) | Pruebas, accesibilidad y rendimiento |

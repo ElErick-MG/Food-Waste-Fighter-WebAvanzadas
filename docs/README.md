@@ -13,7 +13,8 @@ docs/
 │   ├── PROGRESS.md
 │   └── AGENTS.md
 ├── 2.Guias/                  # Guías prácticas paso a paso para desarrolladores
-│   └── ejecucionPrimeraVez.md
+│   ├── ejecucionPrimeraVez.md
+│   └── comandos.md
 ├── 3.Especificaciones/       # Requisitos de negocio, historias de usuario y roadmap
 │   ├── PROJECT_SPEC.md
 │   └── second-bimester-roadmap.md
@@ -38,8 +39,9 @@ docs/
 * **[1.Estado/PROGRESS.md](1.Estado/PROGRESS.md):** Registro vivo del estado actual del proyecto, tareas completadas, métricas de calidad y pendientes de cierre académico.
 * **[1.Estado/AGENTS.md](1.Estado/AGENTS.md):** Reglas operativas y restricciones de desarrollo obligatorias para agentes de IA.
 
-### 2. Guías de Inicialización
+### 2. Guías de Inicialización y Base de Datos
 * **[2.Guias/ejecucionPrimeraVez.md](2.Guias/ejecucionPrimeraVez.md):** Guía práctica para levantar el proyecto desde cero en local (Windows) o en Codespaces. Incluye cómo inicializar Docker/MySQL, ejecutar migraciones, acceder con los datos del seed vía recuperación de correo en `work/outbox/`, interactuar con la base de datos (Prisma Studio y CLI) y explorar la nueva interfaz interactiva (portada 3D, refrigeradora con estantes, modales y chat).
+* **[2.Guias/comandos.md](2.Guias/comandos.md):** Comandos esenciales para inspeccionar la estructura de la base de datos MySQL, métodos de acceso (Prisma Studio, Docker CLI), consultas SQL clave de negocio (usuarios con hash Argon2id, alertas de caducidad, inventario, recetas, chat) y reglas de aislamiento multi-tenant.
 
 ### 3. Especificaciones y Requisitos
 * **[3.Especificaciones/PROJECT_SPEC.md](3.Especificaciones/PROJECT_SPEC.md):** Alcance funcional, objetivos específicos medibles, cronograma de trabajo e historias de usuario priorizadas (**HU01 a HU12**) con criterios de aceptación.
