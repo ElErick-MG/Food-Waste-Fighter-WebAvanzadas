@@ -123,7 +123,7 @@ Resultados de referencia y evidencias → [VALIDATION.md](docs/5.Calidad-Y-Valid
 
 ## 👥 Integrantes y roles
 
-Periodo: `[PERIODO_ACADEMICO]` · Docente: `[DOCENTE]` · Equipo: `[NOMBRE_EQUIPO]`
+Periodo: `2026B` · Docente: `Velepucha Victor ` · Equipo: `1`
 
 | Integrante | Responsabilidad |
 |------------|-----------------|
@@ -132,8 +132,6 @@ Periodo: `[PERIODO_ACADEMICO]` · Docente: `[DOCENTE]` · Equipo: `[NOMBRE_EQUIP
 | Jhonathan Pulig | Inventario, recetas e interfaz |
 | Claudio Peñaherrera | Chat, sesiones y aislamiento |
 | Erick Alpusig | Pruebas, rendimiento y demostración |
-
-🔗 Repositorio: [github.com/A-PerfectStranger/Food-Waste-Fighter-WebAvanzadas](https://github.com/A-PerfectStranger/Food-Waste-Fighter-WebAvanzadas)
 
 ---
 
