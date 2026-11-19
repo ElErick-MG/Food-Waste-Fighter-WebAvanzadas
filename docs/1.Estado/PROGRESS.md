@@ -400,3 +400,28 @@ de datos (sin tabla, evento Socket.IO ni ruta nuevos).
   el alta, el rechazo de formularios inválidos, CSRF, los permisos,
   las sugerencias y el aislamiento entre empresas.
 - Siguiente paso de la rama: revisión de los cambios para el pull request.
+
+## Rendimiento y correcciones (rama `feature/rendimiento-y-bugs`)
+
+### Clic que atravesaba las tarjetas sobre la refri cerrada
+
+- Problema: en el Resumen, con una tarjeta superpuesta abierta (recetas, agregar
+  receta, cuenta, categorías…) o con la ventana del chat, un clic en el centro de la
+  pantalla —donde está la refri detrás— abría la refri (`/inventory`).
+- Causa: `resumen.js` escucha el clic en toda la ventana y solo descartaba una lista
+  fija de elementos (enlaces, botones y las dos columnas). Los clics dentro de las
+  tarjetas, el chat o el fondo oscuro del diálogo no estaban en esa lista y llegaban
+  a `R.toca()`, que detecta la refri 3D detrás.
+- Corrección (solo `src/public/fwf/js/resumen.js`): la refri reacciona únicamente si
+  el evento cae sobre el fondo de la escena (`#resumen`, `#escena`, `<body>` o
+  `<html>`) y nunca mientras haya un `<dialog>` abierto. Se aplica también al efecto
+  de entreabrir las puertas al pasar el puntero. La refri abierta y la portada no
+  tienen este comportamiento global, así que no requieren cambios.
+- `verify:browser` añade la comprobación `overlayBlocksFridgeClick`: con la tarjeta de
+  recetas abierta sobre el Resumen (1280 px), un clic real en el centro debe dejar la
+  página en `/dashboard` con la tarjeta abierta. Se comprobó que la prueba falla con
+  el código anterior (`actual: '/inventory'`) y pasa con la corrección.
+- Verificación: `npm test` 115/115; integración con MySQL 58/60 (los dos fallos
+  conocidos de Windows); `verify:browser` con Edge: PASS (40 escaneos). Revisión en
+  `localhost:3000`: lista de recetas, agregar receta, fondo del diálogo, Mi cuenta y
+  chat sin abrir la refri; sin nada encima, el clic sigue abriéndola.

@@ -80,13 +80,22 @@ function espiar(on) {
   document.body.classList.toggle('sobre-refri', on);
   tw(pose, { puertas: on ? .06 : 0 }, { type: 'spring', stiffness: 200, damping: 18 });
 }
-const sobreUI = e => e.target.closest('a,button,summary,details,.res-izq,.res-der,.aviso-vivo');
+/*
+ * La refri solo responde cuando el puntero está directamente sobre el fondo de la escena.
+ * Antes se usaba una lista de exclusiones (enlaces, columnas…) y cualquier capa nueva encima
+ * —tarjetas superpuestas, chat, avisos— dejaba pasar el clic y abría la refri. Ahora:
+ *  - si hay una tarjeta (<dialog>) abierta, la refri no reacciona;
+ *  - el destino del evento debe ser el fondo: #resumen (la capa transparente), la escena
+ *    de la cocina, <body> o <html>. Cualquier otro elemento es interfaz y tiene prioridad.
+ */
+const sobreFondo = e => !document.querySelector('dialog[open]') && (
+  e.target === resumen || e.target === document.body || e.target === document.documentElement || escena.contains(e.target));
 addEventListener('pointermove', e => {
   if (!R || estado !== 'resumen' || movil || e.pointerType === 'touch') return;
-  espiar(!sobreUI(e) && R.toca(e));
+  espiar(sobreFondo(e) && R.toca(e));
 });
 addEventListener('click', e => {
-  if (!R || estado !== 'resumen' || movil || sobreUI(e) || !R.toca(e)) return;
+  if (!R || estado !== 'resumen' || movil || !sobreFondo(e) || !R.toca(e)) return;
   entrar();
 });
 abrirBtn.addEventListener('click', e => {

@@ -132,6 +132,18 @@ try {
   assert.equal(new URL(admin.url()).pathname, '/inventory');
   await admin.keyboard.press('Escape');
   assert.equal(await admin.locator('dialog.superpuesta').evaluate(node => node.open), false);
+  // Regression: a click inside a card opened over the closed fridge (summary) must not go
+  // through to the fridge behind it (it used to open /inventory). Desktop width: on narrow
+  // screens the summary never opens the fridge by clicking it.
+  await admin.setViewportSize({ width: 1280, height: 900 });
+  await admin.goto(origin + '/dashboard');
+  await admin.locator('.res-der a[href="/recipes"]').first().click();
+  await admin.locator('dialog.superpuesta h1').waitFor();
+  const viewport = admin.viewportSize();
+  await admin.mouse.click(viewport.width / 2, viewport.height / 2);
+  await admin.waitForTimeout(800);
+  assert.equal(new URL(admin.url()).pathname, '/dashboard');
+  assert.equal(await admin.locator('dialog.superpuesta').evaluate(node => node.open), true);
   // Front-end redesign (stage 6): the floating chat bubble on the summary uses the same
   // Socket.IO client; a message sent from it reaches the other person's /chat page.
   await admin.goto(origin + '/dashboard');
@@ -147,7 +159,7 @@ try {
   assert.equal(brandColor, 'rgb(17, 128, 62)');
   const report = {
     measuredAt: new Date().toISOString(), sourceRevision: process.env.VERIFICATION_REVISION || 'working-tree', browser: browser.version(), brandColor,
-    scans, issues, functional: { nativeLogin: true, keyboardSkipLink: true, keyboardAccountMenu: true, overlayCards: true, chatBubble: true, twoDistinctUsers: true, liveExchange: true, persistedHistory: true, companyIsolation: true, notificationWithoutReload: true, websocketObserved: sockets.length > 0 },
+    scans, issues, functional: { nativeLogin: true, keyboardSkipLink: true, keyboardAccountMenu: true, overlayCards: true, overlayBlocksFridgeClick: true, chatBubble: true, twoDistinctUsers: true, liveExchange: true, persistedHistory: true, companyIsolation: true, notificationWithoutReload: true, websocketObserved: sockets.length > 0 },
     errors, externalOrigins: [...new Set(external)], limitations: ['Automated axe WCAG A/AA and best-practice checks plus targeted manual/keyboard behavior are not complete WCAG certification.', 'Local HTTP and isolated MySQL; actual Codespaces traffic is not captured by this command. Incomplete axe checks require human review.'],
   };
   await writeFile('work/browser-quality.json', JSON.stringify(report, null, 2) + '\n');
