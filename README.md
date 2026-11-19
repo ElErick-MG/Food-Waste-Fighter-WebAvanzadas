@@ -125,13 +125,13 @@ Resultados de referencia y evidencias → [VALIDATION.md](docs/5.Calidad-Y-Valid
 
 Periodo: `[PERIODO_ACADEMICO]` · Docente: `[DOCENTE]` · Equipo: `[NOMBRE_EQUIPO]`
 
-| Integrante | Responsabilidad propuesta | Aporte real y commits |
-|------------|--------------------------|----------------------|
-| `[INTEGRANTE_1]` | Coordinación, requisitos y documentación | `[APORTE_1_Y_COMMITS]` |
-| `[INTEGRANTE_2]` | Modelo, autenticación y seguridad | `[APORTE_2_Y_COMMITS]` |
-| `[INTEGRANTE_3]` | Inventario, recetas e interfaz | `[APORTE_3_Y_COMMITS]` |
-| `[INTEGRANTE_4]` | Chat, sesiones y aislamiento | `[APORTE_4_Y_COMMITS]` |
-| `[INTEGRANTE_5_OPCIONAL]` | Pruebas, rendimiento y demostración | `[APORTE_5_Y_COMMITS]` |
+| Integrante | Responsabilidad |
+|------------|-----------------|
+| Kevin Llugcha | Coordinación, requisitos y documentación |
+| Eduardo Arcos | Modelo, autenticación y seguridad |
+| Jhonathan Pulig | Inventario, recetas e interfaz |
+| Claudio Peñaherrera | Chat, sesiones y aislamiento |
+| Erick Alpusig | Pruebas, rendimiento y demostración |
 
 🔗 Repositorio: [github.com/A-PerfectStranger/Food-Waste-Fighter-WebAvanzadas](https://github.com/A-PerfectStranger/Food-Waste-Fighter-WebAvanzadas)
 
