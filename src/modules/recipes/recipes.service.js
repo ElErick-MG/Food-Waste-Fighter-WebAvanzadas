@@ -10,6 +10,12 @@ export function ingredientMatches(ingredient, food) {
 }
 export function createRecipesService(database) {
   return {
+    async create(companyId, { ingredients, ...recipe }) {
+      return database.recipe.create({
+        data: { ...recipe, companyId, ingredients: { create: ingredients } },
+        select: { id: true },
+      });
+    },
     async list(companyId, page) {
       const [total, recipes] = await database.$transaction([
         database.recipe.count({ where: { companyId } }),

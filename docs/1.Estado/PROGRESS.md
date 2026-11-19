@@ -385,3 +385,18 @@ de datos (sin tabla, evento Socket.IO ni ruta nuevos).
   etiqueta accesible, sin `data-chat-room` adicional y CSP sin cambios).
 - Verificación pendiente: `npm test` y `verify:browser` (40 escaneos axe) en esta rama.
 
+
+### Alta de recetas (rama `feature/agregar-recetas`) — DONE
+
+- ADMIN puede agregar recetas con descripción, preparación e ingredientes
+  desde el catálogo y desde el botón «Agregar recetas» debajo de «Agregar
+  producto» en la refri. Express comprueba el rol y el token CSRF, Zod valida la
+  entrada y Prisma guarda la receta y los ingredientes juntos.
+- ADMIN y EMPLOYEE consultan las recetas de su empresa. El Resumen usa el
+  motor existente para sugerir recetas que coinciden con productos próximos
+  a caducar y con stock disponible.
+- Verificación con asistencia de IA: `npm test` 115/115 y
+  `tests/business.integration.test.js` 19/19 en MySQL aislado. Se comprobó
+  el alta, el rechazo de formularios inválidos, CSRF, los permisos,
+  las sugerencias y el aislamiento entre empresas.
+- Siguiente paso de la rama: revisión de los cambios para el pull request.

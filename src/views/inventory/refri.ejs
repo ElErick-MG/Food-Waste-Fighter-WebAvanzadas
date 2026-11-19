@@ -30,7 +30,10 @@
     <% if (message) { %><p role="status" class="lat-aviso"><%= message %></p><% } %>
     <div class="acciones">
       <a class="btn btn-pri" href="/inventory/new"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar producto</a>
-      <% if (currentUser.role === 'ADMIN') { %><a class="btn btn-sec" href="/categories"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg>Agregar categoría</a><% } %>
+      <% if (currentUser.role === 'ADMIN') { %>
+      <a class="btn btn-pri" href="/recipes/new"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Agregar recetas</a>
+      <a class="btn btn-sec" href="/categories"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/></svg>Agregar categoría</a>
+      <% } %>
       <button type="button" class="btn btn-sec" id="verLista" aria-controls="lista" aria-expanded="<%= listaAbierta %>"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Ver como lista</button>
     </div>
     <div class="filtro">

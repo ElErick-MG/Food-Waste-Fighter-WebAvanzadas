@@ -1,0 +1,26 @@
+<%- include('../partials/fwf-ficha-inicio', { title: 'Agregar receta', volver: '/recipes' }) %>
+    <h1 id="ficha-titulo" class="t-modal">Agregar receta</h1>
+    <% if (error) { %><p role="alert" class="ficha-aviso error"><%= error %></p><% } %>
+    <form method="post" action="/recipes">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="campo">
+        <label for="name">Nombre</label>
+        <input id="name" name="name" required minlength="2" maxlength="120" value="<%= values.name ?? '' %>">
+      </div>
+      <div class="campo">
+        <label for="description">Descripción</label>
+        <textarea id="description" name="description" rows="2" required maxlength="500"><%= values.description ?? '' %></textarea>
+      </div>
+      <div class="campo">
+        <label for="ingredients">Ingredientes</label>
+        <p id="ingredientes-ayuda" class="ayuda">Agrega de 1 a 20 ingredientes, uno por línea. Separa el nombre, la cantidad y la unidad con barras verticales. Usa punto decimal.</p>
+        <textarea id="ingredients" name="ingredients" rows="4" required aria-describedby="ingredientes-ayuda" placeholder="Zanahoria | 0.500 | kg"><%= values.ingredients ?? '' %></textarea>
+      </div>
+      <div class="campo">
+        <label for="preparation">Preparación</label>
+        <p id="preparacion-ayuda" class="ayuda">Escribe un paso por línea.</p>
+        <textarea id="preparation" name="preparation" rows="5" required maxlength="3000" aria-describedby="preparacion-ayuda"><%= values.preparation ?? '' %></textarea>
+      </div>
+      <div class="ficha-botones"><button type="submit" class="btn btn-pri btn-grande">Guardar receta</button></div>
+    </form>
+<%- include('../partials/fwf-ficha-fin') %>

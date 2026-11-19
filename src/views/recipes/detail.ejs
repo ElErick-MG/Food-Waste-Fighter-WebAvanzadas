@@ -2,6 +2,7 @@
     <p class="etiqueta ficha-marca">Receta</p>
     <h1 id="ficha-titulo" class="t-modal"><%= recipe.name %></h1>
     <p class="ficha-sub ayuda"><%= recipe.description %></p>
+    <% if (typeof message !== 'undefined' && message) { %><p role="status" class="ficha-aviso pronto"><%= message %></p><% } %>
     <section class="rec-bloque" aria-labelledby="hIngredientes">
       <h2 id="hIngredientes" class="t-tarjeta">Ingredientes</h2>
       <p class="ayuda">✓ indica coincidencia por nombre con un producto no caducado y con stock. Revisa cantidades, unidades y condiciones; no garantiza que alcance para la receta.</p>

@@ -52,13 +52,14 @@ Los modelos, permisos y contratos se describen en [TECHNICAL_REFERENCE.md](../4.
 | HU10 | Obligatoria | Como empleado, se requiere coordinar con otra persona: chat autenticado, General, historial, presencia y mensajes en vivo. |
 | HU11 | Obligatoria | Como usuario conectado, se requiere conocer cambios de inventario: aviso sin recarga y aislamiento entre empresas. |
 | HU12 | Obligatoria | Como equipo, se requiere ejecutar, probar y demostrar la aplicación desde Codespaces con instrucciones reproducibles. |
+| HU13 | Ampliación | Como ADMIN, puedo agregar una receta con descripción, preparación e ingredientes. El personal de mi empresa puede consultarla y el Resumen puede sugerirla según las existencias próximas a caducar. |
 
 Se incluyen validación HTML5/JavaScript y Zod, errores claros, navegación
 coherente, consultas parametrizadas, escape de contenido, CSRF, cookies seguras,
 índices, paginación y al menos cinco pruebas automatizadas relevantes. El chat
 utiliza un servidor propio y conexión wss en el despliegue HTTPS.
 
-No se incluyen editor de recetas, contabilidad de movimientos, nutrición
+Quedan fuera la edición y eliminación de recetas, la contabilidad de movimientos, la nutrición
 verificada ni cálculo de ahorro real. Frontend desacoplado y microservicios
 corresponden al [segundo bimestre](second-bimester-roadmap.md).
 

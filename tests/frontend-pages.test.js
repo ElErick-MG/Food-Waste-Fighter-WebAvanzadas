@@ -197,6 +197,7 @@ describe('Open fridge /inventory and product cards (stage 4)', () => {
     expect(html).toContain('23 registros');
     expect(html).toContain('page=2');
     for (const href of ['/inventory/new', '/categories', '/inventory/item-1', '/inventory/item-1/edit', '/inventory/item-1/delete', '/dashboard']) expect(html).toContain(`href="${href}"`);
+    expect(html).toMatch(/Agregar producto<\/a>\s*<a class="btn btn-pri" href="\/recipes\/new">[^\n]*Agregar recetas<\/a>/);
     expect(html).toContain('Stock bajo');
     expect(html).toContain('/assets/fwf/css/refri-sin-js.css');
     expect(html).not.toContain('<body class="fwf" data-lista>');
@@ -208,6 +209,7 @@ describe('Open fridge /inventory and product cards (stage 4)', () => {
     const employee = await render('inventory/refri', base({ currentUser: { ...currentUser, role: 'EMPLOYEE' } }));
     expect(employee).not.toContain('/delete"');
     expect(employee).not.toContain('Agregar categoría');
+    expect(employee).not.toContain('href="/recipes/new"');
   });
 
   it('keeps the product form fields, CSRF and the verification hooks', async () => {

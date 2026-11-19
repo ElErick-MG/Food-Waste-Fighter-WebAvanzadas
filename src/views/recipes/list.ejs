@@ -2,8 +2,11 @@
     <p class="etiqueta ficha-marca">Aprovecha lo que tienes</p>
     <h1 id="ficha-titulo" class="t-modal">Recetas Sugeridas</h1>
     <p class="ficha-sub ayuda">Consulta las recetas de tu empresa. En cada detalle se indican las coincidencias con los alimentos de tu inventario.</p>
+    <% if (currentUser.role === 'ADMIN') { %>
+    <p class="ficha-botones"><a class="btn btn-pri" href="/recipes/new">Agregar receta</a></p>
+    <% } %>
     <% if (!recipes.length) { %>
-    <div class="lista-vacia"><h2 class="t-tarjeta">No hay recetas disponibles en esta página</h2><p class="ayuda">La empresa de demostración incluye una receta ficticia. Las empresas nuevas comienzan sin recetas.</p></div>
+    <div class="lista-vacia"><h2 class="t-tarjeta">No hay recetas disponibles en esta página</h2></div>
     <% } else { %>
     <ul class="recetas-grid">
       <% for (const recipe of recipes) { %>

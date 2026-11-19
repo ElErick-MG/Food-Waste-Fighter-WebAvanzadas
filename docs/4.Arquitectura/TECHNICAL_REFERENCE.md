@@ -179,6 +179,7 @@ erDiagram
 | /inventory/:id/delete | Solo ADMIN; confirmación explícita con checkbox y CSRF; GET no elimina. |
 | /categories | Consulta autenticada; editor inline por fila con color y nombre (solo ADMIN). |
 | /expiration, /recipes, /recipes/:id | Consulta autenticada limitada a la empresa. |
+| GET /recipes/new, POST /recipes | Alta solo para ADMIN. El POST exige CSRF, devuelve 400 si el formulario es inválido y redirige con 303 al detalle al guardar. |
 | /chat | Sala General e historial persistido; accesible vía burbuja flotante y página dedicada. |
 
 El inventario valida nombre de 2–120 caracteres, categoría autorizada, cantidad
@@ -191,6 +192,13 @@ La fecha del negocio se calcula en BUSINESS_TIMEZONE: caducado antes de hoy,
 crítico de hoy a dos días, advertencia de tres a cinco y normal desde seis.
 Stock bajo significa cantidad menor o igual al mínimo. El dashboard muestra
 los cuatro contadores y las primeras alertas.
+
+El alta escribe la receta y sus ingredientes de forma atómica con una
+creación anidada de Prisma. La empresa procede de la sesión autenticada.
+Zod valida el nombre (2–120 caracteres), la descripción (1–500), la preparación
+(1–3000) y de 1 a 20 ingredientes. Cada ingrediente se captura en una línea
+con el formato `nombre | cantidad | unidad` y una cantidad positiva con
+hasta tres decimales.
 
 Las recetas contienen ingredientes y pasos. Las sugerencias usan coincidencia
 bidireccional de nombres sin distinguir mayúsculas y excluyen alimentos

@@ -248,6 +248,53 @@ describe('Phase 3 business HTTP routes against isolated real MySQL', () => {
     expect((await post(f.agent, `/categories/${f.category.id}/edit`, { name: 'Intento' })).status).toBe(403);
     expect((await post(f.agent, `/categories/${f.category.id}/delete`, { confirm: 'yes' })).status).toBe(403);
   });
+  it('publishes recipes created by an admin to their company catalog and dashboard suggestions', async () => {
+    const f = await fixture();
+    const other = await fixture();
+    await f.persist();
+    const input = {
+      name: 'Crema de zanahoria',
+      description: 'Aprovecha las zanahorias disponibles.',
+      preparation: 'Lavar.\nCocinar.',
+      ingredients: 'Zanahoria | 0.125 | kg\r\nSal | 2 | g',
+    };
+
+    expect((await f.agent.get('/recipes')).text).toContain('href="/recipes/new"');
+    const token = await csrf(f.agent, '/recipes/new');
+    expect((await f.agent.post('/recipes').type('form').send(input)).status).toBe(403);
+    const invalid = await f.agent.post('/recipes').type('form').send({ ...input, _csrf: token, ingredients: 'Zanahoria | 0 | kg' });
+    expect(invalid.status).toBe(400);
+    expect(invalid.text).toContain('Revisa el ingrediente 1');
+    expect(invalid.text).toContain(input.name);
+    expect((await post(f.agent, '/recipes', { ...input, companyId: other.company.id })).status).toBe(400);
+    expect(await database.recipe.count({ where: { companyId: f.company.id } })).toBe(0);
+
+    const saved = await post(f.agent, '/recipes', input);
+    expect(saved.status).toBe(303);
+    const location = saved.headers.location;
+    const recipe = await database.recipe.findUniqueOrThrow({ where: { id: location.split('/').at(-1) }, include: { ingredients: true } });
+    expect(recipe.companyId).toBe(f.company.id);
+    expect(recipe.ingredients).toHaveLength(2);
+    expect(recipe.ingredients.every(ingredient => ingredient.companyId === f.company.id)).toBe(true);
+    expect(String(recipe.ingredients.find(ingredient => ingredient.name === 'Zanahoria').quantity)).toBe('0.125');
+    expect((await f.agent.get(location)).text).toContain('Receta agregada.');
+
+    await database.user.update({ where: { id: f.user.id }, data: { role: 'EMPLOYEE' } });
+    const catalog = await f.agent.get('/recipes');
+    expect(catalog.text).toContain(location);
+    expect(catalog.text).not.toContain('href="/recipes/new"');
+    expect((await f.agent.get('/recipes/new')).status).toBe(403);
+    expect((await post(f.agent, '/recipes', input)).status).toBe(403);
+    const detail = await f.agent.get(location);
+    expect(detail.status).toBe(200);
+    expect(detail.text).toContain('Cocinar.');
+    expect((await f.agent.get('/dashboard')).text).toContain(location);
+    await other.persist();
+    expect((await other.agent.get('/dashboard')).text).not.toContain(location);
+    expect((await other.agent.get('/recipes')).text).not.toContain(location);
+    expect((await other.agent.get(location)).status).toBe(404);
+  });
+
   it('shows persisted recipes/steps/ingredients, matches only usable stock and blocks foreign recipe IDs', async () => {
     const f = await fixture();
     const recipe = await database.recipe.create({ data: { companyId: f.company.id, name: 'Sopa de prueba', description: 'Receta ficticia', preparation: 'Lavar verduras.\nCocinar al vapor.', ingredients: { create: ['ZANAHORIA', 'Leche', 'Tomate'].map(name => ({ name, quantity: '0.500', unit: 'kg' })) } }, include: { ingredients: true } });
